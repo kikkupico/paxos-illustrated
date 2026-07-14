@@ -1,0 +1,2469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Part-Time Parliament — An Illustrated Chronicle of Paxos</title>
+<style>
+/* ============ PAXOS COMICS design system ============ */
+:root{
+  --ink:#1c1512;
+  --paper:#f2e7cd;
+  --paper-hi:#faf3e0;
+  --paper-lo:#e6d5ae;
+  --aegean:#136f9e;
+  --aegean-d:#0b4a6b;
+  --terra:#bf4a26;
+  --olive:#66722c;
+  --olive-d:#4c561e;
+  --gold:#c1912b;
+  --marble:#f8f5ee;
+  --caption:#ffe36e;
+  --blood:#8e2323;
+  --shadow:rgba(28,21,18,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+  font-size:17px; line-height:1.62;
+  background:
+    radial-gradient(1200px 500px at 50% -100px, rgba(255,255,255,.5), transparent 70%),
+    radial-gradient(900px 900px at 110% 15%, rgba(193,145,43,.10), transparent 60%),
+    radial-gradient(900px 900px at -10% 60%, rgba(19,111,158,.07), transparent 60%),
+    var(--paper);
+}
+/* faint halftone wash over the whole book */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:radial-gradient(rgba(28,21,18,.05) 1px, transparent 1.6px);
+  background-size:7px 7px; opacity:.5;
+}
+.page{position:relative; z-index:1; max-width:900px; margin:0 auto; padding:0 20px 90px}
+.prose{max-width:72ch; margin-left:auto; margin-right:auto}
+p{margin:.9em 0}
+em{font-style:italic}
+a{color:var(--aegean-d)}
+var, .m{font-family:Georgia,serif; font-style:italic}
+sub,sup{font-size:.72em}
+code{font-family:Menlo,Consolas,monospace; font-size:.85em; background:rgba(28,21,18,.07); padding:1px 4px; border-radius:3px}
+
+/* ---------- display faces ---------- */
+.display{font-family:Optima,'Gill Sans','Trebuchet MS',sans-serif; letter-spacing:.04em}
+.comic{font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS','Trebuchet MS',sans-serif}
+
+/* ---------- meander (Greek key) divider ---------- */
+.meander{height:18px; margin:34px auto; max-width:520px; border:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 36 18'><path d='M0 2h32v14h-8V8h-8v8h-4V6h12M0 16h8' fill='none' stroke='%231c1512' stroke-width='2.6'/></svg>");
+  background-repeat:repeat-x; background-size:36px 18px; opacity:.75}
+
+/* ---------- comic panels ---------- */
+figure.panel{margin:34px auto; padding:0; max-width:840px; position:relative}
+figure.panel .frame{
+  border:4px solid var(--ink); background:#fff; overflow:hidden;
+  box-shadow:8px 9px 0 var(--shadow);
+}
+figure.panel img{display:block; width:100%; height:auto}
+figure.panel figcaption{
+  display:inline-block; position:relative; margin:-16px 0 0 26px; max-width:82%;
+  background:var(--caption); border:3px solid var(--ink); padding:7px 14px 6px;
+  font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif;
+  font-size:.83rem; line-height:1.42; box-shadow:4px 4px 0 var(--shadow);
+  transform:rotate(-.6deg);
+}
+.tilt-l .frame{transform:rotate(-.7deg)}
+.tilt-r .frame{transform:rotate(.7deg)}
+.panel.narrow{max-width:560px}
+.panel.mid{max-width:700px}
+.panel-row{display:flex; gap:26px; align-items:flex-start; flex-wrap:wrap; justify-content:center}
+.panel-row figure.panel{flex:1 1 330px; margin-top:20px}
+
+/* ---------- cover ---------- */
+header.cover{padding:44px 0 8px; text-align:center}
+.cover .frame-cover{
+  display:inline-block; max-width:620px; width:92%;
+  border:5px solid var(--ink); box-shadow:12px 13px 0 var(--shadow); background:#fff;
+  transform:rotate(-.4deg);
+}
+.cover img{display:block;width:100%;height:auto}
+.kicker{
+  display:inline-block; margin:0 auto 18px; padding:6px 18px;
+  background:var(--ink); color:var(--paper-hi);
+  font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.34em; font-size:.78rem;
+  text-transform:uppercase;
+}
+.cover .sub{
+  margin:26px auto 4px; max-width:620px; font-family:Optima,'Gill Sans',sans-serif;
+  font-size:1.02rem; color:#4a3d2c; letter-spacing:.02em;
+}
+.cover .pub{
+  margin:10px auto 0; max-width:560px; font-size:.8rem; color:#6d5c42; font-style:italic;
+}
+
+/* ---------- section (issue) headers ---------- */
+.issue{margin:74px auto 30px; text-align:center; position:relative}
+.issue .no{
+  display:inline-block; background:var(--terra); color:#fff; border:3px solid var(--ink);
+  font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif; font-size:.82rem;
+  padding:4px 16px; letter-spacing:.14em; text-transform:uppercase;
+  box-shadow:4px 4px 0 var(--shadow); transform:rotate(-1.4deg);
+}
+.issue h2{
+  margin:14px 0 0; font-family:Optima,'Gill Sans',sans-serif; font-weight:700;
+  font-size:clamp(1.7rem,4.6vw,2.5rem); letter-spacing:.06em; text-transform:uppercase;
+  color:var(--ink); text-shadow:2px 2px 0 rgba(193,145,43,.35);
+}
+h3.sect{
+  margin:52px 0 12px; font-family:Optima,'Gill Sans',sans-serif; font-size:1.32rem;
+  letter-spacing:.05em; color:var(--aegean-d);
+  border-bottom:3px double rgba(28,21,18,.5); padding-bottom:6px;
+}
+h4.subsect{
+  margin:40px 0 8px; font-family:Optima,'Gill Sans',sans-serif; font-size:1.06rem;
+  letter-spacing:.05em; color:var(--olive-d); text-transform:uppercase;
+}
+
+/* ---------- decree plaques ---------- */
+.decree{
+  margin:22px auto; max-width:520px; text-align:center; position:relative;
+  background:linear-gradient(180deg,var(--marble),#eae4d4);
+  border:3px solid var(--ink); border-radius:4px;
+  padding:13px 26px 12px; font-style:italic; font-size:1.02rem;
+  box-shadow:5px 5px 0 var(--shadow), inset 0 0 0 4px rgba(193,145,43,.28);
+}
+.decree b{font-style:normal; font-family:Optima,'Gill Sans',sans-serif; margin-right:.5em}
+.decree.bad{background:linear-gradient(180deg,#f6e3dd,#ecd2c8); border-color:var(--blood)}
+
+/* ---------- narration & speech ---------- */
+.narr{
+  margin:26px auto; max-width:640px; background:var(--caption); border:3px solid var(--ink);
+  padding:10px 18px; font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif;
+  font-size:.9rem; box-shadow:5px 5px 0 var(--shadow); transform:rotate(-.35deg);
+}
+.editor-note{
+  margin:30px auto; max-width:660px; background:#e7e2d6; border:3px solid var(--ink);
+  padding:18px 24px; font-size:.93rem; box-shadow:6px 6px 0 var(--shadow); position:relative;
+}
+.editor-note .tag{
+  position:absolute; top:-15px; left:18px; background:var(--aegean); color:#fff;
+  border:3px solid var(--ink); padding:2px 12px; font-family:Optima,sans-serif;
+  font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
+}
+.editor-note .sig{text-align:right; font-style:italic; margin-bottom:0}
+
+/* ---------- footnote scrolls ---------- */
+.fn{
+  margin:18px auto; max-width:620px; font-size:.82rem; line-height:1.5; color:#4d4030;
+  background:linear-gradient(180deg,#efe4c6,#e7d8b1);
+  border:2px dashed rgba(28,21,18,.55); border-radius:2px; padding:8px 14px 8px 40px;
+  position:relative;
+}
+.fn::before{content:"📜"; position:absolute; left:10px; top:7px; font-size:1rem}
+.fn b{color:var(--ink)}
+
+/* ---------- theorems / marble slabs ---------- */
+.slab{
+  margin:28px auto; max-width:680px; background:linear-gradient(180deg,#fbf9f4,#ece7da);
+  border:3px solid var(--ink); box-shadow:6px 6px 0 var(--shadow); padding:4px 24px 10px;
+}
+.slab .slab-head{
+  font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.22em; text-transform:uppercase;
+  font-size:.8rem; color:var(--terra); margin:12px 0 4px;
+}
+.slab .stmt{font-style:italic}
+.mathblock{
+  margin:14px auto; padding:10px 16px; overflow-x:auto; text-align:center;
+  font-family:Georgia,serif; font-style:italic; font-size:1.0rem;
+  background:rgba(255,255,255,.55); border:1px solid rgba(28,21,18,.25); border-radius:3px;
+}
+.mathblock .rm{font-style:normal}
+details.proof{
+  margin:14px auto 20px; max-width:680px; border:2px solid rgba(28,21,18,.5);
+  background:rgba(255,255,255,.4); padding:0 18px;
+}
+details.proof>summary{
+  cursor:pointer; padding:9px 2px; font-family:Optima,sans-serif; letter-spacing:.1em;
+  text-transform:uppercase; font-size:.8rem; color:var(--aegean-d);
+}
+details.proof[open]{padding-bottom:10px}
+ol.proofsteps{font-size:.92rem}
+ol.proofsteps li{margin:.5em 0}
+.qed{float:right; font-family:Optima,sans-serif; letter-spacing:.15em; color:var(--olive-d)}
+
+/* ---------- Paxon name tooltips ---------- */
+.paxon{
+  border-bottom:2px dotted var(--terra); cursor:help; font-style:italic; white-space:nowrap;
+}
+#tip{
+  position:absolute; z-index:50; max-width:290px; display:none;
+  background:var(--ink); color:var(--paper-hi); padding:10px 14px; font-size:.82rem;
+  line-height:1.45; border:2px solid var(--gold); box-shadow:5px 5px 0 var(--shadow);
+  border-radius:4px; font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.02em;
+}
+#tip .who{color:var(--caption); font-weight:700; display:block; margin-bottom:2px}
+
+/* ---------- widgets ---------- */
+.widget{
+  margin:40px auto; max-width:860px; border:4px solid var(--ink);
+  background:linear-gradient(180deg,#efe6cf,#e4d5b0);
+  box-shadow:9px 10px 0 var(--shadow);
+}
+.widget>.whead{
+  display:flex; align-items:center; gap:12px; padding:10px 18px;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg,#7a4a26,#5d3313);
+  color:#f7ecd7; border-bottom:4px solid var(--ink);
+}
+.widget>.whead h5{
+  margin:0; font-family:Optima,'Gill Sans',sans-serif; font-size:1.02rem;
+  letter-spacing:.14em; text-transform:uppercase; font-weight:700;
+}
+.widget>.whead .badge{
+  margin-left:auto; background:var(--caption); color:var(--ink); border:2px solid var(--ink);
+  font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif; font-size:.68rem;
+  padding:2px 10px; transform:rotate(1.5deg); white-space:nowrap;
+}
+.widget .wbody{padding:18px 20px 22px}
+.widget .hint{font-size:.85rem; color:#5a4a33; font-style:italic; margin:6px 0 14px}
+button.gk{
+  font-family:Optima,'Gill Sans',sans-serif; font-size:.85rem; letter-spacing:.05em;
+  border:3px solid var(--ink); background:linear-gradient(180deg,#fdf6e4,#ecd9a8);
+  padding:7px 14px; cursor:pointer; box-shadow:3px 3px 0 var(--shadow); color:var(--ink);
+  transition:transform .06s ease;
+}
+button.gk:hover{transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--shadow)}
+button.gk:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--shadow)}
+button.gk.primary{background:linear-gradient(180deg,#2e88b5,#136f9e); color:#fff}
+button.gk.danger{background:linear-gradient(180deg,#d1633f,#bf4a26); color:#fff}
+button.gk:disabled{opacity:.45; cursor:not-allowed; transform:none}
+select.gk,option{font-family:Optima,sans-serif; font-size:.85rem}
+select.gk{border:3px solid var(--ink); background:#fdf6e4; padding:6px 8px; box-shadow:3px 3px 0 var(--shadow)}
+
+/* fig-1 manuscript widget */
+#fig1 table{border-collapse:collapse; margin:0 auto; background:#f6eed6; font-size:.95rem}
+#fig1 th{font-family:Optima,sans-serif; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; padding:6px 10px; border-bottom:3px solid var(--ink); color:#5a4a33}
+#fig1 td{padding:7px 12px; border-bottom:1px solid rgba(28,21,18,.25); text-align:center}
+#fig1 tr.ballot{cursor:pointer}
+#fig1 tr.ballot:hover{background:rgba(193,145,43,.15)}
+#fig1 tr.ballot.sel{background:rgba(19,111,158,.16); outline:3px solid var(--aegean)}
+#fig1 .bno{font-weight:700; font-family:Optima,sans-serif}
+#fig1 .dec{font-style:italic; font-size:1.05rem}
+#fig1 .cell{display:inline-block; min-width:34px; padding:2px 4px; margin:0 2px; border-radius:3px; user-select:none}
+#fig1 .cell.q{cursor:pointer}
+#fig1 .cell.voter{border:2.5px solid var(--ink); background:#fff; font-weight:700; box-shadow:2px 2px 0 rgba(28,21,18,.3)}
+#fig1 .cell.ghost{opacity:.22}
+#fig1 .cell.hl{background:var(--caption)}
+#fig1 .verdict{font-size:1rem}
+#fig1-explain{
+  margin-top:16px; background:#fff9e6; border:3px solid var(--ink); padding:12px 16px;
+  font-size:.92rem; min-height:64px; box-shadow:4px 4px 0 var(--shadow);
+}
+#fig1-conds{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+#fig1-conds .cond{
+  border:2.5px solid var(--ink); padding:4px 12px; font-family:Optima,sans-serif; font-size:.8rem;
+  background:#dfe8d0;
+}
+#fig1-conds .cond.bad{background:#f0cfc4}
+.laurel{font-size:.95em}
+
+/* chamber simulator */
+#sim .stage{display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-bottom:14px}
+.priest{
+  width:152px; border:3px solid var(--ink); background:linear-gradient(180deg,#fdfaf1,#efe6cf);
+  box-shadow:4px 4px 0 var(--shadow); font-size:.78rem; position:relative;
+}
+.priest .phead{
+  display:flex; align-items:center; gap:8px; padding:5px 8px; border-bottom:2px solid var(--ink);
+  background:linear-gradient(180deg,#e8ddc0,#dbcba2); cursor:pointer;
+}
+.priest .avatar{
+  width:34px; height:34px; border-radius:50%; border:2.5px solid var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  font-family:Optima,sans-serif; font-weight:700; font-size:1.05rem; color:#fff;
+  text-shadow:1px 1px 0 rgba(0,0,0,.4); flex:none;
+}
+.priest .pname{font-family:Optima,sans-serif; font-weight:700; font-size:.9rem}
+.priest .loc{margin-left:auto; font-size:1.05rem}
+.priest .pbody{padding:7px 9px 9px}
+.priest .outcome{
+  min-height:34px; border:2px solid rgba(28,21,18,.6); background:#fffdf4; border-radius:2px;
+  padding:3px 6px; font-style:italic; font-size:.75rem; line-height:1.3;
+}
+.priest .outcome.written{background:#e6efd3; border-color:var(--olive-d)}
+.priest .vars{margin-top:6px; color:#4d4030; line-height:1.55}
+.priest .vars b{font-family:Optima,sans-serif}
+.priest .stat{
+  position:absolute; top:-13px; right:-9px; border:2.5px solid var(--ink); background:var(--caption);
+  font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif; font-size:.62rem; padding:1px 8px;
+  transform:rotate(3deg); display:none;
+}
+.priest.away{filter:grayscale(.75) opacity(.62)}
+.priest.away .phead{background:#cbbf9f}
+#sim .controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:center; margin:10px 0 4px}
+#sim .tray{
+  margin:14px 0 10px; min-height:52px; border:3px dashed rgba(28,21,18,.5); background:rgba(255,255,255,.35);
+  padding:8px 10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+}
+#sim .tray .tray-label{font-family:Optima,sans-serif; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:#5a4a33; margin-right:6px}
+.scroll-chip{
+  border:2.5px solid var(--ink); background:linear-gradient(180deg,#fff8e0,#f3e2b3);
+  font-size:.72rem; font-family:Optima,sans-serif; padding:4px 8px; cursor:pointer;
+  box-shadow:2px 2px 0 var(--shadow); display:inline-flex; gap:6px; align-items:center;
+  animation:pop .18s ease;
+}
+.scroll-chip:hover{background:#fff}
+.scroll-chip .lose{color:var(--blood); font-weight:700; cursor:pointer; padding:0 2px}
+@keyframes pop{from{transform:scale(.7); opacity:0}to{transform:scale(1); opacity:1}}
+#sim .banner{
+  margin:8px 0 10px; text-align:center; font-family:Optima,sans-serif; letter-spacing:.08em;
+  font-size:.9rem; padding:7px 10px; border:3px solid var(--ink);
+}
+#sim .banner.ok{background:#dfe8d0; color:var(--olive-d)}
+#sim .banner.warn{background:#f6ecc8; color:#7a5b12}
+#sim .log{
+  height:240px; overflow-y:auto; background:#241c14; color:#efe2c2; padding:10px 14px;
+  font-family:Menlo,Consolas,monospace; font-size:.72rem; line-height:1.7;
+  border:3px solid var(--ink); box-shadow:inset 0 0 18px rgba(0,0,0,.6);
+}
+#sim .log .t-sys{color:#9fb4c7}
+#sim .log .t-msg{color:#e8c96a}
+#sim .log .t-act{color:#a8c77f}
+#sim .log .t-bad{color:#e08d6d}
+#sim .log .t-big{color:#ffd76e; font-weight:700}
+#sim .scenarios{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:12px}
+
+/* parliament ledger widget */
+#ledgerw .book{
+  max-width:520px; margin:0 auto; background:linear-gradient(180deg,#fdfaf1,#f1e8cf);
+  border:3px solid var(--ink); box-shadow:5px 5px 0 var(--shadow); padding:14px 18px;
+}
+#ledgerw .entry{
+  display:flex; gap:10px; align-items:baseline; padding:6px 4px; border-bottom:1px dotted rgba(28,21,18,.4);
+  font-size:.9rem;
+}
+#ledgerw .entry .no{font-family:Optima,sans-serif; font-weight:700; width:44px; text-align:right; flex:none}
+#ledgerw .entry .txt{font-style:italic}
+#ledgerw .entry.gap{background:rgba(191,74,38,.1)}
+#ledgerw .entry.gap .txt{color:var(--blood); font-style:normal; font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif; font-size:.78rem}
+#ledgerw .entry.gap.fillable{cursor:pointer; outline:2px dashed var(--blood)}
+#ledgerw .entry.gap.fillable:hover{background:rgba(191,74,38,.2)}
+#ledgerw .entry.new .txt{color:var(--aegean-d)}
+#ledgerw .msg{min-height:44px; margin-top:12px; font-size:.88rem; text-align:center; font-style:italic; color:#5a4a33}
+
+/* names reveal */
+#names .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px}
+#names .card{
+  border:2.5px solid var(--ink); background:#f6eed6; padding:8px 12px; cursor:pointer;
+  font-size:.85rem; box-shadow:3px 3px 0 var(--shadow); user-select:none;
+}
+#names .card .gr{font-style:italic; font-size:1rem}
+#names .card .an{display:none; margin-top:4px; font-family:Optima,sans-serif; color:var(--aegean-d)}
+#names .card.open .an{display:block}
+#names .card .role{display:none; font-size:.74rem; color:#5a4a33; font-style:italic}
+#names .card.open .role{display:block}
+
+/* toc */
+nav.toc{
+  margin:36px auto; max-width:640px; border:3px solid var(--ink); background:#efe6cf;
+  box-shadow:6px 6px 0 var(--shadow); padding:16px 26px 18px;
+}
+nav.toc h6{margin:0 0 8px; font-family:Optima,sans-serif; letter-spacing:.24em; text-transform:uppercase; font-size:.78rem; color:var(--terra)}
+nav.toc ol{margin:0; padding-left:20px; font-size:.92rem; columns:2; column-gap:34px}
+nav.toc li{margin:3px 0; -webkit-column-break-inside:avoid; break-inside:avoid}
+nav.toc a{text-decoration:none; border-bottom:1px dotted var(--aegean-d)}
+@media (max-width:640px){ nav.toc ol{columns:1} .panel-row{flex-direction:column} }
+
+/* references */
+.refs{font-size:.82rem; line-height:1.55}
+.refs li{margin:6px 0}
+
+footer.colophon{
+  margin-top:70px; text-align:center; font-size:.8rem; color:#6d5c42; font-style:italic;
+}
+</style>
+</head>
+<body>
+<div id="tip" role="tooltip"></div>
+<div class="page">
+
+<!-- ================= COVER ================= -->
+<header class="cover">
+  <div class="kicker">Paxos Comics · Distributed Classics · No. 1</div><br>
+  <div class="frame-cover"><img src="images/cover.png" alt="Comic book cover: The Part-Time Parliament by Leslie Lamport. A marble parliament chamber on a hilltop of a Greek island, legislators wandering the paths with ledgers, ships in the harbor."></div>
+  <p class="sub display">An illustrated chronicle of the Paxon Parliament — the ancient legislative
+  system whose protocol became <strong>Paxos</strong>, the foundation of modern fault-tolerant
+  distributed computing.</p>
+  <p class="pub">After Leslie Lamport, “The Part-Time Parliament,” <em>ACM Transactions on Computer
+  Systems&nbsp;16</em>, 2 (May 1998), 133–169. Retold panel by panel, with the mathematics intact.</p>
+</header>
+
+<nav class="toc">
+  <h6>Table of Decrees</h6>
+  <ol>
+    <li><a href="#preface">The Editor’s Discovery</a></li>
+    <li><a href="#s1">The Problem</a></li>
+    <li><a href="#s2">The Single-Decree Synod</a></li>
+    <li><a href="#w-fig1">⚱ The Manuscript (interactive)</a></li>
+    <li><a href="#w-sim">⚱ Conduct a Ballot (interactive)</a></li>
+    <li><a href="#s3">The Multi-Decree Parliament</a></li>
+    <li><a href="#w-ledger">⚱ Fill the Gaps (interactive)</a></li>
+    <li><a href="#s4">Relevance to Computer Science</a></li>
+    <li><a href="#w-names">⚱ The Hidden Names</a></li>
+    <li><a href="#appendix">Appendix: Proof of Consistency</a></li>
+    <li><a href="#refs">References</a></li>
+  </ol>
+</nav>
+
+<!-- ================= PREFACE ================= -->
+<section id="preface">
+  <figure class="panel mid tilt-l">
+    <div class="frame"><img src="images/manuscript.png" alt="An archaeologist brushes dust from an ancient parchment manuscript in a tent."></div>
+    <figcaption>THE SUBMISSION WAS DISCOVERED BEHIND A FILING CABINET IN THE <i>TOCS</i> EDITORIAL OFFICE…</figcaption>
+  </figure>
+
+  <div class="editor-note">
+    <span class="tag">From the editor’s desk</span>
+    <p>This manuscript turned up, long forgotten, behind a filing cabinet in the <em>TOCS</em>
+    editorial office. Old as it was, the editor-in-chief judged it worth publishing — and since
+    the author is off doing field work in the Greek isles and cannot be reached, I was asked to
+    prepare it for print.</p>
+    <p>The author appears to be an archaeologist with only a passing interest in computer science.
+    A pity: obscure as his ancient Paxon civilization may be, its legislative system is a superb
+    model for implementing a distributed system in an asynchronous environment. Some of the
+    Paxons’ refinements appear to be unknown in the systems literature.</p>
+    <p>The author does briefly discuss the Paxon Parliament’s relevance to distributed computing,
+    in Section 4. Computer scientists may want to read that section first — or even start with
+    Lampson’s explanation of the algorithm for computer scientists [Lampson 1996]. The algorithm
+    is described more formally by De&nbsp;Prisco et&nbsp;al. [1997]. I have added further comments on the
+    relation between the ancient protocols and more recent work at the end of Section&nbsp;4.</p>
+    <p class="sig">— Keith Marzullo, University of California, San Diego</p>
+  </div>
+
+  <div class="narr">ABSTRACT, AS THE ANCIENTS WOULD CARVE IT: Recent archaeological discoveries on
+  the island of Paxos reveal that its parliament functioned even though the legislators kept
+  wandering off. They maintained consistent copies of the parliamentary record despite their
+  forays from the Chamber and the forgetfulness of their messengers. The Paxons’ protocol offers
+  a new way to implement the state-machine approach to distributed systems.</div>
+</section>
+
+<hr class="meander">
+
+<!-- ================= SECTION 1 ================= -->
+<section id="s1">
+  <div class="issue">
+    <span class="no">Chapter I</span>
+    <h2>The Problem</h2>
+  </div>
+
+  <h3 class="sect">1.1 · The Island of Paxos</h3>
+  <figure class="panel">
+    <div class="frame"><img src="images/island.png" alt="Panorama of the island of Paxos: bustling harbor, agora, and the Parliament Chamber on the hilltop."></div>
+    <figcaption>EARLY IN THIS MILLENNIUM, THE AEGEAN ISLAND OF PAXOS WAS A THRIVING MERCANTILE CENTER.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Wealth brought the Paxons political sophistication, and they traded their old theocracy for
+    a parliamentary government. But on Paxos, commerce came before civic duty: not a single
+    citizen would give his whole life to Parliament. The Paxon Parliament had to keep working
+    even though its legislators drifted endlessly in and out of the parliamentary Chamber.</p>
+    <p>The trouble of governing with a part-time parliament corresponds remarkably to the trouble
+    faced by today’s fault-tolerant distributed systems: <strong>legislators play the role of
+    processes, and leaving the Chamber plays the role of failing.</strong> The Paxons’ solution may
+    therefore interest computer scientists. Here follows a short history of the protocol, and an
+    even shorter discussion of its relevance to distributed computing.</p>
+    <p>Paxon civilization was destroyed by foreign invaders, and archaeologists have only recently
+    begun digging up its history. Our knowledge of the Parliament is therefore fragmentary; the
+    basic protocols are known, but many details are lost. Where such details are interesting, I
+    will take the liberty of speculating on what the Paxons <em>might</em> have done.</p>
+  </div>
+  <aside class="fn"><b>1.</b> The island should not be confused with the Ionian island of Paxoi,
+  whose name is sometimes corrupted to <i>Paxos</i>.</aside>
+
+  <figure class="panel tilt-r">
+    <div class="frame"><img src="images/wanderers.png" alt="Legislators wander in and out of the half-empty Chamber, one leaving for a banquet."></div>
+    <figcaption>NO ONE WAS WILLING TO DEVOTE HIS LIFE TO PARLIAMENT — LEGISLATORS WANDERED IN AND OUT OF THE CHAMBER CONTINUALLY.</figcaption>
+  </figure>
+
+  <h3 class="sect">1.2 · Requirements</h3>
+  <div class="prose">
+    <p>Parliament’s primary task was to determine <em>the law of the land</em>, defined by the sequence
+    of decrees it passed. A modern parliament keeps a secretary to record its acts — but no Paxon
+    would sit in the Chamber all session long to play secretary. Instead, <strong>every legislator
+    carried a personal <em>ledger</em></strong>, in which he recorded the numbered decrees that were
+    passed. Legislator <span class="paxon" data-real="Nancy Lynch" data-note="Pioneer of distributed algorithms theory; co-author of the FLP impossibility result cited in this very paper.">Λινχ∂</span>’s
+    ledger, for instance, held the entry</p>
+  </div>
+  <div class="decree"><b>155:</b> The olive tax is 3 drachmas per ton</div>
+  <figure class="panel narrow tilt-l">
+    <div class="frame"><img src="images/ledger.png" alt="Hands writing decree 155, the olive tax is 3 drachmas per ton, into a leather ledger with indelible ink."></div>
+    <figcaption>LEDGERS WERE WRITTEN IN INDELIBLE INK — AN ENTRY, ONCE MADE, COULD NEVER BE CHANGED.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>if she believed the 155<sup>th</sup> decree passed by Parliament set the olive tax at
+    3&nbsp;drachmas per ton. Ledgers were written with indelible ink, and their entries could not
+    be changed.</p>
+    <p>The first requirement of the parliamentary protocol was the <em>consistency of ledgers</em>:
+    <strong>no two ledgers could contain contradictory information.</strong> If legislator
+    <span class="paxon" data-real="Michael Fischer" data-note="The F of the FLP impossibility theorem — Fischer, Lynch &amp; Paterson, 1985.">Φισ∂ερ</span>
+    had the entry</p>
+  </div>
+  <div class="decree"><b>132:</b> Lamps must use only olive oil</div>
+  <div class="prose">
+    <p>in his ledger, then no other ledger could hold a <em>different</em> entry for decree 132 —
+    though another legislator’s ledger might simply have <em>no</em> entry for 132 yet, if news of
+    its passage had not reached him.</p>
+    <p>Consistency alone was not enough: it could be satisfied trivially by leaving every ledger
+    blank forever. Some requirement had to guarantee that decrees eventually got passed and
+    recorded. In modern parliaments, the passing of decrees is slowed by disagreement among
+    legislators; not so on Paxos, where an atmosphere of mutual trust prevailed and legislators
+    would happily pass any decree that was proposed. Their <em>peripatetic propensity</em>, however,
+    posed a real danger. Consistency itself would be lost if one group of legislators passed the
+    decree</p>
+  </div>
+  <div class="decree"><b>37:</b> Painting on temple walls is forbidden</div>
+  <div class="prose"><p style="text-align:center;margin:.2em 0"><em>…and then strolled off to a banquet, whereupon a wholly
+  different group wandered in and, knowing nothing of what had just happened, passed the
+  conflicting decree…</em></p></div>
+  <div class="decree bad"><b>37:</b> Freedom of artistic expression is guaranteed</div>
+  <figure class="panel">
+    <div class="frame"><img src="images/conflict.png" alt="Two-panel comic: one group passes decree 37 forbidding temple painting and leaves for a banquet; a second group enters and passes a conflicting decree 37 guaranteeing artistic expression."></div>
+    <figcaption>DISASTER! TWO GROUPS, ONE DECREE NUMBER, TWO CONTRADICTORY LAWS. THE PROTOCOL MUST MAKE THIS IMPOSSIBLE.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Progress could not be guaranteed unless enough legislators stayed in the Chamber long
+    enough. Since Paxon legislators refused to curtail their outside activities, no protocol could
+    ensure that any decree would <em>ever</em> be passed. But legislators were willing to promise
+    that, <em>while present in the Chamber</em>, they and their aides would act promptly on all
+    parliamentary business. That promise let the Paxons devise a protocol satisfying the following
+    <em>progress condition</em>:</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">The Progress Condition</div>
+    <p class="stmt">If a majority of the legislators<sup>2</sup> were in the Chamber, and no one
+    entered or left the Chamber for a sufficiently long period of time, then any decree proposed
+    by a legislator in the Chamber would be passed, and every decree that had been passed would
+    appear in the ledger of every legislator in the Chamber.</p>
+  </div>
+  <aside class="fn"><b>2.</b> In translating the progress condition, I have rendered the Paxon
+  word <span class="paxon" data-real="“majority set”" data-note="Sound it out — the Paxon language is closer to English than it looks.">μαδζ∂ωριτϊσετ</span>
+  as <i>majority of the legislators</i>. Alternative translations of this word have been proposed
+  and are discussed in Section&nbsp;2.2.</aside>
+
+  <h3 class="sect">1.3 · Assumptions</h3>
+  <figure class="panel mid tilt-r">
+    <div class="frame"><img src="images/equipment.png" alt="Museum-style panel of a legislator's equipment: ledger, pen, indelible ink, hourglass, and a flimsy slip of paper."></div>
+    <figcaption>STANDARD ISSUE, ONE PER LEGISLATOR: STURDY LEDGER, PEN, INDELIBLE INK, HOURGLASS TIMER… AND A VERY LOSABLE SLIP OF PAPER.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>The protocol’s requirements could be met only by equipping the legislators properly. Each
+    received a sturdy ledger for recording decrees, a pen, and a supply of indelible ink. A
+    legislator might forget what he had been doing if he left the Chamber,<sup>3</sup> so he would
+    jot reminders of important parliamentary tasks in the <em>back</em> of his ledger. Decree
+    entries were never changed, but these back-of-ledger notes could be crossed out. To meet the
+    progress condition legislators had to measure the passage of time, so each was given a simple
+    hourglass timer.</p>
+    <p>Legislators carried their ledgers at all times and could always read the decree list and
+    any un-crossed-out note. The ledgers, made of the finest parchment, were reserved for the most
+    important notes; anything else a legislator would scribble on a slip of paper — which he might
+    (or might not) lose upon leaving the Chamber.</p>
+    <p>The Chamber’s acoustics were dreadful, making oratory impossible, so <strong>legislators
+    could communicate only by messenger</strong>, and each had funds to hire as many messengers as
+    needed. A messenger could be trusted not to garble a message — but he might forget he had
+    already delivered it and deliver it again; and, like the legislators he served, he gave only
+    part of his time to parliamentary duties. A messenger might leave the Chamber on some
+    business — perhaps a six-month voyage — before delivering a message. He might even leave
+    forever, in which case the message would never arrive at all.</p>
+  </div>
+  <aside class="fn"><b>3.</b> In one tragic incident, legislator
+  <span class="paxon" data-real="Sam Toueg" data-note="Distributed-computing researcher; a good sport about the falling statue.">Τωυεγ</span>
+  developed irreversible amnesia after being struck on the head by a falling statue just outside
+  the Chamber.</aside>
+  <figure class="panel narrow tilt-l">
+    <div class="frame"><img src="images/messenger.png" alt="A messenger sprints with a scroll; in an inset, he forgetfully sails away on a six-month voyage, scroll undelivered."></div>
+    <figcaption>THE MESSENGER: FAST, HONEST… AND LIABLE TO SAIL AWAY MID-ERRAND WITH YOUR SCROLL IN HIS BELT.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Though legislators and messengers came and went as they pleased, <strong>while inside the
+    Chamber they attended to Parliament with total devotion</strong>: messengers delivered promptly,
+    and legislators reacted promptly to every message received.</p>
+    <p>The official records of Paxos insist that legislators and messengers were scrupulously
+    honest and strictly obeyed the protocol. Most scholars dismiss this as propaganda meant to
+    paint Paxos as morally superior to its eastern neighbors. Dishonesty, though rare, surely
+    occurred — but since it was never admitted in official documents, we know little of how
+    Parliament coped with corrupt legislators or messengers. What evidence has been unearthed is
+    discussed in Section&nbsp;3.3.5.</p>
+  </div>
+</section>
+
+<hr class="meander">
+
+<!-- ================= SECTION 2 ================= -->
+<section id="s2">
+  <div class="issue">
+    <span class="no">Chapter II</span>
+    <h2>The Single-Decree Synod</h2>
+  </div>
+
+  <figure class="panel">
+    <div class="frame"><img src="images/synod.png" alt="A torch-lit ceremonial Synod of priests around a brazier; several priests sneak out the side doors mid-ceremony."></div>
+    <figcaption>EVERY 19 YEARS THE SYNOD CONVENED TO CHOOSE A SINGLE, SYMBOLIC DECREE. THEN THE PRIESTS TOOK UP WANDERING… AND ONE YEAR, NO DECREE WAS CHOSEN AT ALL.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>The Paxon Parliament evolved from an older, ceremonial <em>Synod</em> of priests, convened
+    every 19 years to choose one symbolic decree. For centuries the Synod used a traditional
+    procedure that required every priest to be present. But as commerce flourished, the priests
+    too began drifting in and out of the Chamber mid-session — until at last the old protocol
+    failed, and a Synod ended with <em>no decree chosen</em>. To prevent a repeat of this
+    theological disaster, Paxon religious leaders asked their mathematicians for a protocol to
+    choose the Synod’s decree. Its requirements and assumptions were essentially those of the
+    later Parliament, except that where the Parliament filled a ledger with a <em>sequence</em> of
+    decrees, a Synod ledger would hold <strong>at most one</strong>.</p>
+    <p>The mathematicians derived the Synod protocol in steps. First they proved that a protocol
+    satisfying certain <em>constraints</em> would guarantee consistency and allow progress. A
+    <em>preliminary protocol</em> was derived directly from these constraints; restricting it gave
+    the <em>basic protocol</em>, which guaranteed consistency but not progress; and restricting
+    <em>that</em> yielded the complete Synod protocol, which satisfied both.<sup>4</sup></p>
+  </div>
+  <aside class="fn"><b>4.</b> The full history of the protocol’s discovery is unknown. Like modern
+  computer scientists, Paxon mathematicians would present elegant, logical derivations bearing no
+  resemblance to how the algorithms were actually found. It is known, however, that the
+  mathematical results (Theorems 1 and 2 below) genuinely came first — discovered while the
+  mathematicians were trying to prove that a satisfactory protocol was <em>impossible</em>.</aside>
+
+  <h3 class="sect">2.1 · Mathematical Results</h3>
+  <div class="prose">
+    <p>The Synod chose its decree through a series of numbered <em>ballots</em>, each ballot a
+    referendum on one decree. In a ballot, a priest had exactly two choices: vote for the decree,
+    or abstain.<sup>5</sup> Each ballot carried a designated set of priests called its
+    <em>quorum</em>; a ballot <em>succeeded</em> if and only if <strong>every priest in the quorum
+    voted</strong>. Formally, a ballot <var>B</var> had four parts (all <i>sets</i> here are finite
+    sets<sup>6</sup>):</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">Anatomy of a Ballot</div>
+    <div class="mathblock" style="text-align:left; font-style:normal">
+      <p style="margin:.35em 0"><var>B</var><sub>dec</sub> — <span class="rm">a decree (the one being voted on)</span></p>
+      <p style="margin:.35em 0"><var>B</var><sub>qrm</sub> — <span class="rm">a nonempty set of priests (the ballot’s <em>quorum</em>)</span></p>
+      <p style="margin:.35em 0"><var>B</var><sub>vot</sub> — <span class="rm">a set of priests (the ones who cast votes for the decree)</span><sup>7</sup></p>
+      <p style="margin:.35em 0"><var>B</var><sub>bal</sub> — <span class="rm">a ballot number</span></p>
+    </div>
+    <p style="font-size:.92rem">A ballot <var>B</var> was <em>successful</em> iff
+    <var>B</var><sub>qrm</sub>&nbsp;⊆&nbsp;<var>B</var><sub>vot</sub> — a successful ballot being
+    one in which every quorum member voted.</p>
+  </div>
+  <aside class="fn"><b>5.</b> Like some modern nations, Paxos had not fully grasped the nature of
+  Athenian democracy.</aside>
+  <aside class="fn"><b>6.</b> Though remarkably advanced for their time, Paxon mathematicians
+  obviously knew no set theory. I have taken the liberty of translating their more primitive
+  notation into its modern language.</aside>
+  <aside class="fn"><b>7.</b> Only quorum members’ votes actually counted, but the Paxons found
+  the correctness proof easier if, in the proof, any priest was allowed to vote in any ballot.</aside>
+  <div class="prose">
+    <p>Ballot numbers came from an unbounded, totally ordered set. If
+    <var>B′</var><sub>bal</sub>&nbsp;&gt;&nbsp;<var>B</var><sub>bal</sub>, ballot <var>B′</var> was said to be
+    <em>later</em> than <var>B</var> — but this said <strong>nothing</strong> about the order in which
+    the ballots were actually conducted; a “later” ballot could well have taken place before an
+    “earlier” one.</p>
+    <p>The mathematicians then defined three conditions on any set <var>ℬ</var> of ballots, and
+    showed that consistency was guaranteed and progress possible when the conducted ballots
+    satisfied them. The first two are simple:</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">The Three Sacred Conditions</div>
+    <p><b><var>B</var>1(<var>ℬ</var>)</b> — Each ballot in <var>ℬ</var> has a unique ballot number.</p>
+    <p><b><var>B</var>2(<var>ℬ</var>)</b> — The quorums of any two ballots in <var>ℬ</var> have at
+    least one priest in common.</p>
+    <p><b><var>B</var>3(<var>ℬ</var>)</b> — For every ballot <var>B</var> in <var>ℬ</var>: if any
+    priest in <var>B</var>’s quorum voted in an earlier ballot in <var>ℬ</var>, then the decree of
+    <var>B</var> equals the decree of the <em>latest</em> of those earlier ballots.</p>
+    <p style="font-size:.85rem; color:#5a4a33"><em>The third condition was stated, rather
+    confusingly, in one Paxon manuscript. Interpreting it was made possible by the manuscript
+    reproduced below — study it yourself.</em></p>
+  </div>
+
+  <!-- ========= WIDGET 1: FIG 1 ========= -->
+  <div class="widget" id="w-fig1">
+    <div class="whead"><h5>⚱ The Manuscript — Figure 1</h5><span class="badge">INTERACTIVE RELIC</span></div>
+    <div class="wbody" id="fig1">
+      <p class="hint">A set <var>ℬ</var> of five ballots for a Synod of five priests
+      Α,&nbsp;Β,&nbsp;Γ,&nbsp;Δ,&nbsp;Ε. Each row lists a ballot’s number, decree, and quorum; the
+      <b>boxed</b> names are the quorum members who actually voted. <b>Click a row</b> to see why it
+      satisfies condition <var>B</var>3 — and <b>click a priest’s name</b> to toggle his vote and watch
+      the conditions break.</p>
+      <table>
+        <thead><tr><th>#</th><th>decree</th><th>quorum &amp; <span style="border:2px solid var(--ink); padding:0 5px; background:#fff">voters</span></th><th>B3</th></tr></thead>
+        <tbody id="fig1-rows"></tbody>
+      </table>
+      <div id="fig1-conds"></div>
+      <div id="fig1-explain">Click one of the five ballots above to read the scholars’ commentary on it.</div>
+      <p style="text-align:center; margin:14px 0 0">
+        <button class="gk" id="fig1-reset">Restore the original manuscript</button>
+      </p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>To state <var>B</var>1–<var>B</var>3 formally requires more notation. A <em>vote</em>
+    <var>v</var> was a quantity with three components: a priest <var>v</var><sub>pst</sub>, a
+    ballot number <var>v</var><sub>bal</sub>, and a decree <var>v</var><sub>dec</sub> — the vote
+    cast by priest <var>v</var><sub>pst</sub> for decree <var>v</var><sub>dec</sub> in ballot
+    number <var>v</var><sub>bal</sub>. The Paxons also defined <em>null votes</em>: for each priest
+    <var>p</var>, the unique vote <var>null</var><sub><var>p</var></sub> with
+    <var>v</var><sub>bal</sub>&nbsp;=&nbsp;−∞ and <var>v</var><sub>dec</sub>&nbsp;=&nbsp;<span style="font-variant:small-caps">blank</span>,
+    where −∞&nbsp;&lt;&nbsp;<var>b</var>&nbsp;&lt;&nbsp;∞ for every ballot number <var>b</var>, and
+    <span style="font-variant:small-caps">blank</span> is not a decree. Votes were totally ordered
+    such that <var>v</var>&nbsp;&lt;&nbsp;<var>v′</var> whenever
+    <var>v</var><sub>bal</sub>&nbsp;&lt;&nbsp;<var>v′</var><sub>bal</sub> (the part of the manuscript
+    ordering votes with equal ballot numbers has been lost).</p>
+    <p>For any set <var>ℬ</var> of ballots, <var>Votes</var>(<var>ℬ</var>) is the set of all votes
+    cast in ballots of <var>ℬ</var>. If <var>p</var> is a priest and <var>b</var> a ballot number
+    or ±∞, then</p>
+  </div>
+  <div class="mathblock"><var>MaxVote</var>(<var>b</var>,&nbsp;<var>p</var>,&nbsp;<var>ℬ</var>)</div>
+  <div class="prose">
+    <p>is the <strong>largest</strong> vote in <var>Votes</var>(<var>ℬ</var>) cast by <var>p</var>
+    with ballot number <strong>less than <var>b</var></strong> — or
+    <var>null</var><sub><var>p</var></sub> if there was none. Since
+    <var>null</var><sub><var>p</var></sub> is smaller than any real vote, this makes
+    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>p</var>,&nbsp;<var>ℬ</var>) the largest vote in the set</p>
+  </div>
+  <div class="mathblock">{<var>v</var> ∈ <var>Votes</var>(<var>ℬ</var>) :
+    (<var>v</var><sub>pst</sub> = <var>p</var>) ∧ (<var>v</var><sub>bal</sub> &lt; <var>b</var>)}
+    ∪ {<var>null</var><sub><var>p</var></sub>}</div>
+  <div class="prose">
+    <p>For a nonempty set <var>Q</var> of priests,
+    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>Q</var>,&nbsp;<var>ℬ</var>) is the maximum of
+    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>p</var>,&nbsp;<var>ℬ</var>) over all <var>p</var> in
+    <var>Q</var>. With this, the three conditions become:<sup>8</sup></p>
+  </div>
+  <div class="slab">
+    <div class="mathblock">
+      <var>B</var>1(<var>ℬ</var>) ≜ ∀<var>B</var>, <var>B′</var> ∈ <var>ℬ</var> :
+      (<var>B</var> ≠ <var>B′</var>) ⇒ (<var>B</var><sub>bal</sub> ≠ <var>B′</var><sub>bal</sub>)
+    </div>
+    <div class="mathblock">
+      <var>B</var>2(<var>ℬ</var>) ≜ ∀<var>B</var>, <var>B′</var> ∈ <var>ℬ</var> :
+      <var>B</var><sub>qrm</sub> ∩ <var>B′</var><sub>qrm</sub> ≠ ∅
+    </div>
+    <div class="mathblock">
+      <var>B</var>3(<var>ℬ</var>) ≜ ∀<var>B</var> ∈ <var>ℬ</var> :
+      (<var>MaxVote</var>(<var>B</var><sub>bal</sub>, <var>B</var><sub>qrm</sub>, <var>ℬ</var>)<sub>bal</sub> ≠ −∞) ⇒
+      (<var>B</var><sub>dec</sub> = <var>MaxVote</var>(<var>B</var><sub>bal</sub>, <var>B</var><sub>qrm</sub>, <var>ℬ</var>)<sub>dec</sub>)
+    </div>
+    <p style="font-size:.85rem">Although <var>MaxVote</var>’s definition leans on the ordering of
+    votes, <var>B</var>1(<var>ℬ</var>) implies
+    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>Q</var>,&nbsp;<var>ℬ</var>)<sub>dec</sub> does not
+    depend on how votes with equal ballot numbers are ordered.</p>
+  </div>
+  <aside class="fn"><b>8.</b> I use the Paxon mathematical symbol ≜, which meant <i>equals by
+  definition</i>.</aside>
+
+  <div class="prose">
+    <p>To show these conditions imply consistency, the Paxons first proved that
+    <var>B</var>1–<var>B</var>3 force any ballot later than a successful one to choose the same
+    decree:</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">Lemma</div>
+    <p class="stmt">If <var>B</var>1(<var>ℬ</var>), <var>B</var>2(<var>ℬ</var>), and
+    <var>B</var>3(<var>ℬ</var>) hold, then</p>
+    <div class="mathblock">((<var>B</var><sub>qrm</sub> ⊆ <var>B</var><sub>vot</sub>) ∧
+      (<var>B′</var><sub>bal</sub> &gt; <var>B</var><sub>bal</sub>)) ⇒
+      (<var>B′</var><sub>dec</sub> = <var>B</var><sub>dec</sub>)</div>
+    <p class="stmt">for any <var>B</var>, <var>B′</var> in <var>ℬ</var>.</p>
+  </div>
+  <details class="proof">
+    <summary>Unroll the proof of the Lemma (a Paxon proof by contradiction, in 11 careful steps)<sup>9</sup></summary>
+    <p style="font-size:.92rem">For any <var>B</var> in <var>ℬ</var>, let
+    <var>Ψ</var>(<var>B</var>,&nbsp;<var>ℬ</var>) ≜
+    {<var>B′</var> ∈ <var>ℬ</var> : (<var>B′</var><sub>bal</sub> &gt; <var>B</var><sub>bal</sub>) ∧
+    (<var>B′</var><sub>dec</sub> ≠ <var>B</var><sub>dec</sub>)} — the later ballots for a
+    <em>different</em> decree. It suffices to show that
+    <var>B</var><sub>qrm</sub>&nbsp;⊆&nbsp;<var>B</var><sub>vot</sub> implies
+    <var>Ψ</var>(<var>B</var>,&nbsp;<var>ℬ</var>) is empty. Assume, for contradiction, a
+    <var>B</var> with <var>B</var><sub>qrm</sub>&nbsp;⊆&nbsp;<var>B</var><sub>vot</sub> and
+    <var>Ψ</var>(<var>B</var>,&nbsp;<var>ℬ</var>)&nbsp;≠&nbsp;∅.</p>
+    <ol class="proofsteps">
+      <li>Choose <var>C</var> ∈ <var>Ψ</var>(<var>B</var>,&nbsp;<var>ℬ</var>) with
+        <var>C</var><sub>bal</sub> = min{<var>B′</var><sub>bal</sub> : <var>B′</var> ∈ <var>Ψ</var>(<var>B</var>,&nbsp;<var>ℬ</var>)}.
+        <br><small>Such a <var>C</var> exists because <var>Ψ</var>(<var>B</var>,&nbsp;<var>ℬ</var>) is nonempty and finite.</small></li>
+      <li><var>C</var><sub>bal</sub> &gt; <var>B</var><sub>bal</sub>
+        <br><small>By 1 and the definition of <var>Ψ</var>.</small></li>
+      <li><var>B</var><sub>vot</sub> ∩ <var>C</var><sub>qrm</sub> ≠ ∅
+        <br><small>By <var>B</var>2 and the hypothesis <var>B</var><sub>qrm</sub> ⊆ <var>B</var><sub>vot</sub>: the quorums overlap, and all of <var>B</var>’s quorum voted.</small></li>
+      <li><var>MaxVote</var>(<var>C</var><sub>bal</sub>, <var>C</var><sub>qrm</sub>, <var>ℬ</var>)<sub>bal</sub> ≥ <var>B</var><sub>bal</sub>
+        <br><small>By 2 and 3: some quorum member of <var>C</var> voted in <var>B</var>, which is earlier than <var>C</var>.</small></li>
+      <li><var>MaxVote</var>(<var>C</var><sub>bal</sub>, <var>C</var><sub>qrm</sub>, <var>ℬ</var>) ∈ <var>Votes</var>(<var>ℬ</var>)
+        <br><small>By 4 (it is not a null vote) and the definition of <var>MaxVote</var>.</small></li>
+      <li><var>MaxVote</var>(<var>C</var><sub>bal</sub>, <var>C</var><sub>qrm</sub>, <var>ℬ</var>)<sub>dec</sub> = <var>C</var><sub>dec</sub>
+        <br><small>By 5 and <var>B</var>3.</small></li>
+      <li><var>MaxVote</var>(<var>C</var><sub>bal</sub>, <var>C</var><sub>qrm</sub>, <var>ℬ</var>)<sub>dec</sub> ≠ <var>B</var><sub>dec</sub>
+        <br><small>By 6 and 1: <var>C</var>’s decree differs from <var>B</var>’s.</small></li>
+      <li><var>MaxVote</var>(<var>C</var><sub>bal</sub>, <var>C</var><sub>qrm</sub>, <var>ℬ</var>)<sub>bal</sub> &gt; <var>B</var><sub>bal</sub>
+        <br><small>By 4, since 7 and <var>B</var>1 imply the vote was not cast in <var>B</var> itself.</small></li>
+      <li><var>MaxVote</var>(<var>C</var><sub>bal</sub>, <var>C</var><sub>qrm</sub>, <var>ℬ</var>) ∈ <var>Votes</var>(<var>Ψ</var>(<var>B</var>,&nbsp;<var>ℬ</var>))
+        <br><small>By 7, 8, and the definition of <var>Ψ</var>: it is a vote in a later ballot with a different decree.</small></li>
+      <li><var>MaxVote</var>(<var>C</var><sub>bal</sub>, <var>C</var><sub>qrm</sub>, <var>ℬ</var>)<sub>bal</sub> &lt; <var>C</var><sub>bal</sub>
+        <br><small>By the definition of <var>MaxVote</var>.</small></li>
+      <li><b>Contradiction</b> — by 9, 10, and 1: a member of <var>Ψ</var> has a ballot number
+        smaller than the minimum. <span class="qed">∎ END PROOF</span></li>
+    </ol>
+  </details>
+  <aside class="fn"><b>9.</b> Paxon mathematicians always gave careful, structured proofs of
+  important theorems. They were not as sophisticated as modern mathematicians, who can omit many
+  details and write paragraph-style proofs without ever making a mistake.</aside>
+
+  <div class="slab">
+    <div class="slab-head">Theorem 1 · Consistency</div>
+    <p class="stmt">If <var>B</var>1(<var>ℬ</var>), <var>B</var>2(<var>ℬ</var>), and
+    <var>B</var>3(<var>ℬ</var>) hold, then</p>
+    <div class="mathblock">((<var>B</var><sub>qrm</sub> ⊆ <var>B</var><sub>vot</sub>) ∧
+      (<var>B′</var><sub>qrm</sub> ⊆ <var>B′</var><sub>vot</sub>)) ⇒
+      (<var>B′</var><sub>dec</sub> = <var>B</var><sub>dec</sub>)</div>
+    <p class="stmt">for any <var>B</var>, <var>B′</var> in <var>ℬ</var> — <b>any two successful
+    ballots are for the same decree.</b></p>
+  </div>
+  <details class="proof">
+    <summary>Unroll the proof of Theorem 1</summary>
+    <p style="font-size:.92rem">If <var>B′</var><sub>bal</sub> = <var>B</var><sub>bal</sub>, then
+    <var>B</var>1 implies <var>B′</var> = <var>B</var>. Otherwise one of the two is later, and the
+    theorem follows immediately from the Lemma. <span class="qed">∎ END PROOF</span></p>
+  </details>
+
+  <div class="slab">
+    <div class="slab-head">Theorem 2 · No Deadlock</div>
+    <p class="stmt">Let <var>b</var> be a ballot number and <var>Q</var> a set of priests such
+    that <var>b</var> &gt; <var>B</var><sub>bal</sub> and
+    <var>Q</var> ∩ <var>B</var><sub>qrm</sub> ≠ ∅ for all <var>B</var> ∈ <var>ℬ</var>. If
+    <var>B</var>1(<var>ℬ</var>), <var>B</var>2(<var>ℬ</var>), and <var>B</var>3(<var>ℬ</var>)
+    hold, then there is a ballot <var>B′</var> with <var>B′</var><sub>bal</sub> = <var>b</var> and
+    <var>B′</var><sub>qrm</sub> = <var>B′</var><sub>vot</sub> = <var>Q</var> such that
+    <var>B</var>1, <var>B</var>2, and <var>B</var>3 all hold for
+    <var>ℬ</var> ∪ {<var>B′</var>} — <b>a new successful ballot can always be added while
+    preserving the conditions.</b></p>
+  </div>
+  <details class="proof">
+    <summary>Unroll the proof of Theorem 2</summary>
+    <p style="font-size:.92rem"><var>B</var>1(<var>ℬ</var> ∪ {<var>B′</var>}) follows from
+    <var>B</var>1(<var>ℬ</var>) and the choice of <var>B′</var><sub>bal</sub> (larger than every
+    number in use). <var>B</var>2(<var>ℬ</var> ∪ {<var>B′</var>}) follows from
+    <var>B</var>2(<var>ℬ</var>) and the assumption on <var>Q</var>. For <var>B</var>3: if
+    <var>MaxVote</var>(<var>b</var>, <var>Q</var>, <var>ℬ</var>)<sub>bal</sub> = −∞ then let
+    <var>B′</var><sub>dec</sub> be any decree; otherwise let it equal
+    <var>MaxVote</var>(<var>b</var>, <var>Q</var>, <var>ℬ</var>)<sub>dec</sub>. Then
+    <var>B</var>3(<var>ℬ</var> ∪ {<var>B′</var>}) follows from <var>B</var>3(<var>ℬ</var>).
+    <span class="qed">∎ END PROOF</span></p>
+  </details>
+  <div class="narr">SO: THE CONDITIONS GUARANTEE ANY TWO SUCCESSFUL BALLOTS AGREE (THEOREM 1), AND
+  NEVER PAINT YOU INTO A CORNER (THEOREM 2). ALL THAT REMAINS IS TO TURN THEM INTO A PROTOCOL
+  PRIESTS CAN ACTUALLY FOLLOW…</div>
+
+  <h3 class="sect">2.2 · The Preliminary Protocol</h3>
+  <div class="prose">
+    <p>The <em>preliminary protocol</em> was derived from the requirement that conditions
+    <var>B</var>1(<var>ℬ</var>)–<var>B</var>3(<var>ℬ</var>) stay true, where <var>ℬ</var> is the
+    set of all ballots that had been or were being conducted. The set <var>ℬ</var> itself was
+    never explicitly computed anywhere — <strong>the Paxons spoke of <var>ℬ</var> as a quantity
+    observed only by the gods</strong>, since it might never be known to any mortal.</p>
+    <p>Each ballot was initiated by a priest, who chose its number, decree, and quorum; each
+    quorum member then decided whether or not to vote in it. The rules governing those choices
+    came straight from the three conditions:</p>
+    <p><strong>Maintaining <var>B</var>1</strong> — every ballot needs a unique number. A priest
+    could remember (with back-of-ledger notes) which ballots he himself had initiated, so it
+    sufficed to <em>partition</em> the ballot numbers among the priests. How the Paxons did this is
+    not known; an obvious method is to make each ballot number a pair — an integer and a priest —
+    ordered lexicographically, so that</p>
+  </div>
+  <div class="mathblock">(13, <span class="paxon rm" data-real="Jim Gray" data-note="Database systems legend; Turing Award 1998.">Γραϊ</span>)
+    &lt; (13, <span class="paxon rm" data-real="Bruce Lindsay" data-note="IBM database researcher, of System R fame.">Λινσεϊ</span>)
+    &lt; (15, <span class="paxon rm" data-real="Jim Gray" data-note="Database systems legend; Turing Award 1998.">Γραϊ</span>)</div>
+  <div class="prose">
+    <p>since Γ came before Λ in the Paxon alphabet. In any case, every priest owned an unbounded
+    set of ballot numbers reserved for him alone.</p>
+    <p><strong>Maintaining <var>B</var>2</strong> — a ballot’s quorum was chosen to contain a
+    <span class="paxon" data-real="“majority set”" data-note="μαδζ∂ωριτϊσετ — say it aloud.">μαδζ∂ωριτϊσετ</span>
+    of priests. At first this meant a simple majority. Later it was observed that fat priests were
+    less mobile and lingered longer in the Chamber, so a
+    <span class="paxon" data-real="“majority set”" data-note="Weighted majorities are alive and well in modern quorum systems.">μαδζ∂ωριτϊσετ</span>
+    was redefined as any set of priests whose total <em>weight</em> exceeded half the total weight
+    of all priests. When a bloc of thin priests protested, actual weights gave way to symbolic
+    weights based on attendance records. The one property that mattered: <strong>any two majority
+    sets have at least one priest in common</strong>. So the initiating priest chose
+    <var>B</var><sub>qrm</sub> to be a majority set.</p>
+    <p><strong>Maintaining <var>B</var>3</strong> — before initiating a ballot with number
+    <var>b</var> and quorum <var>Q</var>, priest <var>p</var> had to learn
+    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>q</var>,&nbsp;<var>ℬ</var>) for every priest
+    <var>q</var> in <var>Q</var> — obtained by an exchange of messages. If
+    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>Q</var>,&nbsp;<var>ℬ</var>)<sub>dec</sub> was not
+    <span style="font-variant:small-caps">blank</span>, the ballot was <em>compelled</em> to carry
+    that decree; only if it was <span style="font-variant:small-caps">blank</span> could the ballot
+    carry any decree. Hence the first two steps of conducting a ballot, initiated by
+    <var>p</var>:<sup>10</sup></p>
+  </div>
+
+  <div class="slab">
+    <div class="slab-head">The Preliminary Protocol — Six Steps of a Ballot</div>
+    <ol style="font-size:.95rem">
+      <li>Priest <var>p</var> chooses a new ballot number <var>b</var> and sends a
+        <em>NextBallot</em>(<var>b</var>) message to some set of priests.</li>
+      <li>A priest <var>q</var> answers a <em>NextBallot</em>(<var>b</var>) message by sending
+        <var>p</var> a <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) message, where <var>v</var>
+        is the vote with the largest ballot number less than <var>b</var> that <var>q</var> has
+        cast, or <var>null</var><sub><var>q</var></sub> if he has cast none.
+        <em>(He must consult the notes in the back of his ledger to remember his votes.)</em></li>
+      <li>After receiving <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) messages from every
+        priest in some majority set <var>Q</var>, priest <var>p</var> initiates a new ballot with
+        number <var>b</var>, quorum <var>Q</var>, and decree <var>d</var> chosen to satisfy
+        <var>B</var>3. He records the ballot in the back of his ledger and sends a
+        <em>BeginBallot</em>(<var>b</var>,&nbsp;<var>d</var>) message to every priest in <var>Q</var>.</li>
+      <li>On receiving <em>BeginBallot</em>(<var>b</var>,&nbsp;<var>d</var>), priest <var>q</var>
+        decides whether to cast his vote in ballot <var>b</var>. (He may not, if that would break a
+        promise implied by a <em>LastVote</em> he has since sent for another ballot.) If he votes,
+        he sends <em>Voted</em>(<var>b</var>,&nbsp;<var>q</var>) to <var>p</var> and records the
+        vote in the back of his ledger.</li>
+      <li>If <var>p</var> receives <em>Voted</em>(<var>b</var>,&nbsp;<var>q</var>) from
+        <em>every</em> priest <var>q</var> in the quorum <var>Q</var>, he writes <var>d</var> in his
+        ledger and sends a <em>Success</em>(<var>d</var>) message to every priest.</li>
+      <li>On receiving <em>Success</em>(<var>d</var>), a priest enters decree <var>d</var> in his
+        ledger.</li>
+    </ol>
+  </div>
+  <aside class="fn"><b>10.</b> Priests <var>p</var> and <var>q</var> could be one and the same.
+  For simplicity the protocol has <var>p</var> send messages to himself in that case — though in
+  reality, a priest could talk to himself without hiring a messenger.</aside>
+
+  <figure class="panel tilt-l">
+    <div class="frame"><img src="images/nextballot.png" alt="A priest dispatches messengers fanning out in all directions, each carrying a NextBallot scroll numbered 14."></div>
+    <figcaption>STEP 1: PRIEST <i>p</i> CHOOSES BALLOT NUMBER <i>b</i> AND HIS MESSENGERS FAN OUT WITH <i>NextBallot(b)</i> SCROLLS.</figcaption>
+  </figure>
+  <figure class="panel narrow tilt-r">
+    <div class="frame"><img src="images/lastvote.png" alt="An old priest consults the notes in the back of his ledger and hands a messenger his LastVote scroll."></div>
+    <figcaption>STEP 2: EACH PRIEST CHECKS THE BACK OF HIS LEDGER AND REPLIES <i>LastVote(b, v)</i> — A SOLEMN PROMISE TO CAST NO NEW VOTE BELOW <i>b</i>.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>When <var>q</var> sends <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>), the vote
+    <var>v</var> equals <var>MaxVote</var>(<var>b</var>,&nbsp;<var>q</var>,&nbsp;<var>ℬ</var>) —
+    but <var>ℬ</var> keeps growing as new ballots start and new votes are cast. Since <var>p</var>
+    will use <var>v</var> when choosing his decree, <var>B</var>3 demands that
+    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>q</var>,&nbsp;<var>ℬ</var>) <em>not change</em>
+    afterward. So by sending <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>), priest
+    <var>q</var> makes a <strong>promise</strong>: he will cast no new vote in any ballot numbered
+    between <var>v</var><sub>bal</sub> and <var>b</var>. (To keep the promise, he must record it in
+    his ledger.)</p>
+    <p>Step 3 adds a ballot <var>B</var> to <var>ℬ</var> — with
+    <var>B</var><sub>bal</sub>&nbsp;=&nbsp;<var>b</var>, <var>B</var><sub>qrm</sub>&nbsp;=&nbsp;<var>Q</var>,
+    <var>B</var><sub>vot</sub>&nbsp;=&nbsp;∅ (no one has voted yet), and
+    <var>B</var><sub>dec</sub>&nbsp;=&nbsp;<var>d</var>. In step 4, a priest deciding to vote adds
+    himself to <var>B</var><sub>vot</sub>.</p>
+    <p>Crucially, <strong>every step of the protocol is optional</strong>. A priest may ignore a
+    <em>NextBallot</em> message; he may decline to vote in step 4 even if no promise forbids it.
+    Skipping an action can stall progress, but it can never cause inconsistency, because it cannot
+    make <var>B</var>1–<var>B</var>3 false. And since losing a message only <em>prevents</em>
+    actions, message loss cannot hurt consistency either. <em>Consistency survives priests
+    wandering off and scrolls sinking with their ships.</em></p>
+    <p>Duplicated messages are equally harmless: receiving a message twice can only cause an
+    action to be repeated, and every action except step 3 is idempotent — sending several
+    <em>Voted</em>(<var>b</var>,&nbsp;<var>q</var>) messages is no different from sending one. Step
+    3’s repetition is prevented by the note made in the back of the ledger when it executes.</p>
+    <p>In step 3, when the decree <var>d</var> is dictated by <var>B</var>3, it may well already
+    be written in the ledger of some priest — a priest who need not even be in the quorum
+    <var>Q</var>, having long since left the Chamber. <strong>This is why step 3 permits no greater
+    freedom in choosing <var>d</var>: consistency itself is at stake.</strong></p>
+  </div>
+
+  <figure class="panel">
+    <div class="frame"><img src="images/voting.png" alt="Priests cast bronze tokens and messengers rush Voted scrolls back to the tallying priest."></div>
+    <figcaption>STEPS 3–5: <i>BeginBallot</i> GOES OUT, THE QUORUM VOTES, AND <i>Voted</i> SCROLLS RACE BACK TO BE TALLIED.</figcaption>
+  </figure>
+  <figure class="panel tilt-l">
+    <div class="frame"><img src="images/success.png" alt="Celebration as the decree is passed and Success scrolls stream out to every priest."></div>
+    <figcaption>STEP 6: <i>Success(d)</i> TO ALL — EVERY PRIEST WRITES THE DECREE IN HIS LEDGER. THE SYNOD HAS CHOSEN!</figcaption>
+  </figure>
+
+  <h3 class="sect">2.3 · The Basic Protocol</h3>
+  <div class="prose">
+    <p>The preliminary protocol asks a priest to record (i) every ballot he has initiated,
+    (ii) every vote he has cast, and (iii) every <em>LastVote</em> message he has sent. Too much
+    bookkeeping for busy priests! The Paxons therefore restricted it to obtain the more practical
+    <em>basic protocol</em>, in which priest <var>p</var> keeps only <strong>three items in the back
+    of his ledger</strong>:</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">The Back of the Ledger</div>
+    <p><b><var>lastTried</var>[<var>p</var>]</b> — the number of the last ballot <var>p</var> tried
+    to initiate, or −∞ if none.</p>
+    <p><b><var>prevVote</var>[<var>p</var>]</b> — the vote cast by <var>p</var> in the
+    highest-numbered ballot in which he voted, or −∞ if he never voted.</p>
+    <p><b><var>nextBal</var>[<var>p</var>]</b> — the largest <var>b</var> for which <var>p</var> has
+    sent a <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) message, or −∞ if he never has.</p>
+  </div>
+  <div class="prose">
+    <p>In the basic protocol, <var>p</var> conducts only <strong>one ballot at a time</strong> —
+    ballot <var>lastTried</var>[<var>p</var>] — and ignores messages about any other ballot he
+    initiated. All bookkeeping for the ballot in progress lives on a <em>slip of paper</em>; if the
+    slip is lost, the ballot is simply abandoned.</p>
+    <p>In the preliminary protocol, <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) promised
+    only: <em>no new vote between <var>v</var><sub>bal</sub> and <var>b</var></em>. In the basic
+    protocol it makes the <strong>stronger promise</strong>: <em>no new vote in any ballot numbered
+    below <var>b</var> at all</em>. This may block a vote the preliminary protocol would have
+    allowed — but since every action was optional anyway, the basic protocol never does anything
+    the preliminary protocol forbids, and thus inherits its consistency.</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">The Basic Protocol — Six Steps</div>
+    <ol style="font-size:.95rem">
+      <li>Priest <var>p</var> chooses a new ballot number <var>b</var> greater than
+        <var>lastTried</var>[<var>p</var>], sets <var>lastTried</var>[<var>p</var>] to <var>b</var>,
+        and sends <em>NextBallot</em>(<var>b</var>) to some set of priests.</li>
+      <li>On receiving <em>NextBallot</em>(<var>b</var>) with
+        <var>b</var>&nbsp;&gt;&nbsp;<var>nextBal</var>[<var>q</var>], priest <var>q</var> sets
+        <var>nextBal</var>[<var>q</var>] to <var>b</var> and sends
+        <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) to <var>p</var>, where
+        <var>v</var>&nbsp;=&nbsp;<var>prevVote</var>[<var>q</var>].
+        <em>(A NextBallot(b) with b&nbsp;≤&nbsp;nextBal[q] is ignored.)</em></li>
+      <li>After receiving <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) from every priest in
+        some majority set <var>Q</var>, where <var>b</var>&nbsp;=&nbsp;<var>lastTried</var>[<var>p</var>],
+        priest <var>p</var> initiates a new ballot with number <var>b</var>, quorum <var>Q</var>,
+        and decree <var>d</var> chosen to satisfy <var>B</var>3, and sends
+        <em>BeginBallot</em>(<var>b</var>,&nbsp;<var>d</var>) to every priest in <var>Q</var>.</li>
+      <li>On receiving <em>BeginBallot</em>(<var>b</var>,&nbsp;<var>d</var>) with
+        <var>b</var>&nbsp;=&nbsp;<var>nextBal</var>[<var>q</var>], priest <var>q</var> casts his
+        vote in ballot <var>b</var>, sets <var>prevVote</var>[<var>q</var>] to this vote, and sends
+        <em>Voted</em>(<var>b</var>,&nbsp;<var>q</var>) to <var>p</var>.
+        <em>(A BeginBallot(b, d) with b&nbsp;≠&nbsp;nextBal[q] is ignored.)</em></li>
+      <li>If <var>p</var> has received <em>Voted</em>(<var>b</var>,&nbsp;<var>q</var>) from every
+        priest <var>q</var> in <var>Q</var>, where
+        <var>b</var>&nbsp;=&nbsp;<var>lastTried</var>[<var>p</var>], then he writes <var>d</var> in
+        his ledger and sends <em>Success</em>(<var>d</var>) to every priest.</li>
+      <li>On receiving <em>Success</em>(<var>d</var>), a priest enters decree <var>d</var> in his
+        ledger.</li>
+    </ol>
+  </div>
+  <div class="prose">
+    <p>The derivation from <var>B</var>1–<var>B</var>3 made it obvious that the basic protocol is
+    consistent. But some similarly “obvious” ancient wisdom had turned out to be false, and
+    skeptical citizens demanded a rigorous proof. The Paxon mathematicians’ proof is reproduced in
+    the <a href="#appendix">appendix</a>. Like the preliminary protocol, the basic protocol never
+    <em>requires</em> anyone to do anything — so it says nothing about progress.</p>
+  </div>
+
+  <!-- ========= WIDGET 2: SIMULATOR ========= -->
+  <div class="widget" id="w-sim">
+    <div class="whead"><h5>⚱ The Chamber — Conduct a Ballot Yourself</h5><span class="badge">HANDS-ON ORACLE</span></div>
+    <div class="wbody" id="sim">
+      <p class="hint">Five priests, one Chamber, and you. <b>Click a priest’s head-bar</b> to send
+      him wandering out of the Chamber (or bring him back — if he was mid-ballot, his slip of paper
+      is lost). Pick an initiator and a decree, start a ballot, then deliver the scrolls one at a
+      time — or lose them (✕) to test the gods’ patience. Messages to absent priests vanish. See if
+      you can make two ledgers disagree. <em>You cannot.</em></p>
+      <div class="banner warn" id="sim-banner">No decree has yet been written in any ledger.</div>
+      <div class="stage" id="sim-stage"></div>
+      <div class="controls">
+        <label class="display" style="font-size:.8rem">INITIATOR
+          <select class="gk" id="sim-priest"></select>
+        </label>
+        <label class="display" style="font-size:.8rem">PROPOSES
+          <select class="gk" id="sim-decree">
+            <option>The olive tax is 3 drachmas per ton</option>
+            <option>Lamps must use only olive oil</option>
+            <option>Painting on temple walls is forbidden</option>
+            <option>Freedom of artistic expression is guaranteed</option>
+            <option>The sale of black goats is permitted</option>
+            <option>Ships must carry lanterns at night</option>
+          </select>
+        </label>
+        <button class="gk primary" id="sim-start">Start ballot (step 1)</button>
+      </div>
+      <div class="tray" id="sim-tray"><span class="tray-label">In the messengers’ hands →</span><span id="sim-tray-items" style="display:contents"></span></div>
+      <div class="controls">
+        <button class="gk" id="sim-next">Deliver next scroll</button>
+        <button class="gk" id="sim-all">Deliver all scrolls</button>
+        <button class="gk danger" id="sim-lose">A messenger sails away (lose one)</button>
+        <button class="gk" id="sim-reset">Reset the Chamber</button>
+      </div>
+      <div class="log" id="sim-log"></div>
+      <div class="scenarios">
+        <span class="display" style="font-size:.72rem; letter-spacing:.12em; align-self:center">TRY A LEGEND:</span>
+        <button class="gk" data-scn="quiet">Ⅰ · A quiet day</button>
+        <button class="gk" data-scn="wander">Ⅱ · The wanderers</button>
+        <button class="gk" data-scn="duel">Ⅲ · Two would-be presidents</button>
+        <button class="gk" data-scn="theorem">Ⅳ · Theorem 1, live</button>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sect">2.4 · The Complete Synod Protocol</h3>
+  <div class="prose">
+    <p>The basic protocol maintains consistency but only says what a priest <em>may</em> do; it
+    never requires action. The complete protocol keeps the same six steps and adds the obvious
+    requirement that priests perform steps 2–6 <em>as soon as possible</em>. But someone must also
+    be required to perform step 1 — to initiate ballots — and the key to the complete protocol lay
+    in deciding <strong>when</strong>.</p>
+    <p>Never initiating a ballot obviously prevents progress. Less obviously, <em>initiating too
+    many</em> does too: a new ballot with a bigger number <var>b</var> extracts, via step 2,
+    promises that block voting in every previously initiated ballot. If eager priests keep
+    starting higher-numbered ballots before the previous ones can finish, no ballot ever
+    succeeds. <em>(Try Legend Ⅲ in the Chamber above.)</em></p>
+    <p>Progress requires ballots to keep being initiated until one succeeds — but not too
+    frequently. To calibrate this, the Paxons measured their world. A messenger who did not leave
+    the Chamber always delivered a message within <strong>4 minutes</strong>; a priest who stayed
+    put always acted within <strong>7 minutes</strong>.<sup>11</sup> So if <var>p</var> and
+    <var>q</var> were both in the Chamber, an event causing <var>p</var> to message <var>q</var>,
+    who replies at once, would produce that reply within <strong>22 minutes</strong> —
+    if neither messenger wandered off. (Send within 7, deliver within 4, respond within 7, return
+    within 4.)</p>
+    <p>Suppose a single priest <var>p</var> was initiating ballots, sending step-1 messages to
+    every priest. If he began a ballot while a majority sat in the Chamber, he could expect to
+    execute step 3 within 22 minutes of starting, and step 5 within another 22. If either deadline
+    passed without result, then either some priest or messenger had left the Chamber — or a
+    larger-numbered ballot, started earlier by another priest, was blocking his. To handle the
+    latter case, the protocol was extended: a priest receiving a <em>NextBallot</em>(<var>b</var>)
+    or <em>BeginBallot</em>(<var>b</var>,&nbsp;<var>d</var>) with
+    <var>b</var>&nbsp;&lt;&nbsp;<var>nextBal</var>[<var>q</var>] replied with
+    <var>nextBal</var>[<var>q</var>], prompting <var>p</var> to try again with a bigger number.</p>
+    <p>If <var>p</var> initiated a new ballot exactly when (i) 22 minutes passed without
+    completing step 3 or 5, or (ii) he learned of a higher-numbered ballot — then, were the
+    Chamber doors barred with <var>p</var> and a majority inside, <strong>a decree would be passed
+    and recorded in every present priest’s ledger within 99 minutes</strong>. (Up to 22 minutes to
+    start the next ballot, 22 to learn a bigger ballot number was loose, then 55 to run steps 1–6
+    of a successful ballot.) The progress condition would thus be met if a <em>single</em> priest,
+    staying in the Chamber, was the one initiating ballots.</p>
+  </div>
+  <aside class="fn"><b>11.</b> I assume a value of 30 seconds for the
+  <span class="paxon" data-real="“jiffy”" data-note="δζ∂ιφι — the Paxon unit of time. Say it fast.">δζ∂ιφι</span>,
+  the Paxon unit of time — a value within the range determined from studies of hourglass shards.
+  Priests’ reaction time was so long because each had to respond to every message within 7 minutes
+  (14 <span class="paxon" data-real="jiffies" data-note="δζ∂ιφι, plural.">δζ∂ιφι</span>), even when
+  several arrived at once.</aside>
+  <figure class="panel narrow tilt-r">
+    <div class="frame"><img src="images/hourglass.png" alt="A brass hourglass in the foreground; behind it, the Chamber doors are barred with a majority of priests inside."></div>
+    <figcaption>BAR THE DOORS WITH A MAJORITY INSIDE, AND THE HOURGLASS PROMISES A DECREE WITHIN 99 MINUTES.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>The complete protocol therefore included a procedure to choose a single priest — the
+    <em>president</em> — to initiate ballots. In most governments choosing a president is hard,
+    because most governments insist on having exactly one at a time. In the United States, for
+    instance, chaos would ensue if some believed Bush had been elected president while others
+    believed Dukakis had — one might sign a bill into law as the other vetoed it. But in the Paxon
+    Synod, multiple presidents could only <em>slow things down</em>; they could never corrupt a
+    ledger. The president-selection method needed only this <em>presidential selection
+    requirement</em>:</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">Presidential Selection Requirement</div>
+    <p class="stmt">If no one entered or left the Chamber, then after <var>T</var> minutes exactly
+    one priest in the Chamber would consider himself to be the president.</p>
+  </div>
+  <div class="prose">
+    <p>Given this, the complete protocol had the property that if a majority set was in the
+    Chamber and no one entered or left for <var>T</var>&nbsp;+&nbsp;99 minutes, every priest present
+    would end the period with the decree in his ledger.</p>
+    <p>The Paxons made president the priest whose name was <strong>last in alphabetical order</strong>
+    among those in the Chamber — though we don’t know exactly how. The requirement would be
+    satisfied if, say, every priest in the Chamber sent his name to every other at least once each
+    <var>T</var>&nbsp;−&nbsp;11 minutes, and a priest considered himself president iff he received
+    no message from a “higher-named” priest for <var>T</var> minutes.</p>
+    <p>Thus the complete Synod protocol = the basic protocol + prompt execution of steps 2–6 + a
+    presidential selection method + the president initiating ballots at the right moments. Many
+    details are lost; the methods above for choosing a president and timing ballots are surely not
+    the ones Paxos really used. The rules given here even make the president keep initiating
+    ballots after a decree is chosen — so that late-arriving priests learn of it — though better
+    ways surely existed. Each priest probably also sent the president his
+    <var>lastTried</var>[<var>p</var>] during selection, letting the new president pick a
+    large-enough ballot number on his first try.</p>
+    <p>The Paxons understood that <em>any</em> protocol achieving progress must measure the passage
+    of time.<sup>12</sup> The protocols above are easily written as precise algorithms with timers
+    and time-outs — assuming perfectly accurate timers; a closer analysis shows timers with a
+    known bound on accuracy suffice, and the skilled glass blowers of Paxos had no difficulty
+    producing suitable hourglasses.</p>
+    <p>Given the sophistication of Paxon mathematicians, it is widely believed they found an
+    optimal algorithm for the presidential selection requirement. We can only hope this algorithm
+    will be discovered in future excavations on Paxos.</p>
+  </div>
+  <aside class="fn"><b>12.</b> Many centuries would pass, however, before a rigorous proof of this
+  necessity was given [Fischer&nbsp;et&nbsp;al. 1985].</aside>
+</section>
+
+<hr class="meander">
+
+<!-- ================= SECTION 3 ================= -->
+<section id="s3">
+  <div class="issue">
+    <span class="no">Chapter III</span>
+    <h2>The Multi-Decree Parliament</h2>
+  </div>
+
+  <h3 class="sect">3.1 · The Protocol</h3>
+  <div class="prose">
+    <p>When Parliament was established, its protocol was derived from the Synod protocol. Instead
+    of choosing one decree, the Parliament had to pass a <em>series</em> of numbered decrees. As in
+    the Synod, a president was elected; anyone wanting a decree passed would tell the president,
+    who assigned it a number and attempted to pass it. Logically, Parliament ran a
+    <strong>separate instance of the complete Synod protocol for every decree number</strong> — but
+    with a single president elected for all instances at once, performing the first two steps of
+    the protocol <em>just once</em>.</p>
+    <p>The key observation: in the Synod protocol, the president does not choose the decree or the
+    quorum until step 3. So a newly elected president <var>p</var> can send a <em>single</em>
+    message serving as the <em>NextBallot</em>(<var>b</var>) message of <strong>all</strong>
+    instances — one per decree number, infinitely many. A legislator <var>q</var> can reply with a
+    single message serving as the <em>LastVote</em> messages of all instances; it carries only a
+    finite amount of information, since <var>q</var> can have voted in only finitely many
+    instances.</p>
+    <p>Once the new president hears from a majority set, he is ready to perform step 3 in every
+    instance. For some finite number of instances (decree numbers), condition <var>B</var>3 forces
+    a decree upon him — he performs step 3 for each of those immediately, trying to pass those
+    forced decrees. Thereafter, whenever a citizen asks him to pass a decree, he picks the
+    lowest-numbered decree he is still free to choose and runs step 3 of that instance for it.</p>
+    <p>Two refinements led to the actual Paxon Parliament’s protocol:</p>
+    <p><strong>Skip what is already known.</strong> There is no reason to run the Synod protocol
+    for a decree number whose outcome is already written down. So a newly elected president
+    <var>p</var>, whose ledger already holds all decrees numbered up through <var>n</var>, sends a
+    <em>NextBallot</em>(<var>b</var>,&nbsp;<var>n</var>) message that acts as a
+    <em>NextBallot</em>(<var>b</var>) in all instances for decree numbers above <var>n</var>. In
+    his reply, legislator <var>q</var> informs <var>p</var> of every decree above <var>n</var>
+    already in <var>q</var>’s ledger (besides the usual <em>LastVote</em> information for decrees
+    not in his ledger), and asks <var>p</var> to send him any decrees numbered ≤&nbsp;<var>n</var>
+    that <em>he</em> is missing.</p>
+    <p><strong>Fill the gaps.</strong> Suppose decrees 125 and 126 are introduced late on a Friday
+    afternoon; 126 is passed and written in a ledger or two, 125 gets nowhere — and everyone goes
+    home for the weekend. Monday morning,
+    <span class="paxon" data-real="Cynthia Dwork" data-note="Of Dwork, Lynch &amp; Stockmeyer — consensus under partial synchrony, cited by this paper.">Δφωρκ</span>
+    is elected the new president. She learns of decree 126, but nothing of 125: the old president
+    and everyone who voted for it are still out of the Chamber. Her ledger has a gap. Passing an
+    important new decree as number 125 would make it appear <em>earlier in the books</em> than
+    decree 126, passed the week before — possibly confusing citizens who had acted on
+    knowledge of 126. Instead, Δφωρκ fills the gap with the traditional do-nothing decree:</p>
+  </div>
+  <div class="decree"><b>125:</b> The ides of February is national olive day</div>
+  <div class="prose">
+    <p>In general, a new president filled every gap in his ledger by attempting to pass the
+    “olive-day” decree — a decree that made absolutely no difference to anyone in Paxos.</p>
+  </div>
+
+  <!-- ========= WIDGET 3: LEDGER GAPS ========= -->
+  <div class="widget" id="w-ledger">
+    <div class="whead"><h5>⚱ President Δφωρκ’s Monday Morning</h5><span class="badge">FILL THE GAPS</span></div>
+    <div class="wbody" id="ledgerw">
+      <p class="hint">You are the newly elected president. Your ledger has gaps — decrees you know
+      nothing about, below decrees you know passed. A citizen is waiting. <b>Click the gaps</b> to
+      deal with them, then pass the citizen’s decree.</p>
+      <div class="book" id="ledger-book"></div>
+      <div class="msg" id="ledger-msg"></div>
+      <p style="text-align:center; margin-top:10px">
+        <button class="gk primary" id="ledger-propose">Pass the citizen’s decree: “Ships must carry lanterns at night”</button>
+        <button class="gk" id="ledger-reset" style="margin-left:8px">Start the morning over</button>
+      </p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>The consistency and progress of the parliamentary protocol follow immediately from those of
+    the Synod protocol it was built on. To our knowledge, the Paxons never bothered writing a
+    precise description of the parliamentary protocol — it was so easily derived from the Synod
+    protocol.</p>
+  </div>
+
+  <h3 class="sect">3.2 · Properties of the Protocol</h3>
+  <h4 class="subsect">3.2.1 · The Ordering of Decrees</h4>
+  <div class="prose">
+    <p>Balloting could run concurrently for many decree numbers, with ballots initiated by
+    different legislators — each believing himself president. We cannot say precisely in what
+    order decrees were passed, especially without knowing how presidents were selected. But one
+    ordering property can be deduced.</p>
+    <p>A decree was <em>proposed</em> when the president chose it in step 3 of its instance; it was
+    <em>passed</em> when first written in a ledger. Before proposing any new decree, a president
+    had to learn from a majority set what decrees they had voted for — and any decree already
+    passed had been voted for by at least one member of every majority set. So a president
+    learned of all previously passed decrees before proposing a new one. He would not fill a gap
+    with an <em>important</em> decree (only with olive-day decrees), and he would not propose
+    decrees out of order — hence the <em>decree-ordering property</em>:</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">Decree-Ordering Property</div>
+    <p class="stmt">If decrees <var>A</var> and <var>B</var> are important and decree <var>A</var>
+    was passed before decree <var>B</var> was proposed, then <var>A</var> has a lower decree number
+    than <var>B</var>.</p>
+  </div>
+
+  <h4 class="subsect">3.2.2 · Behind Closed Doors</h4>
+  <div class="prose">
+    <p>Whatever the mysteries of choosing a president, we know exactly how Parliament ran once a
+    president was in place and no one was entering or leaving. On receiving a request to pass a
+    decree — from a citizen directly, or relayed by another legislator — the president assigned it
+    a number and passed it with this exchange (numbers refer to Synod-protocol steps):</p>
+    <ol start="3" style="max-width:60ch; margin:1em auto">
+      <li>The president sent a <em>BeginBallot</em> message to each legislator in a quorum.</li>
+      <li>Each legislator in the quorum sent a <em>Voted</em> message to the president.</li>
+      <li>The president sent a <em>Success</em> message to every legislator.</li>
+    </ol>
+    <p>That is <strong>three message delays and about 3<var>N</var> messages</strong>, for a
+    parliament of <var>N</var> legislators and a quorum of about <var>N</var>/2. And when
+    Parliament was busy, the president would combine the <em>BeginBallot</em> for one decree with
+    the <em>Success</em> for a previous one — only <strong>2<var>N</var> messages per decree</strong>.</p>
+  </div>
+
+  <h3 class="sect">3.3 · Further Developments</h3>
+  <div class="prose">
+    <p>Governing the island turned out to be more complicated than the Paxons expected, and a
+    series of problems forced changes to the protocol. The most important are described below.</p>
+  </div>
+
+  <h4 class="subsect">3.3.1 · Picking a President</h4>
+  <figure class="panel mid tilt-l">
+    <div class="frame"><img src="images/president.png" alt="A tanned legislator returning from vacation is crowned president to his horror, as an aide wheels in a towering stack of decrees to copy."></div>
+    <figcaption>LEGISLATOR Ωκι RETURNS FROM SIX MONTHS ABROAD… AND IS INSTANTLY MADE PRESIDENT, ALPHABETICALLY. PARLIAMENT HALTS WHILE HE COPIES SIX MONTHS OF DECREES.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>The president was originally chosen the Synod way — pure alphabetical order. Thus when
+    legislator <span class="paxon" data-real="Brian Oki" data-note="Co-inventor (with Barbara Liskov) of Viewstamped Replication — independently equivalent to Paxos, as Marzullo notes at the end of Section 4.">Ωκι</span>
+    returned from a six-month vacation, he was instantly made president — knowing nothing of what
+    had happened in his absence. Parliamentary business stopped dead while Ωκι, a slow writer,
+    laboriously copied six months of decrees to bring his ledger up to date.</p>
+    <p>The incident sparked a debate on presidential selection. Some urged that once a legislator
+    became president, he should stay president until he left the Chamber. An influential bloc of
+    citizens wanted the <em>richest</em> legislator in the Chamber as president, since he could
+    hire scribes and servants to help with presidential duties — arguing that once a rich
+    legislator had caught his ledger up, there was no reason not to let him assume the
+    presidency. Others countered that the most <em>upstanding</em> citizen should preside,
+    regardless of wealth — “upstanding” presumably meaning less likely to be dishonest, though no
+    Paxon would publicly admit official malfeasance was possible. The outcome of the debate is
+    unknown; no record survives of the presidential selection protocol ultimately used.</p>
+  </div>
+
+  <h4 class="subsect">3.3.2 · Long Ledgers</h4>
+  <div class="prose">
+    <p>As the years passed and decrees accumulated, finding the current olive tax — or what color
+    goat could legally be sold — meant poring over an ever longer list. A legislator returning
+    from a long voyage faced a mountain of copying. Eventually legislators converted their
+    ledgers from decree lists into <strong>law books</strong> holding just the current state of the
+    law, annotated with the number of the last decree reflected in that state.</p>
+    <p>To learn the olive tax one now looked in the law book under “taxes.” If a legislator’s law
+    book was complete through decree 1298 and he learned decree 1299 set the olive tax to
+    6&nbsp;drachmas per ton, he simply updated the olive-tax entry and noted his book was complete
+    through 1299. If he then learned of decree 1302, he would hold it in the back of the ledger
+    until 1300 and 1301 arrived, and only then incorporate it.</p>
+    <p>To let a briefly absent legislator catch up without copying an entire law book, legislators
+    also kept the past week’s decrees in the back of the book. They could have kept this list on a
+    slip of paper, but it proved convenient to enter decrees in the back of the ledger as they
+    passed and update the law book only two or three times a week.</p>
+  </div>
+
+  <h4 class="subsect">3.3.3 · Bureaucrats</h4>
+  <figure class="panel tilt-r">
+    <div class="frame"><img src="images/cheese.png" alt="Two rival cheese inspectors stamp the same wheel of cheese FIT and UNFIT while a merchant despairs."></div>
+    <figcaption>TWO CHEESE INSPECTORS AT ONCE! Δίκστρα SAYS “UNFIT,” Γωυδα SAYS “FIT,” AND THE CHEESE MARKET DESCENDS INTO CHAOS.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>As Paxos prospered, legislators grew too busy for the details of government, and a
+    bureaucracy was established: instead of decreeing whether each lot of cheese was fit for
+    sale, Parliament passed a decree appointing a <em>cheese inspector</em> to decide.</p>
+    <p>Selecting bureaucrats proved trickier than expected. Parliament made
+    <span class="paxon" data-real="Edsger W. Dijkstra" data-note="Famously exacting — of course he was too strict a cheese inspector. His 1974 self-stabilization paper is cited in Section 3.3.5.">Δίκστρα</span>
+    the first cheese inspector. Months later, merchants complained he was too strict, rejecting
+    perfectly good cheese, and Parliament replaced him by passing</p>
+  </div>
+  <div class="decree"><b>1375:</b> <span class="paxon" data-real="Mohamed Gouda" data-note="Distributed-computing researcher — and, conveniently, a cheese.">Γωυδα</span> is the new cheese inspector</div>
+  <div class="prose">
+    <p>But Δίκστρα paid no attention to what Parliament did, so he did not learn of the decree
+    right away — and for a while both Δίκστρα and Γωυδα inspected cheese, issuing conflicting
+    rulings. To prevent such confusion, the Paxons had to guarantee that <strong>a position was held
+    by at most one bureaucrat at a time</strong>. The solution: the president stamped each decree
+    with the time and date it was proposed. A decree appointing Δίκστρα might read</p>
+  </div>
+  <div class="decree"><b>2716:</b> 8:30 15 Jan 72 — Δίκστρα is cheese inspector for 3 months</div>
+  <div class="prose">
+    <p>declaring his term to begin at 8:30 on 15 January <em>or</em> when the previous inspector’s
+    term ended, whichever came later — and to end at 8:30 on 15 March, unless he resigned earlier
+    by having the president pass a decree such as</p>
+  </div>
+  <div class="decree"><b>2834:</b> 9:15 3 Mar 72 — Δίκστρα resigns as cheese inspector</div>
+  <div class="prose">
+    <p>Terms were kept short so a bureaucrat who left the island could be replaced quickly;
+    Parliament simply extended the term of anyone doing a satisfactory job. A bureaucrat needed to
+    tell time to know if he currently held his post. Mechanical clocks were unknown on Paxos, but
+    Paxons could read the sun or the stars to within 15 minutes.<sup>13</sup> If Δίκστρα’s term
+    began at 8:30, he would not start inspecting cheese until his celestial observations showed
+    8:45.</p>
+    <p>This scheme plainly works if higher-numbered decrees always carry later proposal times.
+    But what if Parliament passed</p>
+  </div>
+  <div class="decree"><b>2854:</b> 9:45 9 Apr 78 — <span class="paxon" data-real="Nissim Francez" data-note="Programming-languages and verification researcher.">Φρανσεζ</span> is wine taster for 2 months</div>
+  <div class="decree"><b>2855:</b> 9:20 9 Apr 78 — <span class="paxon" data-real="Amir Pnueli" data-note="Brought temporal logic to computer science; Turing Award 1996.">Πνυελϊ</span> is wine taster for 1 month</div>
+  <div class="prose">
+    <p>— proposal times running <em>backward</em>, courtesy of two legislators who each thought he
+    was president? Such inversions are impossible, because the protocol satisfies this
+    property:</p>
+  </div>
+  <div class="slab">
+    <p class="stmt">If two decrees are passed by different presidents, then one of the presidents
+    proposed his decree after learning that the other decree had been proposed.</p>
+  </div>
+  <details class="proof">
+    <summary>Why the property holds</summary>
+    <p style="font-size:.92rem">Suppose ballot <var>b</var> was successful for decree <var>D</var>,
+    ballot <var>b′</var> for decree <var>D′</var>, with <var>b</var>&nbsp;&lt;&nbsp;<var>b′</var>.
+    Since both succeeded, some legislator <var>q</var> voted in both. The balloting for
+    <var>D′</var> began with a <em>NextBallot</em>(<var>b′</var>,&nbsp;<var>n</var>) message. If its
+    sender did not already know of <var>D</var>, then <var>n</var> is smaller than <var>D</var>’s
+    decree number — and <var>q</var>’s reply to that <em>NextBallot</em> must state that he voted
+    for <var>D</var>. Either way, <var>D′</var>’s president learned of <var>D</var> before
+    proposing <var>D′</var>. <span class="qed">∎</span></p>
+  </details>
+
+  <h4 class="subsect">3.3.4 · Learning the Law</h4>
+  <figure class="panel tilt-l">
+    <div class="frame"><img src="images/goats.png" alt="A farmer presents black goats to a refusing merchant while a legislator shrugs over his out-of-date ledger."></div>
+    <figcaption>THE LAW SAYS BLACK GOATS MAY BE SOLD — BUT LEGISLATOR Σπωκμεϊρ’S LEDGER STOPS AT DECREE 76, AND THE DEAL COLLAPSES.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Citizens, not just legislators, needed to learn the law. At first the Paxons assumed a
+    citizen could simply read any legislator’s ledger — until this incident. For centuries it had
+    been legal to sell only white goats. A farmer named
+    <span class="paxon" data-real="Danny Dolev" data-note="Distributed-computing researcher; Byzantine agreement and clock synchronization.">Δωλεφ</span>
+    got Parliament to pass the decree</p>
+  </div>
+  <div class="decree"><b>77:</b> The sale of black goats is permitted</div>
+  <div class="prose">
+    <p>and told his goatherd to sell some black goats to a merchant named
+    <span class="paxon" data-real="Dale Skeen" data-note="Of three-phase commit fame — see Section 4.2.">Σκεεν</span>.
+    A law-abiding man, Σκεεν asked legislator
+    <span class="paxon" data-real="Larry Stockmeyer" data-note="Complexity theorist; the S of Dwork–Lynch–Stockmeyer.">Σπωκμεϊρ</span>
+    whether the sale would be legal. But Σπωκμεϊρ had been away from the Chamber and his ledger
+    stopped short of decree 77 — so he advised that the sale would be illegal, and Σκεεν refused
+    the goats.</p>
+    <p>The incident led to the <em>monotonicity condition</em> on inquiries about the law:</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">Monotonicity Condition</div>
+    <p class="stmt">If one inquiry precedes a second inquiry, then the second inquiry cannot
+    reveal an earlier state of the law than the first.</p>
+  </div>
+  <div class="prose">
+    <p>(If a citizen learns a decree has passed, acquiring that knowledge counts as an implicit
+    inquiry.) The interpretation of this condition evolved over the years — three times:</p>
+    <p><strong>First interpretation: pass a decree per inquiry.</strong> If
+    <span class="paxon" data-real="Fred Schneider" data-note="Author of the state-machine-approach survey cited in Section 4.">Σ∂νϊδερ</span>
+    wanted to know the current olive tax, he had Parliament pass</p>
+  </div>
+  <div class="decree"><b>87:</b> Citizen Σ∂νϊδερ is reading the law</div>
+  <div class="prose">
+    <p>then read any ledger complete through decree 86. If citizen
+    <span class="paxon" data-real="David Gries" data-note="Textbook author and programming methodologist.">Γρεες</span>
+    inquired afterward, his inquiry-decree was proposed after 87 had passed, so by the
+    decree-ordering property it got a number above 87 — Γρεες could not see an older olive tax
+    than Σ∂νϊδερ. This satisfies monotonicity when <em>precedes</em> means “finished before the
+    other began.” But a decree per inquiry proved far too cumbersome.</p>
+    <p><strong>Second interpretation: causality and decree numbers.</strong> The Paxons weakened
+    <em>precedes</em>: inquiry <var>A</var> precedes inquiry <var>B</var> only if <var>A</var>
+    happened earlier <em>and could causally affect</em> <var>B</var>. This still prevents the
+    black-goat fiasco — a causal chain runs from farmer Δωλεφ’s implicit inquiry to merchant
+    Σκεεν’s. The weaker condition was met by quoting decree numbers in all business transactions.
+    Farmer Δωλεφ, whose flock had grown colorful, got Parliament to pass</p>
+  </div>
+  <div class="decree"><b>277:</b> The sale of brown goats is permitted</div>
+  <div class="prose">
+    <p>and, selling brown goats to Σκεεν, declared the sale legal <em>as of decree 277</em>. Σκεεν
+    then asked legislator Σπωκμεϊρ whether the sale was legal under the law through at least
+    decree 277. If Σπωκμεϊρ’s ledger fell short, he would wait for it to catch up — or tell Σκεεν
+    to ask someone else. If his ledger ran through decree 298, he would answer that the sale was
+    legal as of 298, and Σκεεν would carry the number 298 into his next transaction or inquiry.</p>
+    <p><strong>Third interpretation: one specialist per area.</strong> Ordinary citizens disliked
+    remembering decree numbers, so the Paxons re-read the condition once more — this time
+    reinterpreting <em>the state of the law</em>. The law was divided into areas, and a legislator
+    was chosen as <em>specialist</em> for each; the current state of each area was
+    <strong>defined</strong> to be whatever that specialist’s ledger said. If decree 1517 changed
+    tariff law and 1518 changed tax law, the tax law could genuinely change first — if the tax
+    specialist learned of both decrees before the tariff specialist learned of either — a state of
+    the law unobtainable by enacting the decrees in numerical order, yet now perfectly lawful.</p>
+    <p>To avoid conflicting definitions of the current state, at most one specialist at a time was
+    allowed per area — enforced by the same time-stamped-term method used for bureaucrats
+    (Section&nbsp;3.3.3). An inquiry touching a single area went to that area’s specialist, who
+    answered from his ledger. Since learning that a law had passed was itself an implicit inquiry,
+    a decree was required to change at most one area, and news of its passage could come only from
+    that area’s specialist.</p>
+    <p>Inquiries spanning areas were handled by cooperation. When merchant
+    <span class="paxon" data-real="Barbara Liskov" data-note="Turing Award 2008; with Oki, invented Viewstamped Replication.">Λισκωφ</span>
+    asked whether the tariff on an imported golden fleece exceeded the sales tax on a local one,
+    the tax specialist could answer by first asking the tariff specialist for the fleece tariff —
+    valid so long as he made no changes to his own ledger before the reply came back. This worked
+    until sweeping changes across several areas of the law were needed at once. Then the Paxons
+    realized the real requirement was not that a decree affect a single area, but that
+    <strong>every area it affects have the same specialist</strong>: Parliament could change several
+    areas with one decree by first appointing one legislator specialist for all of them. Moreover
+    the same area could have several specialists, provided that area of the law was not allowed to
+    change — just before income taxes came due, Parliament would appoint a seasonal flood of
+    tax-law specialists to answer everyone’s questions.</p>
+  </div>
+
+  <h4 class="subsect">3.3.5 · Dishonest Legislators and Honest Mistakes</h4>
+  <div class="prose">
+    <p>Whatever the official assertions, there must have been a few dishonest legislators in the
+    history of Paxos; when caught, they were probably exiled. By sending contradictory messages, a
+    malicious legislator could drive different ledgers into inconsistency — as could a simple
+    lapse of memory by an honest legislator or messenger.</p>
+    <p>Recognized inconsistencies were easy to repair by decree: disagreement over the olive tax
+    could be ended by passing a fresh decree fixing the tax at a definite value. The hard problem
+    was correcting inconsistent ledgers <em>when no one knew they were inconsistent</em>. Its
+    solution can be inferred from the redundant decrees that begin appearing in ledgers some years
+    into Parliament’s history — for example</p>
+  </div>
+  <div class="decree"><b>2605:</b> The olive tax is 9 drachmas per ton</div>
+  <div class="prose">
+    <p>passed although decree 2155 had already set the olive tax to 9&nbsp;drachmas per ton and
+    nothing in between had changed it. Parliament apparently <strong>cycled through its entire body
+    of law every six months</strong>, so that even if ledgers started out inconsistent, all
+    legislators would agree on the current law of the land within six months. It is believed that
+    with these redundant decrees the Paxons made their Parliament <em>self-stabilizing</em>.
+    (<em>Self-stabilizing</em> is a modern term due to Dijkstra [1974].)</p>
+    <p>Precisely what self-stabilization meant in a Parliament of legislators forever coming and
+    going is unclear. The Paxons would not have accepted a definition requiring every legislator
+    to be in the Chamber at once before consistency could be guaranteed. But achieving consistency
+    did require that if one legislator had a ledger entry for some decree number and another did
+    not, the second would eventually fill it in. Exactly what self-stabilization property the
+    Parliament possessed, and how it was achieved, we do not know. Paxon mathematicians surely
+    addressed the problem, but their work has not yet been found. One hopes that future
+    archaeological expeditions to Paxos will give the search for manuscripts on self-stabilization
+    the highest priority.</p>
+  </div>
+
+  <h4 class="subsect">3.3.6 · Choosing New Legislators</h4>
+  <div class="prose">
+    <p>At first, membership in Parliament was hereditary, passed from parent to child. When elder
+    statesman <span class="paxon" data-real="David Parnas" data-note="Of information-hiding fame — here, the very model of institutional continuity.">Παρνας</span>
+    retired, he handed his ledger to his son, who carried on without interruption; the other
+    legislators neither knew nor cared <em>which</em> Παρνας they were corresponding with.</p>
+    <p>As old families emigrated and new ones arrived, the Paxons decided to add and remove
+    members of Parliament <em>by decree</em>. This posed a circularity: membership was determined
+    by which decrees were passed, but passing a decree required knowing what a majority set was —
+    which depended on the membership. The circle was broken by letting <strong>the membership used
+    in passing decree <var>n</var> be specified by the law as of decree
+    <var>n</var>&nbsp;−&nbsp;3</strong>. A president could not try to pass decree 3255 until he knew
+    all decrees through 3252. In practice, after passing</p>
+  </div>
+  <div class="decree"><b>3252:</b> <span class="paxon" data-real="Ray Strong" data-note="H. Raymond Strong, IBM — Byzantine agreement and clock synchronization.">Σπρωυνγ</span> is now a legislator</div>
+  <div class="prose">
+    <p>the president would immediately pass olive-day decrees as 3253 and 3254.</p>
+    <p>Changing Parliament’s composition this way was <strong>dangerous, and had to be done with
+    care</strong>. The consistency and progress conditions would always hold — but the progress
+    condition only promises progress when a majority set is in the Chamber, and it does not
+    promise that a majority set will ever exist. Indeed, this very mechanism brought the
+    parliamentary system of Paxos down. Because of a scribe’s error, a decree meant to honor
+    sailors who had drowned in a shipwreck instead declared the drowned sailors to be <em>the only
+    members of Parliament</em>. Its passage made the passing of any further decree impossible —
+    including the decrees proposed to correct the mistake. Government on Paxos came to a halt. A
+    general named <span class="paxon" data-real="Butler Lampson" data-note="Turing Award 1992 — and the great popularizer of Paxos among systems builders; his 1996 paper is cited in the editor's preface. Casting him as the coup general is the paper's finest joke.">Λαμπσων</span>
+    seized the moment to stage a coup, establishing a military dictatorship that ended centuries
+    of progressive government. Paxos grew weak under a series of corrupt dictators, and proved
+    unable to repel the invasion from the east that destroyed its civilization.</p>
+  </div>
+  <figure class="panel">
+    <div class="frame"><img src="images/fall.png" alt="Storm clouds over Paxos: a horrified scribe with a botched decree, the empty cobwebbed Chamber, and a general watching soldiers march."></div>
+    <figcaption>ONE SCRIBE’S ERROR MADE DROWNED SAILORS THE ONLY LEGISLATORS. NO DECREE COULD PASS — NOT EVEN THE FIX. GENERAL Λαμπσων SAW HIS MOMENT.</figcaption>
+  </figure>
+</section>
+
+<hr class="meander">
+
+<!-- ================= SECTION 4 ================= -->
+<section id="s4">
+  <div class="issue">
+    <span class="no">Chapter IV</span>
+    <h2>Relevance to Computer Science</h2>
+  </div>
+
+  <h3 class="sect">4.1 · The State Machine Approach</h3>
+  <figure class="panel">
+    <div class="frame"><img src="images/statemachine.png" alt="Split panel: the ancient Chamber with legislators writing in ledgers on the left, mirrored by a modern server room with replicated databases on the right."></div>
+    <figcaption>THE CHAMBER, TRANSLATED: LEGISLATOR ↔ SERVER · CITIZEN ↔ CLIENT · CURRENT LAW ↔ DATABASE STATE.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Paxos’s Parliament was destroyed many centuries ago, but its protocol remains useful.
+    Consider a simple distributed database, used perhaps as a name server. Its state assigns
+    values to names; copies of the database live on multiple servers. A client may ask any server
+    to read or change a name’s value, and there are two kinds of read: a <em>slow read</em>, which
+    returns the value currently assigned, and a <em>fast read</em>, which is quicker but may miss a
+    recent change. The correspondence with the Paxon Parliament is immediate:</p>
+  </div>
+  <div class="slab">
+    <div class="mathblock" style="font-style:normal">
+      <table style="margin:0 auto; border-collapse:collapse; font-size:.95rem">
+        <tr><th style="border-bottom:2px solid var(--ink); padding:4px 18px">Parliament</th><th style="border-bottom:2px solid var(--ink); padding:4px 18px">Distributed Database</th></tr>
+        <tr><td style="padding:4px 18px; text-align:right">legislator</td><td style="padding:4px 18px">↔ &nbsp;server</td></tr>
+        <tr><td style="padding:4px 18px; text-align:right">citizen</td><td style="padding:4px 18px">↔ &nbsp;client program</td></tr>
+        <tr><td style="padding:4px 18px; text-align:right">current law</td><td style="padding:4px 18px">↔ &nbsp;database state</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="prose">
+    <p>A client’s request to change a value is performed by passing a decree; a slow read likewise
+    passes a decree, exactly as in Section&nbsp;3.3.4; a fast read simply reads the server’s current
+    copy. The Paxon Parliament protocol thus provides a distributed, fault-tolerant implementation
+    of the database.</p>
+    <p>This is an instance of the <em>state machine approach</em>, first proposed in [Lamport
+    1978]. One defines a <em>state machine</em> — a set of states, a set of commands, a set of
+    responses, and a function assigning a response/state pair to every command/state pair.
+    Intuitively, a state machine executes a command by producing a response and a new state, both
+    determined by the command and the current state. For the database, a state-machine state is
+    just a database state, and the commands are:</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">Fig. 2 — State machine for a simple database</div>
+    <div class="mathblock" style="font-style:normal; text-align:left; font-size:.9rem">
+      <table style="margin:0 auto; border-collapse:collapse">
+        <tr><td style="padding:3px 14px"><i>command:</i></td><td style="padding:3px 14px"><b>read</b>(<var>name</var>, <var>client</var>)</td><td style="padding:3px 14px"><b>update</b>(<var>name</var>, <var>val</var>, <var>client</var>)</td></tr>
+        <tr><td style="padding:3px 14px"><i>response:</i></td><td style="padding:3px 14px">(<var>client</var>, value of <var>name</var>)</td><td style="padding:3px 14px">(<var>client</var>, “ok”)</td></tr>
+        <tr><td style="padding:3px 14px"><i>new state:</i></td><td style="padding:3px 14px">same as current state</td><td style="padding:3px 14px">same, except value of <var>name</var> changed to <var>val</var></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="prose">
+    <p>In the state-machine approach, a network of servers transforms client requests into
+    state-machine commands, executes the commands, and turns the responses into replies to
+    clients. A general algorithm ensures <strong>all servers obtain the same sequence of
+    commands</strong> — so, starting from the same initial state, they produce the same sequence of
+    responses and state changes. In the database example, a slow read or an update becomes a
+    <b>read</b> or <b>update</b> command; the server that received the request sends the reply. All
+    servers hold consistent copies — though at any moment some may hold earlier versions than
+    others, since commands need not execute everywhere simultaneously; a server answers
+    <em>fast reads</em> from its current version, without a command.</p>
+    <p>The beauty of the approach: the system’s functionality lives entirely in the state machine
+    — a mere function from command/state pairs to response/state pairs — while synchronization and
+    fault tolerance live in the general algorithm that distributes the commands. Designing a new
+    system means designing only a new state machine; the command-distribution algorithm is
+    standard and already proved correct. <strong>Functions are far easier to design, and to get
+    right, than distributed algorithms.</strong></p>
+    <p>The first algorithm for implementing an arbitrary state machine appeared in [Lamport 1978];
+    later algorithms tolerate up to any fixed number <var>f</var> of arbitrary failures.<sup>14</sup>
+    Those algorithms guarantee that if fewer than <var>f</var> processes fail, commands execute
+    within a fixed time — suitable for real-time applications — but if more than <var>f</var>
+    failures occur, servers may become inconsistent; and since two servers unable to communicate
+    are equivalent to one of them having failed, a low probability of losing consistency demands a
+    large <var>f</var>, hence great cost in redundant hardware, bandwidth, and response time.</p>
+    <p>The Paxon Parliament offers another way. The legislators’ law book corresponds to the
+    machine state; passing a decree corresponds to executing a command. The resulting algorithm is
+    less robust and less expensive: it tolerates neither malicious failures nor guarantees
+    bounded-time response — but <strong>consistency survives the benign failure of any number of
+    processes and communication paths</strong>. The Paxon algorithm suits systems with modest
+    reliability requirements that do not justify an extremely fault-tolerant, real-time
+    implementation.</p>
+    <p>With bounded-time algorithms, time can be made part of the state, and machine actions can
+    be triggered by the passage of time — say, automatically revoking a client’s ownership of a
+    resource held too long. The Paxon algorithm permits no such thing: under failures, passing a
+    decree can take arbitrarily long, and one command can be executed (appear earlier in the
+    decree sequence) than another issued before it. Yet a state machine can still use real time
+    the way the Parliament did — the cheese-inspector method of Section&nbsp;3.3.3 serves perfectly
+    well for deciding who currently owns a resource.</p>
+  </div>
+  <aside class="fn"><b>14.</b> These algorithms were derived from the military protocols of
+  another Mediterranean state — <em>Byzantine</em> ones, the scholars say.</aside>
+
+  <h3 class="sect">4.2 · Commit Protocols</h3>
+  <div class="prose">
+    <p>The Paxon Synod protocol resembles standard three-phase commit protocols [Bernstein et al.
+    1987; Skeen 1982]. A Paxon ballot and a three-phase commit both exchange five messages between
+    a coordinator (the president) and the other quorum members (legislators). A commit protocol
+    chooses between exactly two values — <em>commit</em> or <em>abort</em> — while the Synod
+    protocol chooses an arbitrary decree. To convert a commit protocol into a Synod protocol, one
+    sends the decree in the initial round of messages: a <em>commit</em> decision then means the
+    decree was passed, an <em>abort</em> decision means the “olive-day” decree was passed.</p>
+    <p>The Synod protocol differs in not sending the decree until the second phase — which is
+    precisely what lets the parliamentary protocol execute the first phase <em>just once</em> for
+    all decrees, so that passing each individual decree costs only three messages… err, three
+    message <em>delays</em> and the 2<var>N</var>–3<var>N</var> messages of Section&nbsp;3.2.2.</p>
+    <p>The theorems underlying the Synod protocol are similar to results of Dwork, Lynch, and
+    Stockmeyer [1988] — though their algorithms run ballots sequentially in separate rounds, and
+    seem unrelated to the Synod protocol itself.</p>
+  </div>
+
+  <div class="editor-note">
+    <span class="tag">The editor, once more</span>
+    <p>Much has happened in the field since this article was written. The state-machine approach
+    is surveyed by Schneider [1990]. The recovery protocol of Keidar and Dolev [1996] and the
+    totally-ordered broadcast algorithm of Fekete et al. [1997] are quite similar to the Paxon
+    protocol described here. The author was also apparently unaware that the view management
+    protocol of Oki and Liskov [1988] seems to be <em>equivalent</em> to the Paxon protocol.</p>
+    <p>Many of the refinements presented in this submission also appeared in contemporary or
+    subsequent literature: the delegation method of Section&nbsp;3.3.3 closely resembles the leases
+    mechanism of Gray and Cheriton [1989]; the decree-numbering technique by which Section&nbsp;3.3.4
+    achieves monotonicity is described by Ladin et al. [1992]; and the technique of Section&nbsp;3.3.6
+    for adding new legislators was also given by Schneider [1990].</p>
+    <p class="sig">— K.&nbsp;M.</p>
+  </div>
+
+  <!-- ========= WIDGET 4: NAMES ========= -->
+  <div class="widget" id="w-names">
+    <div class="whead"><h5>⚱ The Hidden Names of Paxos</h5><span class="badge">DECODER RING</span></div>
+    <div class="wbody" id="names">
+      <p class="hint">The “Paxon dialect” is Greek letters wrapped around the names of real
+      researchers — Lamport’s running joke, with each scholar cast in a fitting role. (You may have
+      noticed the dotted names throughout; hover over them for the same secrets.) <b>Click a card
+      to decode it.</b></p>
+      <div class="grid" id="names-grid"></div>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top:36px">
+    <h4 class="subsect" style="margin-top:0">Acknowledgments</h4>
+    <p>Daniel Duchamp pointed out to the author the need for a new state-machine implementation.
+    Discussions with Martín Abadi, Andy Hisgen, Tim Mann, and Garret Swart led him to Paxos.
+    <span class="paxon" data-real="Leonidas Guibas" data-note="Stanford computational geometer — and, evidently, a native speaker of Paxon.">Λεωνίδας Γκίμπας</span>
+    provided invaluable assistance with the Paxon dialect.</p>
+  </div>
+</section>
+
+<hr class="meander">
+
+<!-- ================= APPENDIX ================= -->
+<section id="appendix">
+  <div class="issue">
+    <span class="no">Recovered Fragments</span>
+    <h2>Appendix: Proof of Consistency<br>of the Synodic Protocol</h2>
+  </div>
+
+  <h3 class="sect">A1 · The Basic Protocol</h3>
+  <div class="prose">
+    <p>Here is the Synod’s basic protocol of Section&nbsp;2.3, restated in modern algorithmic
+    notation. First, the variables a priest <var>p</var> keeps <strong>in his ledger</strong> (for
+    convenience, <var>prevVote</var>[<var>p</var>] is split into components
+    <var>prevBal</var>[<var>p</var>] and <var>prevDec</var>[<var>p</var>]):</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">Ledger variables (indelible ink, notes crossed out but never erased)</div>
+    <p style="font-size:.92rem"><b><var>outcome</var>[<var>p</var>]</b> — the decree written in
+    <var>p</var>’s ledger, or <span style="font-variant:small-caps">blank</span> if nothing is
+    written yet.</p>
+    <p style="font-size:.92rem"><b><var>lastTried</var>[<var>p</var>]</b> — the number of the last
+    ballot <var>p</var> tried to begin, or −∞.</p>
+    <p style="font-size:.92rem"><b><var>prevBal</var>[<var>p</var>]</b> — the number of the last
+    ballot in which <var>p</var> voted, or −∞.</p>
+    <p style="font-size:.92rem"><b><var>prevDec</var>[<var>p</var>]</b> — the decree for which
+    <var>p</var> last voted, or <span style="font-variant:small-caps">blank</span>.</p>
+    <p style="font-size:.92rem"><b><var>nextBal</var>[<var>p</var>]</b> — the number of the last
+    ballot in which <var>p</var> agreed to participate, or −∞.</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">Slip-of-paper variables (lost whenever the slip is lost)</div>
+    <p style="font-size:.92rem"><b><var>status</var>[<var>p</var>]</b> — one of <i>idle</i> (not
+    conducting or trying to begin a ballot), <i>trying</i> (trying to begin ballot
+    <var>lastTried</var>[<var>p</var>]), or <i>polling</i> (now conducting ballot
+    <var>lastTried</var>[<var>p</var>]). If the slip is lost, <var>status</var>[<var>p</var>]
+    is taken to equal <i>idle</i> and the remaining variables are irrelevant.</p>
+    <p style="font-size:.92rem"><b><var>prevVotes</var>[<var>p</var>]</b> — the set of votes
+    received in <em>LastVote</em> messages for the current ballot.</p>
+    <p style="font-size:.92rem"><b><var>quorum</var>[<var>p</var>]</b> — if polling, the quorum of
+    the current ballot; else meaningless.</p>
+    <p style="font-size:.92rem"><b><var>voters</var>[<var>p</var>]</b> — if polling, the quorum
+    members from whom <var>p</var> has received <em>Voted</em> messages; else meaningless.</p>
+    <p style="font-size:.92rem"><b><var>decree</var>[<var>p</var>]</b> — if polling, the current
+    ballot’s decree; else meaningless.</p>
+  </div>
+  <div class="prose">
+    <p>There is also the history variable <var>ℬ</var> — the set of ballots started, with their
+    progress (who has cast votes). A history variable is used in developing and proving the
+    algorithm but is not actually implemented. Recall too that ballot numbers were partitioned
+    among the priests: <var>owner</var>(<var>b</var>) is the priest allowed to use ballot number
+    <var>b</var>.</p>
+    <p>Priest <var>p</var>’s actions are <em>atomic</em> — once begun, an action completes before
+    <var>p</var> begins another. Each action has an enabling condition and a list of effects;
+    receive-actions are enabled whenever a messenger arrives with the right message; each action
+    sends at most one message. These are <strong>allowed</strong> actions — the protocol never
+    requires a priest to do anything, and no attempt is made at efficiency: the actions cheerfully
+    let <var>p</var> do silly things, like sending another <em>BeginBallot</em> to a priest who has
+    already answered with a <em>LastVote</em>.</p>
+  </div>
+  <details class="proof" open>
+    <summary>The nine allowed actions of the basic protocol</summary>
+    <div style="font-size:.92rem">
+      <p><b>Try New Ballot</b> — <i>always enabled.</i><br>
+      · Set <var>lastTried</var>[<var>p</var>] to any ballot number <var>b</var> greater than its
+      previous value, with <var>owner</var>(<var>b</var>)&nbsp;=&nbsp;<var>p</var>.<br>
+      · Set <var>status</var>[<var>p</var>] to <i>trying</i>.<br>
+      · Set <var>prevVotes</var>[<var>p</var>] to ∅.</p>
+      <p><b>Send NextBallot Message</b> — <i>enabled whenever status[p]&nbsp;=&nbsp;trying.</i><br>
+      · Send <em>NextBallot</em>(<var>lastTried</var>[<var>p</var>]) to any priest.</p>
+      <p><b>Receive NextBallot(b) Message</b> — <i>if b&nbsp;≥&nbsp;nextBal[p]:</i><br>
+      · Set <var>nextBal</var>[<var>p</var>] to <var>b</var>.</p>
+      <p><b>Send LastVote Message</b> — <i>enabled whenever nextBal[p]&nbsp;&gt;&nbsp;prevBal[p].</i><br>
+      · Send <em>LastVote</em>(<var>nextBal</var>[<var>p</var>],&nbsp;<var>v</var>) to priest
+      <var>owner</var>(<var>nextBal</var>[<var>p</var>]), where
+      <var>v</var><sub>pst</sub>&nbsp;=&nbsp;<var>p</var>,
+      <var>v</var><sub>bal</sub>&nbsp;=&nbsp;<var>prevBal</var>[<var>p</var>], and
+      <var>v</var><sub>dec</sub>&nbsp;=&nbsp;<var>prevDec</var>[<var>p</var>].</p>
+      <p><b>Receive LastVote(b, v) Message</b> — <i>if b&nbsp;=&nbsp;lastTried[p] and
+      status[p]&nbsp;=&nbsp;trying:</i><br>
+      · Set <var>prevVotes</var>[<var>p</var>] to the union of its former value and
+      {<var>v</var>}.</p>
+      <p><b>Start Polling Majority Set Q</b> — <i>enabled when status[p]&nbsp;=&nbsp;trying and
+      Q&nbsp;⊆&nbsp;{v<sub>pst</sub>&nbsp;:&nbsp;v&nbsp;∈&nbsp;prevVotes[p]}, where Q is a majority
+      set:</i><br>
+      · Set <var>status</var>[<var>p</var>] to <i>polling</i>, <var>quorum</var>[<var>p</var>] to
+      <var>Q</var>, <var>voters</var>[<var>p</var>] to ∅.<br>
+      · Set <var>decree</var>[<var>p</var>] to a decree <var>d</var> chosen as follows: let
+      <var>v</var> be the maximum element of <var>prevVotes</var>[<var>p</var>]; if
+      <var>v</var><sub>bal</sub>&nbsp;≠&nbsp;−∞ then <var>d</var>&nbsp;=&nbsp;<var>v</var><sub>dec</sub>,
+      else <var>d</var> may equal any decree.<br>
+      · Add to <var>ℬ</var> the ballot <var>B</var> with
+      <var>B</var><sub>dec</sub>&nbsp;=&nbsp;<var>d</var>,
+      <var>B</var><sub>qrm</sub>&nbsp;=&nbsp;<var>Q</var>,
+      <var>B</var><sub>vot</sub>&nbsp;=&nbsp;∅,
+      <var>B</var><sub>bal</sub>&nbsp;=&nbsp;<var>lastTried</var>[<var>p</var>].</p>
+      <p><b>Send BeginBallot Message</b> — <i>enabled when status[p]&nbsp;=&nbsp;polling:</i><br>
+      · Send <em>BeginBallot</em>(<var>lastTried</var>[<var>p</var>],&nbsp;<var>decree</var>[<var>p</var>])
+      to any priest in <var>quorum</var>[<var>p</var>].</p>
+      <p><b>Receive BeginBallot(b, d) Message</b> — <i>if b&nbsp;=&nbsp;nextBal[p]&nbsp;&gt;&nbsp;prevBal[p]:</i><br>
+      · Set <var>prevBal</var>[<var>p</var>] to <var>b</var>, <var>prevDec</var>[<var>p</var>] to
+      <var>d</var>.<br>
+      · In <var>ℬ</var>, add <var>p</var> to <var>B</var><sub>vot</sub> for the (unique) ballot
+      <var>B</var> with <var>B</var><sub>bal</sub>&nbsp;=&nbsp;<var>b</var>.</p>
+      <p><b>Send Voted Message</b> — <i>enabled whenever prevBal[p]&nbsp;≠&nbsp;−∞:</i><br>
+      · Send <em>Voted</em>(<var>prevBal</var>[<var>p</var>],&nbsp;<var>p</var>) to
+      <var>owner</var>(<var>prevBal</var>[<var>p</var>]).</p>
+      <p><b>Receive Voted(b, q) Message</b> — <i>if b&nbsp;=&nbsp;lastTried[p] and
+      status[p]&nbsp;=&nbsp;polling:</i><br>
+      · Set <var>voters</var>[<var>p</var>] to the union of its former value and {<var>q</var>}.</p>
+      <p><b>Succeed</b> — <i>enabled whenever status[p]&nbsp;=&nbsp;polling,
+      quorum[p]&nbsp;⊆&nbsp;voters[p], and outcome[p]&nbsp;=&nbsp;</i><span style="font-variant:small-caps">blank</span>:<br>
+      · Set <var>outcome</var>[<var>p</var>] to <var>decree</var>[<var>p</var>].</p>
+      <p><b>Send Success Message</b> — <i>enabled whenever outcome[p]&nbsp;≠&nbsp;</i><span style="font-variant:small-caps">blank</span>:<br>
+      · Send <em>Success</em>(<var>outcome</var>[<var>p</var>]) to any priest.</p>
+      <p><b>Receive Success(d) Message</b> — <i>if outcome[p]&nbsp;=&nbsp;</i><span style="font-variant:small-caps">blank</span>:<br>
+      · Set <var>outcome</var>[<var>p</var>] to <var>d</var>.</p>
+    </div>
+  </details>
+  <div class="prose">
+    <p>Is this abstract algorithm a fair model of what real priests did? A priest could perform
+    three kinds of action “atomically”: receive a message, write a note or ledger entry, and send
+    a message. Each is one action of the algorithm — except that <b>Receive</b> actions both
+    receive a message and set a variable. We may pretend a message was received only when the
+    priest acted on it; if he left the Chamber first, we pretend it was never received. Since the
+    pretense cannot affect consistency, the consistency of the basic Synod protocol follows from
+    the consistency of the algorithm.</p>
+  </div>
+
+  <h3 class="sect">A2 · Proof of Consistency</h3>
+  <div class="prose">
+    <p>Consistency means: whenever <var>outcome</var>[<var>p</var>] and
+    <var>outcome</var>[<var>q</var>] are both different from
+    <span style="font-variant:small-caps">blank</span>, they are equal. A rigorous proof needs a
+    complete description of the algorithm; the description above is almost complete. Missing is a
+    variable <var>ℳ</var> whose value is the multiset<sup>15</sup> of messages in transit — each
+    <b>Send</b> adds a message to <var>ℳ</var>, each <b>Receive</b> removes one — together with
+    actions for the <em>loss</em> and <em>duplication</em> of messages, and a <b>Forget</b> action
+    representing a priest losing his slip of paper.</p>
+    <p>With these additions, each change of state corresponds to one allowed action. The Paxons
+    proved correctness by exhibiting a predicate <var>I</var> such that: (1) <var>I</var> is true
+    initially; (2) <var>I</var> implies the correctness condition; and (3) every allowed action
+    leaves <var>I</var> true. The predicate was a conjunction
+    <var>I</var>1&nbsp;∧&nbsp;…&nbsp;∧&nbsp;<var>I</var>7, where <var>I</var>1–<var>I</var>5 were in
+    turn conjunctions of <var>I</var>1(<var>p</var>)–<var>I</var>5(<var>p</var>) over all priests
+    <var>p</var>. Each conjunct constrains one variable (bracketed below).</p>
+  </div>
+  <aside class="fn"><b>15.</b> A multiset is a set that may contain multiple copies of the same
+  element.</aside>
+  <details class="proof">
+    <summary>The invariant I, in full</summary>
+    <div style="font-size:.9rem">
+      <div class="mathblock" style="text-align:left">
+        <var>I</var>1(<var>p</var>) ≜ <span class="rm">[<var>outcome</var>[<var>p</var>]]</span><br>
+        (<var>outcome</var>[<var>p</var>] ≠ <span class="rm" style="font-variant:small-caps">blank</span>) ⇒
+        ∃<var>B</var> ∈ <var>ℬ</var> : (<var>B</var><sub>qrm</sub> ⊆ <var>B</var><sub>vot</sub>) ∧
+        (<var>B</var><sub>dec</sub> = <var>outcome</var>[<var>p</var>])
+      </div>
+      <div class="mathblock" style="text-align:left">
+        <var>I</var>2(<var>p</var>) ≜ <span class="rm">[<var>lastTried</var>[<var>p</var>]]</span><br>
+        ∧ <var>owner</var>(<var>lastTried</var>[<var>p</var>]) = <var>p</var><br>
+        ∧ ∀<var>B</var> ∈ <var>ℬ</var> : (<var>owner</var>(<var>B</var><sub>bal</sub>) = <var>p</var>) ⇒<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;∧ <var>B</var><sub>bal</sub> ≤ <var>lastTried</var>[<var>p</var>]<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;∧ (<var>status</var>[<var>p</var>] = <span class="rm"><i>trying</i></span>) ⇒ (<var>B</var><sub>bal</sub> &lt; <var>lastTried</var>[<var>p</var>])
+      </div>
+      <div class="mathblock" style="text-align:left">
+        <var>I</var>3(<var>p</var>) ≜ <span class="rm">[<var>prevBal</var>[<var>p</var>], <var>prevDec</var>[<var>p</var>], <var>nextBal</var>[<var>p</var>]]</span><br>
+        ∧ <var>prevBal</var>[<var>p</var>] = <var>MaxVote</var>(∞, <var>p</var>, <var>ℬ</var>)<sub>bal</sub><br>
+        ∧ <var>prevDec</var>[<var>p</var>] = <var>MaxVote</var>(∞, <var>p</var>, <var>ℬ</var>)<sub>dec</sub><br>
+        ∧ <var>nextBal</var>[<var>p</var>] ≥ <var>prevBal</var>[<var>p</var>]
+      </div>
+      <div class="mathblock" style="text-align:left">
+        <var>I</var>4(<var>p</var>) ≜ <span class="rm">[<var>prevVotes</var>[<var>p</var>]]</span><br>
+        (<var>status</var>[<var>p</var>] ≠ <span class="rm"><i>idle</i></span>) ⇒
+        ∀<var>v</var> ∈ <var>prevVotes</var>[<var>p</var>] :<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;∧ <var>v</var> = <var>MaxVote</var>(<var>lastTried</var>[<var>p</var>], <var>v</var><sub>pst</sub>, <var>ℬ</var>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;∧ <var>nextBal</var>[<var>v</var><sub>pst</sub>] ≥ <var>lastTried</var>[<var>p</var>]
+      </div>
+      <div class="mathblock" style="text-align:left">
+        <var>I</var>5(<var>p</var>) ≜ <span class="rm">[<var>quorum</var>[<var>p</var>], <var>voters</var>[<var>p</var>], <var>decree</var>[<var>p</var>]]</span><br>
+        (<var>status</var>[<var>p</var>] = <span class="rm"><i>polling</i></span>) ⇒<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;∧ <var>quorum</var>[<var>p</var>] ⊆ {<var>v</var><sub>pst</sub> : <var>v</var> ∈ <var>prevVotes</var>[<var>p</var>]}<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;∧ ∃<var>B</var> ∈ <var>ℬ</var> : ∧ <var>quorum</var>[<var>p</var>] = <var>B</var><sub>qrm</sub>
+        ∧ <var>decree</var>[<var>p</var>] = <var>B</var><sub>dec</sub><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∧ <var>voters</var>[<var>p</var>] ⊆ <var>B</var><sub>vot</sub>
+        ∧ <var>lastTried</var>[<var>p</var>] = <var>B</var><sub>bal</sub>
+      </div>
+      <div class="mathblock" style="text-align:left">
+        <var>I</var>6 ≜ <span class="rm">[<var>ℬ</var>]</span><br>
+        ∧ <var>B</var>1(<var>ℬ</var>) ∧ <var>B</var>2(<var>ℬ</var>) ∧ <var>B</var>3(<var>ℬ</var>)<br>
+        ∧ ∀<var>B</var> ∈ <var>ℬ</var> : <var>B</var><sub>qrm</sub> <span class="rm">is a majority set</span>
+      </div>
+      <div class="mathblock" style="text-align:left">
+        <var>I</var>7 ≜ <span class="rm">[<var>ℳ</var>]</span><br>
+        ∧ ∀<var>NextBallot</var>(<var>b</var>) ∈ <var>ℳ</var> : <var>b</var> ≤ <var>lastTried</var>[<var>owner</var>(<var>b</var>)]<br>
+        ∧ ∀<var>LastVote</var>(<var>b</var>, <var>v</var>) ∈ <var>ℳ</var> :
+        ∧ <var>v</var> = <var>MaxVote</var>(<var>b</var>, <var>v</var><sub>pst</sub>, <var>ℬ</var>)
+        ∧ <var>nextBal</var>[<var>v</var><sub>pst</sub>] ≥ <var>b</var><br>
+        ∧ ∀<var>BeginBallot</var>(<var>b</var>, <var>d</var>) ∈ <var>ℳ</var> :
+        ∃<var>B</var> ∈ <var>ℬ</var> : (<var>B</var><sub>bal</sub> = <var>b</var>) ∧ (<var>B</var><sub>dec</sub> = <var>d</var>)<br>
+        ∧ ∀<var>Voted</var>(<var>b</var>, <var>p</var>) ∈ <var>ℳ</var> :
+        ∃<var>B</var> ∈ <var>ℬ</var> : (<var>B</var><sub>bal</sub> = <var>b</var>) ∧ (<var>p</var> ∈ <var>B</var><sub>vot</sub>)<br>
+        ∧ ∀<var>Success</var>(<var>d</var>) ∈ <var>ℳ</var> :
+        ∃<var>p</var> : <var>outcome</var>[<var>p</var>] = <var>d</var> ≠ <span class="rm" style="font-variant:small-caps">blank</span>
+      </div>
+    </div>
+  </details>
+  <details class="proof">
+    <summary>Sketch of the invariance proof</summary>
+    <div style="font-size:.92rem">
+      <p>That <var>I</var> holds initially is checked conjunct by conjunct from the variables’
+      initial values. That <var>I</var> implies consistency follows from <var>I</var>1, the first
+      conjunct of <var>I</var>6, and Theorem&nbsp;1: any two non-<span style="font-variant:small-caps">blank</span>
+      outcomes are decrees of successful ballots in <var>ℬ</var>, which Theorem&nbsp;1 makes equal.
+      The hard part is showing every action preserves each conjunct:</p>
+      <p><b><var>I</var>1(<var>p</var>)</b> — <var>ℬ</var> changes only by adding a ballot or adding
+      a voter, neither of which can falsify it. <var>outcome</var>[<var>p</var>] changes only via
+      <b>Succeed</b> (whose enabling condition plus <var>I</var>5(<var>p</var>) preserve
+      <var>I</var>1) and <b>Receive Success</b> (preserved by the enabling condition,
+      <var>I</var>1(<var>q</var>) for the sender, and the last conjunct of <var>I</var>7).</p>
+      <p><b><var>I</var>2(<var>p</var>)</b> — depends only on <var>lastTried</var>[<var>p</var>],
+      <var>status</var>[<var>p</var>], <var>ℬ</var>. Only <b>Try New Ballot</b> changes
+      <var>lastTried</var>[<var>p</var>] (increasing it to a number owned by <var>p</var>) and only
+      it sets <var>status</var> to <i>trying</i>; a new ballot enters <var>ℬ</var> only by
+      <b>Start Polling</b>, whose specification plus the first conjunct keep the second true.</p>
+      <p><b><var>I</var>3(<var>p</var>)</b> — votes are never removed from <var>ℬ</var>, so
+      <var>MaxVote</var>(∞,&nbsp;<var>p</var>,&nbsp;<var>ℬ</var>) changes only when <var>p</var>
+      casts a new vote — only by <b>Receive BeginBallot</b>, which is exactly the action updating
+      <var>prevBal</var> and <var>prevDec</var>; <var>B</var>1 (from <var>I</var>6) makes the voted
+      ballot unique, and <var>nextBal</var> is never decreased.</p>
+      <p><b><var>I</var>4(<var>p</var>)</b> — <b>Try New Ballot</b> empties
+      <var>prevVotes</var>[<var>p</var>], making it vacuously true; <b>Receive LastVote</b>
+      preserves it via the <em>LastVote</em> conjunct of <var>I</var>7; a vote by
+      <var>v</var><sub>pst</sub> below <var>lastTried</var>[<var>p</var>] is impossible because
+      <var>nextBal</var>[<var>v</var><sub>pst</sub>]&nbsp;≥&nbsp;<var>lastTried</var>[<var>p</var>].</p>
+      <p><b><var>I</var>5(<var>p</var>)</b> — established by <b>Start Polling</b> (which adds the
+      very ballot the conjunct asserts to exist) and preserved by <b>Receive Voted</b> via the
+      <em>Voted</em> conjunct of <var>I</var>7 and <var>B</var>1.</p>
+      <p><b><var>I</var>6</b> — since <var>B</var><sub>bal</sub> and <var>B</var><sub>qrm</sub>
+      never change, only adding a ballot (<b>Start Polling</b>, safe by <var>I</var>2 and the
+      majority-set assertion) or adding a vote (<b>Receive BeginBallot</b>, safe by
+      <var>I</var>3(<var>p</var>) and <var>I</var>4(<var>p</var>)) could falsify
+      <var>B</var>1–<var>B</var>3 — and neither does.</p>
+      <p><b><var>I</var>7</b> — since <var>lastTried</var> and <var>nextBal</var> never decrease and
+      a non-<span style="font-variant:small-caps">blank</span> <var>outcome</var> never changes,
+      only sending messages or casting votes could falsify it, and each of the five message types
+      satisfies its conjunct when sent — <em>NextBallot</em> by <var>I</var>2(<var>p</var>),
+      <em>LastVote</em> by <var>I</var>3(<var>p</var>), <em>BeginBallot</em> by
+      <var>I</var>5(<var>p</var>), <em>Voted</em> by <var>I</var>3(<var>p</var>), and
+      <em>Success</em> by its enabling condition. <span class="qed">∎</span></p>
+    </div>
+  </details>
+</section>
+
+<hr class="meander">
+
+<!-- ================= REFERENCES ================= -->
+<section id="refs">
+  <div class="issue">
+    <span class="no">The Library</span>
+    <h2>References</h2>
+  </div>
+  <ol class="refs prose">
+    <li>Bernstein, P. A., Hadzilacos, V., and Goodman, N. 1987. <em>Concurrency Control and Recovery in Database Systems.</em> Addison-Wesley, Reading, Massachusetts.</li>
+    <li>De Prisco, R., Lampson, B., and Lynch, N. 1997. Revisiting the Paxos algorithm. In <em>Proceedings of the 11th International Workshop on Distributed Algorithms (WDAG 97)</em>, LNCS 1320, Springer-Verlag, 111–125.</li>
+    <li>Dijkstra, E. W. 1974. Self-stabilizing systems in spite of distributed control. <em>Communications of the ACM 17</em>, 11 (Nov.), 643–644.</li>
+    <li>Dwork, C., Lynch, N., and Stockmeyer, L. 1988. Consensus in the presence of partial synchrony. <em>Journal of the ACM 35</em>, 2 (April), 288–323.</li>
+    <li>Fekete, A., Lynch, N., and Shvartsman, A. 1997. Specifying and using a partitionable group communication service. In <em>Proceedings of the 16th Annual ACM Symposium on Principles of Distributed Computing</em>, 53–62.</li>
+    <li>Fischer, M. J., Lynch, N., and Paterson, M. S. 1985. Impossibility of distributed consensus with one faulty process. <em>Journal of the ACM 32</em>, 2 (April), 374–382.</li>
+    <li>Gray, C. G. and Cheriton, D. R. 1989. Leases: An efficient fault-tolerant mechanism for distributed file cache consistency. In <em>Proceedings of the 12th ACM Symposium on Operating Systems Principles</em>, 202–210.</li>
+    <li>Keidar, I. and Dolev, D. 1996. Efficient message ordering in dynamic networks. In <em>Proceedings of the 15th Annual ACM Symposium on Principles of Distributed Computing.</em></li>
+    <li>Ladin, R., Liskov, B., Shrira, L., and Ghemawat, S. 1992. Providing high availability using lazy replication. <em>ACM Transactions on Computer Systems 10</em>, 4 (Nov.), 360–391.</li>
+    <li>Lamport, L. 1978. Time, clocks, and the ordering of events in a distributed system. <em>Communications of the ACM 21</em>, 7 (July), 558–565.</li>
+    <li>Lamport, L. 1984. Using time instead of timeout for fault-tolerant distributed systems. <em>ACM Transactions on Programming Languages and Systems 6</em>, 2 (April), 254–280.</li>
+    <li>Lampson, B. W. 1996. How to build a highly available system using consensus. In <em>Distributed Algorithms</em>, LNCS 1151, Springer-Verlag, Berlin, 1–17.</li>
+    <li>Oki, B. M. and Liskov, B. H. 1988. Viewstamped replication: A new primary copy method to support highly-available distributed systems. In <em>Proceedings of the 7th Annual ACM Symposium on Principles of Distributed Computing</em>, 8–17.</li>
+    <li>Schneider, F. B. 1990. Implementing fault-tolerant services using the state machine approach: A tutorial. <em>ACM Computing Surveys 22</em>, 4 (Dec.), 299–319.</li>
+    <li>Skeen, M. D. 1982. <em>Crash Recovery in a Distributed Database System.</em> Ph.D. thesis, University of California, Berkeley.</li>
+  </ol>
+  <p class="prose" style="font-style:italic; font-size:.85rem; color:#6d5c42; text-align:center">
+    Received January 1990 · Accepted March 1998<br>
+    <span style="font-size:.78rem">(Yes, really. The paper spent eight years in review — the
+    editors kept insisting the author was joking.)</span>
+  </p>
+</section>
+
+<footer class="colophon">
+  <hr class="meander">
+  <p>Retold and illustrated as a tribute to Leslie Lamport’s “The Part-Time Parliament”
+  (ACM TOCS 16, 2, May 1998, 133–169) — the paper that gave distributed computing its Greek
+  island. Illustrations conjured in the vintage comic style; interactive oracles implemented in
+  plain JavaScript, running the <em>actual</em> basic Synod protocol.<br>
+  For the original mathematics, always consult the original manuscript.</p>
+</footer>
+
+
+
+
+
+</div><!--/page-->
+<script>
+"use strict";
+/* ================= Paxon name tooltips ================= */
+(function(){
+  const tip = document.getElementById('tip');
+  function show(el){
+    tip.innerHTML = '<span class="who">' + el.dataset.real + '</span>' + (el.dataset.note || '');
+    tip.style.display = 'block';
+    const r = el.getBoundingClientRect();
+    const tw = tip.offsetWidth;
+    let x = window.scrollX + r.left + r.width/2 - tw/2;
+    x = Math.max(8, Math.min(x, window.scrollX + document.documentElement.clientWidth - tw - 8));
+    tip.style.left = x + 'px';
+    tip.style.top = (window.scrollY + r.bottom + 8) + 'px';
+  }
+  document.querySelectorAll('.paxon').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>show(el));
+    el.addEventListener('mouseleave', ()=>{ tip.style.display='none'; });
+    el.addEventListener('click', (e)=>{ e.stopPropagation(); show(el); });
+  });
+  document.addEventListener('click', ()=>{ tip.style.display='none'; });
+})();
+
+/* ================= WIDGET 1: Figure 1 explorer ================= */
+(function(){
+  const PRIESTS = ['Α','Β','Γ','Δ','Ε'];
+  const initial = [
+    {no:2,  dec:'α', qrm:['Α','Β','Γ','Δ'], vot:['Δ']},
+    {no:5,  dec:'β', qrm:['Α','Β','Γ','Ε'], vot:['Γ']},
+    {no:14, dec:'α', qrm:['Β','Δ','Ε'],     vot:['Β','Ε']},
+    {no:27, dec:'β', qrm:['Α','Γ','Δ'],     vot:['Α','Γ','Δ']},
+    {no:29, dec:'β', qrm:['Β','Γ','Δ'],     vot:['Β']}
+  ];
+  let ballots, selected = null;
+  const rowsEl = document.getElementById('fig1-rows');
+  const explainEl = document.getElementById('fig1-explain');
+  const condsEl = document.getElementById('fig1-conds');
+
+  function clone(){ return initial.map(b=>({no:b.no, dec:b.dec, qrm:[...b.qrm], vot:[...b.vot]})); }
+
+  // B3 analysis for one ballot: returns {ok, req, latest, votesInfo[]}
+  function analyze(b){
+    const votesInfo = [];
+    let latest = null; // {no, dec, by}
+    for(const q of b.qrm){
+      // q's votes in earlier ballots
+      let best = null;
+      for(const eb of ballots){
+        if(eb.no < b.no && eb.vot.includes(q)){
+          if(!best || eb.no > best.no) best = eb;
+        }
+      }
+      if(best){
+        votesInfo.push({priest:q, no:best.no, dec:best.dec});
+        if(!latest || best.no > latest.no) latest = {no:best.no, dec:best.dec, by:q};
+      }
+    }
+    if(!latest) return {ok:true, latest:null, votesInfo};
+    return {ok: b.dec === latest.dec, latest, votesInfo};
+  }
+  function successful(b){ return b.qrm.every(q=>b.vot.includes(q)); }
+
+  function explain(b){
+    const a = analyze(b);
+    let h = '<b>Ballot ' + b.no + '</b> — decree <i>' + b.dec + '</i>, quorum {' + b.qrm.join(', ') + '}, voters {' + (b.vot.join(', ')||'&nbsp;') + '}';
+    if(successful(b)) h += ' &nbsp;<span class="laurel">🏆 successful — every quorum member voted!</span>';
+    h += '<br>';
+    if(a.votesInfo.length === 0){
+      h += 'No member of this ballot’s quorum voted in any earlier ballot, so the condition on it is <b>trivially true</b>: its decree was free to be anything.';
+    }else{
+      h += 'Earlier votes by quorum members: ' + a.votesInfo.map(v=>v.priest+' voted in ballot '+v.no+' (decree <i>'+v.dec+'</i>)').join('; ') + '. ';
+      h += 'The <b>latest</b> of those is ballot ' + a.latest.no + ', for decree <i>' + a.latest.dec + '</i> — so <var>B</var>3 requires this ballot’s decree to be <i>' + a.latest.dec + '</i>. ';
+      h += a.ok ? 'It is. <b style="color:var(--olive-d)">Condition satisfied ✓</b>'
+                : 'It is <i>' + b.dec + '</i>. <b style="color:var(--blood)">CONDITION VIOLATED ✗ — this set of ballots could produce two contradictory “chosen” decrees.</b>';
+    }
+    explainEl.innerHTML = h;
+  }
+
+  function render(){
+    rowsEl.innerHTML = '';
+    let allB3 = true;
+    for(const b of ballots){
+      const a = analyze(b);
+      if(!a.ok) allB3 = false;
+      const tr = document.createElement('tr');
+      tr.className = 'ballot' + (selected===b.no?' sel':'');
+      const cells = PRIESTS.map(p=>{
+        const inQ = b.qrm.includes(p), inV = b.vot.includes(p);
+        const cls = 'cell' + (inQ?' q':' ghost') + (inV?' voter':'');
+        return '<span class="'+cls+'" data-b="'+b.no+'" data-p="'+p+'" title="'+(inQ?'click to toggle '+p+'’s vote':'not in quorum')+'">'+p+'</span>';
+      }).join('');
+      tr.innerHTML = '<td class="bno">'+b.no+'</td><td class="dec">'+b.dec+'</td><td>'+cells+'</td>'+
+        '<td class="verdict">'+(a.ok?'✓':'<span style="color:var(--blood)">✗</span>')+(successful(b)?' 🏆':'')+'</td>';
+      tr.addEventListener('click', ()=>{ selected=b.no; render(); explain(b); });
+      rowsEl.appendChild(tr);
+    }
+    condsEl.innerHTML =
+      '<span class="cond">B1: unique numbers ✓</span>' +
+      '<span class="cond">B2: quorums overlap ✓</span>' +
+      '<span class="cond'+(allB3?'':' bad')+'">B3: latest-vote rule '+(allB3?'✓':'✗ violated!')+'</span>';
+    // vote toggling
+    rowsEl.querySelectorAll('.cell.q').forEach(c=>{
+      c.addEventListener('click',(e)=>{
+        e.stopPropagation();
+        const b = ballots.find(x=>x.no==c.dataset.b);
+        const p = c.dataset.p;
+        const i = b.vot.indexOf(p);
+        if(i>=0) b.vot.splice(i,1); else b.vot.push(p);
+        selected = b.no;
+        render(); explain(b);
+      });
+    });
+  }
+  document.getElementById('fig1-reset').addEventListener('click', ()=>{
+    ballots = clone(); selected=null; render();
+    explainEl.innerHTML = 'The manuscript is restored. Click one of the five ballots above to read the scholars’ commentary on it.';
+  });
+  ballots = clone(); render();
+})();
+
+/* ================= WIDGET 2: Chamber simulator ================= */
+(function(){
+  const NAMES = ['Α','Β','Γ','Δ','Ε'];
+  const COLORS = ['#136f9e','#bf4a26','#66722c','#8e5aa0','#b8860b'];
+  const MAJ = 3;
+  const NEG = {n:-1, p:-1}; // -infinity ballot
+  let priests, msgs, msgSeq, ballotCeil, log;
+
+  const stageEl = document.getElementById('sim-stage');
+  const trayEl = document.getElementById('sim-tray-items');
+  const logEl = document.getElementById('sim-log');
+  const bannerEl = document.getElementById('sim-banner');
+  const selPriest = document.getElementById('sim-priest');
+  const selDecree = document.getElementById('sim-decree');
+  NAMES.forEach((n,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent='Priest '+n; selPriest.appendChild(o); });
+
+  function bcmp(a,b){ return a.n!==b.n ? a.n-b.n : a.p-b.p; }
+  function bshow(b){ return b.n<0 ? '−∞' : '('+b.n+','+NAMES[b.p]+')'; }
+
+  function reset(){
+    priests = NAMES.map((n,i)=>({i, name:n, in:true,
+      lastTried:NEG, prevBal:NEG, prevDec:null, nextBal:NEG, outcome:null,
+      status:'idle', prevVotes:null, quorum:null, voters:null, decree:null}));
+    msgs = []; msgSeq = 0; ballotCeil = 0; log = [];
+    logEl.innerHTML='';
+    say('sys','The Chamber is opened. Five priests take their seats, ledgers in hand.');
+    render();
+  }
+  function say(cls, txt){
+    const d = document.createElement('div');
+    d.className = 't-'+cls; d.innerHTML = txt;
+    logEl.appendChild(d); logEl.scrollTop = logEl.scrollHeight;
+  }
+  function render(){
+    stageEl.innerHTML='';
+    priests.forEach(p=>{
+      const d = document.createElement('div');
+      d.className = 'priest' + (p.in?'':' away');
+      const stat = p.status!=='idle' ? '<span class="stat" style="display:block">'+p.status+' '+bshow(p.lastTried)+'</span>' : '';
+      d.innerHTML = stat +
+        '<div class="phead" title="click to send '+p.name+' in/out of the Chamber">' +
+          '<span class="avatar" style="background:'+COLORS[p.i]+'">'+p.name+'</span>' +
+          '<span class="pname">'+p.name+'</span><span class="loc">'+(p.in?'🏛️':'🫒')+'</span></div>' +
+        '<div class="pbody">' +
+          '<div class="outcome'+(p.outcome?' written':'')+'">'+(p.outcome ? 'LEDGER: “'+p.outcome+'”' : 'ledger: no decree yet')+'</div>' +
+          '<div class="vars">back of ledger:<br><b>lastTried</b> '+bshow(p.lastTried)+'<br><b>prevVote</b> '+
+            (p.prevBal.n<0?'−∞':bshow(p.prevBal)+' “'+trunc(p.prevDec)+'”')+'<br><b>nextBal</b> '+bshow(p.nextBal)+'</div>' +
+        '</div>';
+      d.querySelector('.phead').addEventListener('click', ()=>toggle(p));
+      stageEl.appendChild(d);
+    });
+    trayEl.innerHTML='';
+    msgs.forEach(m=>{
+      const c = document.createElement('span');
+      c.className='scroll-chip';
+      c.innerHTML = '📜 '+m.label+' → '+NAMES[m.to]+' <span class="lose" title="the messenger sails away">✕</span>';
+      c.addEventListener('click',(e)=>{ if(e.target.classList.contains('lose')){ lose(m); } else { deliver(m); } });
+      trayEl.appendChild(c);
+    });
+    const outs = priests.filter(p=>p.outcome!==null).map(p=>p.outcome);
+    if(outs.length===0){ bannerEl.className='banner warn'; bannerEl.textContent='No decree has yet been written in any ledger.'; }
+    else{
+      const agree = outs.every(o=>o===outs[0]);
+      bannerEl.className='banner '+(agree?'ok':'warn');
+      bannerEl.textContent = agree
+        ? '⚖️ CONSISTENCY HOLDS — every written ledger says: “'+outs[0]+'” ('+outs.length+' of 5 ledgers written)'
+        : 'THE GODS ARE ANGRY: ledgers disagree?! (This should be impossible — please report this bug to the Synod.)';
+    }
+  }
+  function trunc(s){ return s && s.length>24 ? s.slice(0,22)+'…' : (s||''); }
+  function toggle(p){
+    p.in = !p.in;
+    if(!p.in){
+      let extra='';
+      if(p.status!=='idle'){ p.status='idle'; p.prevVotes=null; p.quorum=null; p.voters=null; p.decree=null;
+        extra=' His slip of paper flutters away — ballot '+bshow(p.lastTried)+' is abandoned.'; }
+      say('sys','Priest '+p.name+' wanders out of the Chamber. 🫒'+extra);
+    }else{
+      say('sys','Priest '+p.name+' strolls back into the Chamber. 🏛️ (His ledger, as always, is with him.)');
+    }
+    render();
+  }
+  function send(from, to, type, label, data){
+    msgs.push(Object.assign({id:msgSeq++, from, to, type, label}, data));
+  }
+  function lose(m){
+    msgs = msgs.filter(x=>x!==m);
+    say('bad','🌊 The messenger carrying '+m.label+' (for '+NAMES[m.to]+') boards a ship for a six-month voyage. The scroll is never delivered.');
+    render();
+  }
+  function deliver(m){
+    msgs = msgs.filter(x=>x!==m);
+    const q = priests[m.to];
+    if(!q.in){
+      say('bad','📪 The messenger finds priest '+q.name+'’s seat empty ('+m.label+' is lost — he is out of the Chamber).');
+      render(); return;
+    }
+    switch(m.type){
+      case 'NextBallot': {
+        if(bcmp(m.b, q.nextBal) > 0){
+          q.nextBal = m.b;
+          const v = {pst:q.i, bal:q.prevBal, dec:q.prevDec};
+          say('act','Priest '+q.name+' reads NextBallot'+bshow(m.b)+', notes it in the back of his ledger, and replies LastVote'+
+            (v.bal.n<0 ? ' — “I have never voted.”' : ' — “my last vote below that: ballot '+bshow(v.bal)+', for “'+trunc(v.dec)+'”.”') +
+            ' He hereby PROMISES to cast no new vote in any ballot below '+bshow(m.b)+'.');
+          send(q.i, m.from, 'LastVote', 'LastVote'+bshow(m.b), {b:m.b, v});
+        } else {
+          say('sys','Priest '+q.name+' ignores NextBallot'+bshow(m.b)+' — he has already promised himself to '+bshow(q.nextBal)+'.');
+        }
+        break;
+      }
+      case 'LastVote': {
+        const p = q;
+        if(p.status==='trying' && bcmp(m.b, p.lastTried)===0){
+          p.prevVotes.push(m.v);
+          say('act','Priest '+p.name+' receives LastVote'+bshow(m.b)+' from '+NAMES[m.v.pst]+' ('+(p.prevVotes.length)+' of '+MAJ+' needed).');
+          if(p.prevVotes.length===MAJ && p.status==='trying'){
+            // step 3
+            p.status='polling';
+            p.quorum = p.prevVotes.map(v=>v.pst);
+            p.voters = [];
+            let best = p.prevVotes.reduce((a,v)=> bcmp(v.bal,a.bal)>0?v:a, {bal:NEG, dec:null});
+            if(best.bal.n<0){
+              p.decree = p.wanted;
+              say('big','⭐ STEP 3 — a majority set {'+p.quorum.map(i=>NAMES[i]).join(', ')+'} has answered, and none has ever voted. Priest '+p.name+' is FREE to choose his own decree: “'+p.decree+'”.');
+            } else {
+              p.decree = best.dec;
+              const forced = p.wanted !== best.dec;
+              say('big','⭐ STEP 3 — a majority set {'+p.quorum.map(i=>NAMES[i]).join(', ')+'} has answered. The latest vote among them is '+NAMES[best.pst]+'’s, in ballot '+bshow(best.bal)+', for “'+best.dec+'”. Condition B3 COMPELS priest '+p.name+' to propose that same decree'+(forced?' — his own “'+trunc(p.wanted)+'” must wait for another ballot!':'.'));
+            }
+            p.quorum.forEach(i=>send(p.i, i, 'BeginBallot', 'BeginBallot'+bshow(m.b), {b:m.b, d:p.decree}));
+          }
+        }
+        break;
+      }
+      case 'BeginBallot': {
+        if(bcmp(m.b, q.nextBal)===0 && bcmp(m.b, q.prevBal)>0){
+          q.prevBal = m.b; q.prevDec = m.d;
+          say('act','🗳️ Priest '+q.name+' CASTS HIS VOTE in ballot '+bshow(m.b)+' for “'+trunc(m.d)+'”, records it in the back of his ledger, and sends Voted back.');
+          send(q.i, m.from, 'Voted', 'Voted'+bshow(m.b), {b:m.b, voter:q.i});
+        } else {
+          say('sys','Priest '+q.name+' declines to vote in ballot '+bshow(m.b)+' — it would break the promise of a later LastVote (nextBal = '+bshow(q.nextBal)+').');
+        }
+        break;
+      }
+      case 'Voted': {
+        const p = q;
+        if(p.status==='polling' && bcmp(m.b, p.lastTried)===0){
+          if(!p.voters.includes(m.voter)) p.voters.push(m.voter);
+          say('act','Priest '+p.name+' tallies Voted from '+NAMES[m.voter]+' ('+p.voters.length+' of '+p.quorum.length+' quorum votes in).');
+          if(p.quorum.every(i=>p.voters.includes(i))){
+            if(p.outcome===null) p.outcome = p.decree;
+            p.status='idle';
+            say('big','🏆 SUCCESS! Every quorum member has voted in ballot '+bshow(m.b)+'. Priest '+p.name+' writes “'+p.decree+'” in his ledger IN INDELIBLE INK and sends Success to every priest.');
+            priests.forEach(o=>{ if(o.i!==p.i) send(p.i, o.i, 'Success', 'Success', {d:p.decree}); });
+          }
+        }
+        break;
+      }
+      case 'Success': {
+        if(q.outcome===null){
+          q.outcome = m.d;
+          say('act','Priest '+q.name+' receives the glad tidings and writes “'+trunc(m.d)+'” in his ledger. ✒️');
+        }
+        break;
+      }
+    }
+    render();
+  }
+  function start(pi, decree, quiet){
+    const p = priests[pi];
+    if(!p.in){ say('bad','Priest '+p.name+' is out of the Chamber and can initiate nothing.'); render(); return; }
+    ballotCeil++;
+    p.lastTried = {n:ballotCeil, p:pi};
+    p.status='trying'; p.prevVotes=[]; p.wanted = decree;
+    say('big','📯 STEP 1 — Priest '+p.name+' takes a fresh slip of paper and begins ballot '+bshow(p.lastTried)+', hoping to pass: “'+decree+'”. NextBallot scrolls go out to all five priests.');
+    priests.forEach(o=>send(pi, o.i, 'NextBallot', 'NextBallot'+bshow(p.lastTried), {b:p.lastTried}));
+    if(!quiet) render();
+  }
+  function deliverNext(){ if(msgs.length===0){ say('sys','No scrolls are in transit.'); render(); return;} deliver(msgs[0]); }
+  function deliverAll(){ let guard=0; while(msgs.length>0 && guard++<500) deliver(msgs[0]); }
+
+  document.getElementById('sim-start').addEventListener('click', ()=>start(+selPriest.value, selDecree.value));
+  document.getElementById('sim-next').addEventListener('click', deliverNext);
+  document.getElementById('sim-all').addEventListener('click', deliverAll);
+  document.getElementById('sim-lose').addEventListener('click', ()=>{ if(msgs.length) lose(msgs[0]); });
+  document.getElementById('sim-reset').addEventListener('click', reset);
+
+  /* scenarios */
+  const scenarios = {
+    quiet(){
+      reset();
+      say('sys','— LEGEND Ⅰ: A QUIET DAY. Everyone stays put; priest Α passes the olive tax unopposed. —');
+      start(0, 'The olive tax is 3 drachmas per ton');
+      deliverAll();
+      say('sys','A perfect session: 1 ballot, every ledger written. Try losing scrolls next time.');
+    },
+    wander(){
+      reset();
+      say('sys','— LEGEND Ⅱ: THE WANDERERS. Δ and Ε leave for a banquet; the remaining three ARE a majority, so business continues. —');
+      priests[3].in=false; priests[4].in=false;
+      say('sys','Priests Δ and Ε head to a banquet. 🫒🫒');
+      start(1, 'Lamps must use only olive oil');
+      deliverAll();
+      say('sys','A majority (Α, Β, Γ) sufficed — the two absentees’ scrolls were lost, and nobody cared. When Δ and Ε return, bring them back and let someone run a new ballot: Success messages (or B3) will catch them up.');
+    },
+    duel(){
+      reset();
+      say('sys','— LEGEND Ⅲ: TWO WOULD-BE PRESIDENTS. Α and Ε each believe themselves president. Watch higher ballots strangle lower ones. —');
+      start(0, 'Painting on temple walls is forbidden', true);
+      // deliver only the NextBallots, not the rest
+      let guard=0;
+      while(msgs.length && msgs[0].type==='NextBallot' && guard++<20) deliver(msgs[0]);
+      say('sys','…but before Α can collect his LastVotes into a quorum—');
+      start(4, 'Freedom of artistic expression is guaranteed', true);
+      guard=0;
+      while(msgs.length && guard++<200){
+        // deliver Ε's NextBallots first (they arrive fresh), leaving Α's stale LastVotes
+        const i = msgs.findIndex(m=>m.type==='NextBallot');
+        deliver(i>=0 ? msgs[i] : msgs[0]);
+      }
+      say('bad','Every priest has now promised ballot '+bshow(priests[4].lastTried)+' — the LastVote replies still in flight for Α’s ballot are stale, and if Α ever gets a BeginBallot out, it will be politely ignored. If Α retaliates with a still-higher ballot before Ε finishes, NO ballot ever succeeds. This is why the complete protocol elects ONE president (the alphabetically last: Ε, as it happens).');
+    },
+    theorem(){
+      reset();
+      say('sys','— LEGEND Ⅳ: THEOREM 1, LIVE. First a decree is chosen; then a different priest, wanting a DIFFERENT decree, runs a new ballot… and passes the old decree instead. —');
+      start(2, 'The sale of black goats is permitted');
+      deliverAll();
+      say('sys','Decree chosen. Now priest Ε — who missed everything and dearly wants a lantern law — starts his own ballot:');
+      priests.forEach(p=>{ if(p.outcome) return; });
+      start(4, 'Ships must carry lanterns at night');
+      deliverAll();
+      say('sys','Ε’s majority necessarily overlapped the earlier quorum (B2), so some LastVote carried the goat decree, and B3 forced Ε to propose it. THE LEDGERS CANNOT DISAGREE. Ε’s lantern law must wait for the multi-decree Parliament of Chapter III.');
+    }
+  };
+  document.querySelectorAll('#sim .scenarios button').forEach(b=>{
+    b.addEventListener('click', ()=>scenarios[b.dataset.scn]());
+  });
+  reset();
+})();
+
+/* ================= WIDGET 3: ledger gaps ================= */
+(function(){
+  const bookEl = document.getElementById('ledger-book');
+  const msgEl = document.getElementById('ledger-msg');
+  let entries, passed127;
+  function reset(){
+    entries = [
+      {no:122, txt:'The tariff on imported wool is 2 drachmas per bale', kind:'old'},
+      {no:123, txt:'Goat sacrifices are limited to festival days', kind:'old'},
+      {no:124, txt:'The harbor master shall keep a lamp lit till midnight', kind:'old'},
+      {no:125, txt:null, kind:'gap'},
+      {no:126, txt:'Wine may not be sold before the spring festival', kind:'learned'},
+    ];
+    passed127 = false;
+    msgEl.innerHTML = 'Your ledger, freshly reconciled with a majority of legislators. Decree 126 you learned from Λινχ∂’s ledger — but of 125, no legislator you can reach knows anything. The old president is on a fishing trip.';
+    render();
+  }
+  function render(){
+    bookEl.innerHTML = '<div style="text-align:center; font-family:Optima,sans-serif; letter-spacing:.18em; font-size:.72rem; color:#8a7550; margin-bottom:8px">LEDGER OF PRESIDENT Δφωρκ — MONDAY, BEFORE BREAKFAST</div>';
+    for(const e of entries){
+      const d = document.createElement('div');
+      d.className = 'entry ' + (e.kind==='gap' ? 'gap fillable' : '') + (e.kind==='new' ? 'new' : '');
+      d.innerHTML = '<span class="no">'+e.no+':</span><span class="txt">'+
+        (e.kind==='gap' ? '??? — nobody reachable knows what decree '+e.no+' was (click to deal with it)' : e.txt)+'</span>'+
+        (e.kind==='learned' ? ' <span title="learned from another ledger">👁</span>':'');
+      if(e.kind==='gap') d.addEventListener('click', ()=>fill(e));
+      bookEl.appendChild(d);
+    }
+  }
+  function fill(e){
+    e.kind='new';
+    e.txt='The ides of February is national olive day 🫒';
+    msgEl.innerHTML='You run a ballot for decree '+e.no+' proposing the traditional <i>olive-day</i> decree. <b>Note what B3 protects you from:</b> if decree '+e.no+' actually HAD been passed while you were away, some member of your majority set would have voted for it, and the ballot would pass <i>that</i> decree instead of olive day. Either way — no gap, no harm.';
+    render();
+  }
+  document.getElementById('ledger-propose').addEventListener('click', ()=>{
+    if(passed127){ msgEl.innerHTML='Already passed. The citizen has sailed off happily, lantern aglow.'; return; }
+    const gap = entries.find(e=>e.kind==='gap');
+    if(gap){
+      msgEl.innerHTML='<b style="color:var(--blood)">Not so fast, President.</b> Assigning the lantern law a number below your gap would make an <i>important</i> decree appear earlier in the books than decree 126, passed last week — and a citizen who requested it <i>because</i> 126 passed would be very confused. Fill your gaps with olive-day decrees first.';
+      return;
+    }
+    entries.push({no:127, txt:'Ships must carry lanterns at night', kind:'new'});
+    passed127 = true;
+    msgEl.innerHTML='🏆 Decree <b>127</b> is proposed, balloted, and passed — in order, after everything already in the books. The decree-ordering property sleeps soundly tonight.';
+    render();
+  });
+  document.getElementById('ledger-reset').addEventListener('click', reset);
+  reset();
+})();
+
+/* ================= WIDGET 4: hidden names ================= */
+(function(){
+  const names = [
+    ['Λινχ∂','Nancy Lynch','Keeper of ledger entry 155; co-author of the FLP impossibility result the paper cites.'],
+    ['Φισ∂ερ','Michael Fischer','Holder of decree 132; the F in FLP.'],
+    ['Τωυεγ','Sam Toueg','Struck by a falling statue; developed irreversible amnesia.'],
+    ['Γραϊ','Jim Gray','Ballot number (13, Γραϊ); database transactions legend.'],
+    ['Λινσεϊ','Bruce Lindsay','Ballot number (13, Λινσεϊ); System R database pioneer.'],
+    ['Ωκι','Brian Oki','Made president straight off the boat; co-invented Viewstamped Replication — the protocol equivalent to Paxos.'],
+    ['Δφωρκ','Cynthia Dwork','The Monday-morning president who filled gaps with olive days.'],
+    ['Δίκστρα','Edsger W. Dijkstra','First cheese inspector of Paxos — famously strict. Invented self-stabilization (Section 3.3.5).'],
+    ['Γωυδα','Mohamed Gouda','Second cheese inspector. Also a cheese.'],
+    ['Φρανσεζ','Nissim Francez','Wine taster, two months.'],
+    ['Πνυελϊ','Amir Pnueli','Wine taster, one month; temporal-logic Turing laureate.'],
+    ['Δωλεφ','Danny Dolev','The farmer with the black (and brown) goats.'],
+    ['Σκεεν','Dale Skeen','The law-abiding merchant; three-phase-commit pioneer.'],
+    ['Σπωκμεϊρ','Larry Stockmeyer','The legislator with the out-of-date ledger.'],
+    ['Σ∂νϊδερ','Fred Schneider','Citizen reading the law via decree 87; wrote THE state-machine survey.'],
+    ['Γρεες','David Gries','The second inquirer about the olive tax.'],
+    ['Λισκωφ','Barbara Liskov','Merchant comparing fleece tariffs; the Liskov of Viewstamped Replication.'],
+    ['Παρνας','David Parnas','Elder statesman whose son inherited his ledger — information hiding at its finest.'],
+    ['Σπρωυνγ','Ray Strong','Made a legislator by decree 3252.'],
+    ['Λαμπσων','Butler Lampson','The general who staged the coup — and, in our world, the great champion of the Paxos algorithm.'],
+    ['Λεωνίδας Γκίμπας','Leonidas Guibas','Provided invaluable assistance with the Paxon dialect.'],
+    ['μαδζ∂ωριτϊσετ','“majority set”','The most contested word in Paxon philology.'],
+    ['δζ∂ιφι','“jiffy”','The Paxon unit of time: 30 seconds, per hourglass-shard studies.']
+  ];
+  const grid = document.getElementById('names-grid');
+  names.forEach(([gr,an,role])=>{
+    const d = document.createElement('div');
+    d.className='card';
+    d.innerHTML='<span class="gr">'+gr+'</span><span class="an">= '+an+'</span><span class="role">'+role+'</span>';
+    d.addEventListener('click',()=>d.classList.toggle('open'));
+    grid.appendChild(d);
+  });
+})();
+</script>
+
+</body>
+</html>
