@@ -887,11 +887,12 @@ people that the protocol was correct if, in their proof, they allowed any priest
 
   <h3 class="sect">2.3 · The Basic Protocol</h3>
   <div class="prose">
-    <p>The preliminary protocol asks a priest to record (i) every ballot he has initiated,
-    (ii) every vote he has cast, and (iii) every <em>LastVote</em> message he has sent. Too much
-    bookkeeping for busy priests! The Paxons therefore restricted it to obtain the more practical
-    <em>basic protocol</em>, in which priest <var>p</var> keeps only <strong>three items in the back
-    of his ledger</strong>:</p>
+    <p>In the preliminary protocol, a priest must record (i) the number of every ballot
+    he has initiated, (ii) every vote he has cast, and (iii) every <em>LastVote</em> message he
+    has sent. Keeping track of all this information would have been difficult for the
+    busy priests. The Paxons therefore restricted the preliminary protocol to obtain
+    the more practical <em>basic protocol</em> in which each priest <var>p</var> had to maintain only the
+    following information in the back of his ledger:</p>
   </div>
   <div class="slab">
     <div class="slab-head">The Back of the Ledger</div>
@@ -903,16 +904,22 @@ people that the protocol was correct if, in their proof, they allowed any priest
     sent a <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) message, or −∞ if he never has.</p>
   </div>
   <div class="prose">
-    <p>In the basic protocol, <var>p</var> conducts only <strong>one ballot at a time</strong> —
-    ballot <var>lastTried</var>[<var>p</var>] — and ignores messages about any other ballot he
-    initiated. All bookkeeping for the ballot in progress lives on a <em>slip of paper</em>; if the
-    slip is lost, the ballot is simply abandoned.</p>
-    <p>In the preliminary protocol, <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) promised
-    only: <em>no new vote between <var>v</var><sub>bal</sub> and <var>b</var></em>. In the basic
-    protocol it makes the <strong>stronger promise</strong>: <em>no new vote in any ballot numbered
-    below <var>b</var> at all</em>. This may block a vote the preliminary protocol would have
-    allowed — but since every action was optional anyway, the basic protocol never does anything
-    the preliminary protocol forbids, and thus inherits its consistency.</p>
+    <p>Steps 1–6 of the preliminary protocol describe how a single ballot is conducted by
+    its initiator, priest <var>p</var>. The preliminary protocol allows <var>p</var> to conduct any number
+    of ballots concurrently. In the basic protocol, he conducts only one ballot at a
+    time—ballot number <var>lastTried</var>[<var>p</var>]. After <var>p</var> initiates this ballot, he ignores messages
+    that pertain to any other ballot that he had previously initiated. Priest <var>p</var> keeps all
+    information about the progress of ballot number <var>lastTried</var>[<var>p</var>] on a slip of paper. If
+    he loses that slip of paper, then he stops conducting the ballot.</p>
+    <p>In the preliminary protocol, each <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) message sent by a priest <var>q</var> rep<span style="display:none">-</span>resents a promise not to vote in any ballot numbered between <var>v</var><sub>bal</sub> and <var>b</var>. In the
+    basic protocol, it represents the stronger promise not to cast a new vote in any
+    ballot numbered less than <var>b</var>. This stronger promise might prevent him from casting
+    a vote in step 4 of the basic protocol that he would have been allowed to cast in
+    the preliminary protocol. However, since the preliminary protocol always gives <var>q</var>
+    the option of not casting his vote, the basic protocol does not require him to do
+    anything not allowed by the preliminary protocol.</p>
+    <p>Steps 1–6 of the preliminary protocol become the following six steps for conduct<span style="display:none">-</span>ing a ballot in the basic protocol. (All information used by <var>p</var> to conduct the ballot,
+    other than <var>lastTried</var>[<var>p</var>], <var>prevVote</var>[<var>p</var>], and <var>nextBal</var>[<var>p</var>], is kept on a slip of paper.)</p>
   </div>
   <div class="slab">
     <div class="slab-head">The Basic Protocol — Six Steps</div>
@@ -945,11 +952,15 @@ people that the protocol was correct if, in their proof, they allowed any priest
     </ol>
   </div>
   <div class="prose">
-    <p>The derivation from <var>B</var>1–<var>B</var>3 made it obvious that the basic protocol is
-    consistent. But some similarly “obvious” ancient wisdom had turned out to be false, and
-    skeptical citizens demanded a rigorous proof. The Paxon mathematicians’ proof is reproduced in
-    the <a href="#appendix">appendix</a>. Like the preliminary protocol, the basic protocol never
-    <em>requires</em> anyone to do anything — so it says nothing about progress.</p>
+    <p>The basic protocol is a restricted version of the preliminary protocol, meaning
+    that every action allowed by the basic protocol is also allowed by the preliminary
+    protocol. Since the preliminary protocol satisfies the consistency condition, the
+    basic protocol also satisfies that condition. Like the preliminary protocol, the basic
+    protocol does not require that any action ever be taken, so it does not addresses
+    the question of progress.</p>
+    <p>The derivation of the basic protocol from <var>B</var>1–<var>B</var>3 made it obvious that the consis<span style="display:none">-</span>tency condition was satisfied. However, some similarly “obvious” ancient wisdom
+    had turned out to be false, and skeptical citizens demanded a more rigorous proof.
+    Their Paxon mathematicians’ proof that the protocol satisfies the consistency con<span style="display:none">-</span>dition is reproduced in the appendix.</p>
   </div>
 
   <!-- ========= WIDGET 2: SIMULATOR ========= -->
@@ -999,94 +1010,120 @@ people that the protocol was correct if, in their proof, they allowed any priest
 
   <h3 class="sect">2.4 · The Complete Synod Protocol</h3>
   <div class="prose">
-    <p>The basic protocol maintains consistency but only says what a priest <em>may</em> do; it
-    never requires action. The complete protocol keeps the same six steps and adds the obvious
-    requirement that priests perform steps 2–6 <em>as soon as possible</em>. But someone must also
-    be required to perform step 1 — to initiate ballots — and the key to the complete protocol lay
-    in deciding <strong>when</strong>.</p>
-    <p>Never initiating a ballot obviously prevents progress. Less obviously, <em>initiating too
-    many</em> does too: a new ballot with a bigger number <var>b</var> extracts, via step 2,
-    promises that block voting in every previously initiated ballot. If eager priests keep
-    starting higher-numbered ballots before the previous ones can finish, no ballot ever
-    succeeds. <em>(Try Legend Ⅲ in the Chamber above.)</em></p>
-    <p>Progress requires ballots to keep being initiated until one succeeds — but not too
-    frequently. To calibrate this, the Paxons measured their world. A messenger who did not leave
-    the Chamber always delivered a message within <strong>4 minutes</strong>; a priest who stayed
-    put always acted within <strong>7 minutes</strong>.<sup>11</sup> So if <var>p</var> and
-    <var>q</var> were both in the Chamber, an event causing <var>p</var> to message <var>q</var>,
-    who replies at once, would produce that reply within <strong>22 minutes</strong> —
-    if neither messenger wandered off. (Send within 7, deliver within 4, respond within 7, return
-    within 4.)</p>
-    <p>Suppose a single priest <var>p</var> was initiating ballots, sending step-1 messages to
-    every priest. If he began a ballot while a majority sat in the Chamber, he could expect to
-    execute step 3 within 22 minutes of starting, and step 5 within another 22. If either deadline
-    passed without result, then either some priest or messenger had left the Chamber — or a
-    larger-numbered ballot, started earlier by another priest, was blocking his. To handle the
-    latter case, the protocol was extended: a priest receiving a <em>NextBallot</em>(<var>b</var>)
-    or <em>BeginBallot</em>(<var>b</var>,&nbsp;<var>d</var>) with
-    <var>b</var>&nbsp;&lt;&nbsp;<var>nextBal</var>[<var>q</var>] replied with
-    <var>nextBal</var>[<var>q</var>], prompting <var>p</var> to try again with a bigger number.</p>
-    <p>If <var>p</var> initiated a new ballot exactly when (i) 22 minutes passed without
-    completing step 3 or 5, or (ii) he learned of a higher-numbered ballot — then, were the
-    Chamber doors barred with <var>p</var> and a majority inside, <strong>a decree would be passed
-    and recorded in every present priest’s ledger within 99 minutes</strong>. (Up to 22 minutes to
-    start the next ballot, 22 to learn a bigger ballot number was loose, then 55 to run steps 1–6
-    of a successful ballot.) The progress condition would thus be met if a <em>single</em> priest,
-    staying in the Chamber, was the one initiating ballots.</p>
+    <p>The basic protocol maintains consistency, but it cannot ensure any progress because
+    it states only what a priest may do; it does not require him to do anything. The
+    complete protocol consists of the same six steps for conducting a ballot as the basic
+    protocol. To help achieve progress, it includes the obvious additional requirement
+    that priests perform steps 2–6 of the protocol as soon as possible. However, to
+    meet the progress condition, it is necessary that some priest be required to perform
+    step 1, which initiates a ballot. The key to the complete protocol lay in determining
+    when a priest should initiate a ballot.</p>
+    <p>Never initiating a ballot will certainly prevent progress. However, initiating too
+    may ballots can also prevent progress. If <var>b</var> is larger than any other ballot number,
+    then the receipt of a <em>NextBallot</em>(<var>b</var>) message by priest <var>q</var> in step 2 may elicit a
+    promise that prevents him from voting in step 4 for any previously initiated ballot.
+    Thus, the initiation of a new ballot can prevent any previously initiated ballot from
+    succeeding. If new ballots are continually initiated with increasing ballot numbers
+    before the previous ballots have a chance to succeed, then no progress might be
+    made.</p>
+    <p>Achieving the progress condition requires that new ballots be initiated until one
+    succeeds, but that they not be initiated too frequently. To develop the complete
+    protocol, the Paxons first had to know how long it took messengers to deliver
+    messages and priests to respond. They determined that a messenger who did not
+    leave the Chamber would always deliver a message within 4 minutes, and a priest
+    who remained in the Chamber would always perform an action within 7 minutes
+    of the event that caused the action.<sup>11</sup> Thus, if <var>p</var> and <var>q</var> were in the Chamber when
+    some event caused <var>p</var> to send a message to <var>q</var>, and <var>q</var> responded with a reply to <var>p</var>, then
+    <var>p</var> would receive that reply within 22 minutes if neither messenger left the Chamber.
+    (Priest <var>p</var> would send the message within 7 minutes of the event, <var>q</var> would receive
+    the message within 4 more minutes, he would respond within 7 minutes, and the
+    reply would reach <var>p</var> within 4 more minutes.)</p>
+    <p>Suppose that only a single priest <var>p</var> was initiating ballots, and that he did so
+    by sending a message to every priest in step 1 of the protocol. If <var>p</var> initiated a
+    ballot when a majority set of priests was in the chamber, then he could expect
+    to execute step 3 within 22 minutes of initiating the ballot, and to execute step 5
+    within another 22 minutes. If he was unable to execute the steps by those times,
+    then either some priest or messenger left the Chamber after <var>p</var> initiated the ballot,
+    or a larger-numbered ballot had previously been initiated by another priest (before
+    <var>p</var> became the only priest to initiate ballots). To handle the latter possibility, <var>p</var> had
+    to learn about any ballot numbers greater than <var>lastTried</var>[<var>p</var>] used by other priests.
+    This could be done by extending the protocol to require that if a priest <var>q</var> received
+    a <em>NextBallot</em>(<var>b</var>) or a <em>BeginBallot</em>(<var>b</var>,&nbsp;<var>d</var>) message from <var>p</var> with <var>b</var>&nbsp;&lt;&nbsp;<var>nextBal</var>[<var>q</var>], then he
+    sent <var>p</var> a message containing <var>nextBal</var>[<var>q</var>]. Priest <var>p</var> would then initiate a new ballot
+    with a larger ballot number.</p>
+    <p>Still assuming that <var>p</var> was the only priest initiating ballots, suppose that he were
+    required to initiate a new ballot iff (i) he had not executed step 3 or step 5 within
+    the previous 22 minutes, or (ii) he learned that another priest had initiated a
+    higher-numbered ballot. If the Chamber doors were locked with <var>p</var> and a majority
+    set of priests inside, then a decree would be passed and recorded in the ledgers of
+    all priests in the Chamber within 99 minutes. (It could take 22 minutes for <var>p</var> to
+    start the next ballot, 22 more minutes to learn that another priest had initiated
+    a larger-numbered ballot, then 55 minutes to complete steps 1–6 for a successful
+    ballot.) Thus, the progress condition would be met if only a single priest, who did
+    not leave the chamber, were initiating ballots.</p>
   </div>
-  <aside class="fn"><b>11.</b> I assume a value of 30 seconds for the
+  <aside class="fn"><b>11.</b> I am assuming a value of 30 seconds for the
   <span class="paxon" data-real="“jiffy”" data-note="δζ∂ιφ˘ι — the Paxon unit of time. Say it fast.">δζ∂ιφ˘ι</span>,
-  the Paxon unit of time — a value within the range determined from studies of hourglass shards.
-  Priests’ reaction time was so long because each had to respond to every message within 7 minutes
-  (14 <span class="paxon" data-real="jiffies" data-note="δζ∂ιφ˘ι, plural.">δζ∂ιφ˘ι</span>), even when
-  several arrived at once.</aside>
+  the Paxon unit of time. This value is within the range determined from studies of hourglass shards. The reaction time of priests was so long because they had to respond to every message within 7 minutes (14 <span class="paxon" data-real="jiffies" data-note="δζ∂ιφ˘ι, plural.">δζ∂ιφ˘ι</span>), even if a number of messages arrived simultaneously.</aside>
   <figure class="panel narrow tilt-r">
     <div class="frame"><img src="images/hourglass_small.webp" alt="A brass hourglass in the foreground; behind it, the Chamber doors are barred with a majority of priests inside."></div>
     <figcaption>BAR THE DOORS WITH A MAJORITY INSIDE, AND THE HOURGLASS PROMISES A DECREE WITHIN 99 MINUTES.</figcaption>
   </figure>
   <div class="prose">
-    <p>The complete protocol therefore included a procedure to choose a single priest — the
-    <em>president</em> — to initiate ballots. In most governments choosing a president is hard,
-    because most governments insist on having exactly one at a time. In the United States, for
-    instance, chaos would ensue if some believed Bush had been elected president while others
-    believed Dukakis had — one might sign a bill into law as the other vetoed it. But in the Paxon
-    Synod, multiple presidents could only <em>slow things down</em>; they could never corrupt a
-    ledger. The president-selection method needed only this <em>presidential selection
-    requirement</em>:</p>
+    <p>The complete protocol therefore included a procedure for choosing a single priest,
+    called the <em>president</em>, to initiate ballots. In most forms of government, choosing a
+    president can be a difficult problem. However, the difficultly arises only because
+    most governments require that there be exactly one president at any time. In the
+    United States, for example, chaos would result if some people thought Bush had
+    been elected president while others thought that Dukakis had, since one of them
+    might decide to sign a bill into law while the other decided to veto it. However, in the
+    Paxon Synod, having multiple presidents could only impede progress; it could not
+    cause inconsistency. For the complete protocol to satisfy the progress condition, the
+    method for choosing the president needed only to satisfy the following <em>presidential
+    selection requirement</em>:</p>
   </div>
   <div class="slab">
     <div class="slab-head">Presidential Selection Requirement</div>
-    <p class="stmt">If no one entered or left the Chamber, then after <var>T</var> minutes exactly
-    one priest in the Chamber would consider himself to be the president.</p>
+    <p class="stmt">If no one entered or left the Chamber, then after <var>T</var> minutes exactly one
+    priest in the Chamber would consider himself to be the president.</p>
   </div>
   <div class="prose">
-    <p>Given this, the complete protocol had the property that if a majority set was in the
-    Chamber and no one entered or left for <var>T</var>&nbsp;+&nbsp;99 minutes, every priest present
-    would end the period with the decree in his ledger.</p>
-    <p>The Paxons made president the priest whose name was <strong>last in alphabetical order</strong>
-    among those in the Chamber — though we don’t know exactly how. The requirement would be
-    satisfied if, say, every priest in the Chamber sent his name to every other at least once each
-    <var>T</var>&nbsp;−&nbsp;11 minutes, and a priest considered himself president iff he received
-    no message from a “higher-named” priest for <var>T</var> minutes.</p>
-    <p>Thus the complete Synod protocol = the basic protocol + prompt execution of steps 2–6 + a
-    presidential selection method + the president initiating ballots at the right moments. Many
-    details are lost; the methods above for choosing a president and timing ballots are surely not
-    the ones Paxos really used. The rules given here even make the president keep initiating
-    ballots after a decree is chosen — so that late-arriving priests learn of it — though better
-    ways surely existed. Each priest probably also sent the president his
-    <var>lastTried</var>[<var>p</var>] during selection, letting the new president pick a
-    large-enough ballot number on his first try.</p>
-    <p>The Paxons understood that <em>any</em> protocol achieving progress must measure the passage
-    of time.<sup>12</sup> The protocols above are easily written as precise algorithms with timers
-    and time-outs — assuming perfectly accurate timers; a closer analysis shows timers with a
-    known bound on accuracy suffice, and the skilled glass blowers of Paxos had no difficulty
-    producing suitable hourglasses.</p>
-    <p>Given the sophistication of Paxon mathematicians, it is widely believed they found an
-    optimal algorithm for the presidential selection requirement. We can only hope this algorithm
-    will be discovered in future excavations on Paxos.</p>
+    <p>If the presidential selection requirement were met, then the complete protocol would
+    have the property that if a majority set of priests were in the chamber and no one
+    entered or left the Chamber for <var>T</var>&nbsp;+&nbsp;99 minutes, then at the end of that period
+    every priest in the Chamber would have a decree written in his ledger.</p>
+    <p>The Paxons chose as president the priest whose name was last in alphabetical
+    order among the names of all priests in the Chamber, though we don’t know exactly
+    how this was done. The presidential selection requirement would have been satisfied
+    if a priest in the Chamber sent a message containing his name to every other priest
+    at least once every <var>T</var>&nbsp;−&nbsp;11 minutes, and a priest considered himself to be president
+    iff he received no message from a “higher-named” priest for <var>T</var> minutes.</p>
+    <p>The complete Synod protocol was obtained from the basic protocol by requiring
+    priests to perform steps 2–6 promptly, adding a method for choosing a president who
+    initiated ballots, and requiring the president to initiate ballots at the appropriate
+    times. Many details of the protocol are not known. I have described simple methods
+    for selecting a president and for deciding when the president should initiate a new
+    ballot, but they are undoubtedly not the ones used in Paxos. The rules I have given
+    require the president to keep initiating ballots even after a decree has been chosen,
+    thereby ensuring that priests who have just entered the Chamber learn about the
+    chosen decree. There were obviously better ways to make sure priests learned about
+    the decree after it had been chosen. Also, in the course of selecting a president,
+    each priest probably sent his value of <var>lastTried</var>[<var>p</var>] to the other priests, allowing the
+    president to choose a large enough ballot number on his first try.</p>
+    <p>The Paxons realized that any protocol to achieve the progress condition must
+    involve measuring the passage of time.<sup>12</sup> The protocols given above for selecting
+    a president and initiating ballots are easily formulated as precise algorithms that
+    set timers and perform actions when time-outs occur—assuming perfectly accurate
+    timers. A closer analysis reveals that such protocols can be made to work with
+    timers having a known bound on their accuracy. The skilled glass blowers of Paxos
+    had no difficulty constructing suitable hourglass timers.</p>
+    <p>Given the sophistication of Paxon mathematicians, it is widely believed that
+    they must have found an optimal algorithm to satisfy the presidential selection
+    requirement. We can only hope that this algorithm will be discovered in future
+    excavations on Paxos.</p>
   </div>
-  <aside class="fn"><b>12.</b> Many centuries would pass, however, before a rigorous proof of this
-  necessity was given [Fischer&nbsp;et&nbsp;al. 1985].</aside>
+  <aside class="fn"><b>12.</b> However, many centuries were to pass before a rigorous proof of this result was given.
+  [Fischer&nbsp;et&nbsp;al. 1985].</aside>
 </section>
 
 <hr class="meander">
@@ -1098,9 +1135,11 @@ people that the protocol was correct if, in their proof, they allowed any priest
     <h2>The Multi-Decree Parliament</h2>
   </div>
 
-  <h3 class="sect">3.1 · The Protocol</h3>
   <div class="prose">
     <p>When Parliament was established, a protocol to satisfy its consistency and progress requirements was derived from the Synod protocol. The derivation and properties of the original parliamentary protocol are described in Sections 3.1 and 3.2. Section 3.3 discusses the further evolution of the protocol.</p>
+  </div>
+  <h3 class="sect">3.1 · The Protocol</h3>
+  <div class="prose">
     <p>Instead of passing just one decree, the Paxon Parliament had to pass a series of numbered decrees. As in the Synod protocol, a president was elected. Anyone who wanted a decree passed would inform the president, who would assign a number to the decree and attempt to pass it. Logically, the parliamentary protocol used a separate instance of the complete Synod protocol for each decree number. However, a single president was selected for all these instances, and he performed the first two steps of the protocol just once.</p>
     <p>The key to deriving the parliamentary protocol is the observation that, in the Synod protocol, the president does not choose the decree or the quorum until step 3. A newly elected president <var>p</var> can send to some set of legislators a single message that serves as the <em>NextBallot</em>(<var>b</var>) message for all instances of the Synod protocol. (There are an infinite number of instances—one for each decree number.) A legislator <var>q</var> can reply with a single message that serves as the <em>LastVote</em> messages for step 2 of all instances of the Synod protocol. This message contains only a finite amount of information, since <var>q</var> can have voted in only a finite number of instances.</p>
     <p>When the new president has received a reply from every member of a majority set, he is ready to perform step 3 for every instance of the Synod protocol. For some finite number of instances (decree numbers), the choice of decree in step 3 will be determined by <var>B</var>3. The president immediately performs step 3 for each of those instances to try passing these decrees. Then, whenever he receives a request to pass a decree, he chooses the lowest-numbered decree that he is still free to choose, and he performs step 3 for that decree number (instance of the Synod protocol) to try to pass the decree.</p>
@@ -1414,6 +1453,10 @@ people that the protocol was correct if, in their proof, they allowed any priest
     <p style="font-size:.92rem"><b><var>nextBal</var>[<var>p</var>]</b> — the number of the last
     ballot in which <var>p</var> agreed to participate, or −∞.</p>
   </div>
+  <div class="prose">
+    <p>Next come variables representing information that priest p could keep on a slip of
+    paper:</p>
+    </div>
   <div class="slab">
     <div class="slab-head">Slip-of-paper variables (lost whenever the slip is lost)</div>
     <p style="font-size:.92rem"><b><var>status</var>[<var>p</var>]</b> — one of <i>idle</i> (not
