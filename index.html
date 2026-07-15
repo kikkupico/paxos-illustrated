@@ -426,27 +426,26 @@ footer.colophon{
 
   <div class="editor-note">
     <span class="tag">From the editor’s desk</span>
-    <p>This manuscript turned up, long forgotten, behind a filing cabinet in the <em>TOCS</em>
-    editorial office. Old as it was, the editor-in-chief judged it worth publishing — and since
-    the author is off doing field work in the Greek isles and cannot be reached, I was asked to
-    prepare it for print.</p>
-    <p>The author appears to be an archaeologist with only a passing interest in computer science.
-    A pity: obscure as his ancient Paxon civilization may be, its legislative system is a superb
-    model for implementing a distributed system in an asynchronous environment. Some of the
-    Paxons’ refinements appear to be unknown in the systems literature.</p>
-    <p>The author does briefly discuss the Paxon Parliament’s relevance to distributed computing,
-    in Section 4. Computer scientists may want to read that section first — or even start with
-    Lampson’s explanation of the algorithm for computer scientists [Lampson 1996]. The algorithm
-    is described more formally by De&nbsp;Prisco et&nbsp;al. [1997]. I have added further comments on the
-    relation between the ancient protocols and more recent work at the end of Section&nbsp;4.</p>
+    <p>This submission was recently discovered behind a filing cabinet in the <em>TOCS</em> editorial
+    office. Despite its age, the editor-in-chief felt that it was worth publishing. Because the
+    author is currently doing field work in the Greek isles and cannot be reached, I was asked
+    to prepare it for publication.</p>
+    <p>The author appears to be an archeologist with only a passing interest in computer science.
+    This is unfortunate; even though the obscure ancient Paxon civilization he describes
+    is of little interest to most computer scientists, its legislative system is an excellent model
+    for how to implement a distributed computer system in an asynchronous environment.
+    Indeed, some of the refinements the Paxons made to their protocol appear to be unknown
+    in the systems literature.</p>
+    <p>The author does give a brief discussion of the Paxon Parliament’s relevance to distributed
+    computing in Section 4. Computer scientists will probably want to read that
+    section first. Even before that, they might want to read the explanation of the algorithm
+    for computer scientists by Lampson [1996]. The algorithm is also described more formally
+    by De&nbsp;Prisco et&nbsp;al. [1997]. I have added further comments on the relation between the
+    ancient protocols and more recent work at the end of Section&nbsp;4.</p>
     <p class="sig">— Keith Marzullo, University of California, San Diego</p>
   </div>
 
-  <div class="narr">ABSTRACT, AS THE ANCIENTS WOULD CARVE IT: Recent archaeological discoveries on
-  the island of Paxos reveal that its parliament functioned even though the legislators kept
-  wandering off. They maintained consistent copies of the parliamentary record despite their
-  forays from the Chamber and the forgetfulness of their messengers. The Paxons’ protocol offers
-  a new way to implement the state-machine approach to distributed systems.</div>
+  <div class="narr">Recent archaeological discoveries on the island of Paxos reveal that the parliament functioned despite the peripatetic propensity of its part-time legislators. The legislators maintained consistent copies of the parliamentary record, despite their frequent forays from the chamber and the forgetfulness of their messengers. The Paxon parliament’s protocol provides a new way of implementing the state-machine approach to the design of distributed systems.</div>
 </section>
 
 <hr class="meander">
@@ -464,19 +463,9 @@ footer.colophon{
     <figcaption>EARLY IN THIS MILLENNIUM, THE AEGEAN ISLAND OF PAXOS WAS A THRIVING MERCANTILE CENTER.</figcaption>
   </figure>
   <div class="prose">
-    <p>Wealth brought the Paxons political sophistication, and they traded their old theocracy for
-    a parliamentary government. But on Paxos, commerce came before civic duty: not a single
-    citizen would give his whole life to Parliament. The Paxon Parliament had to keep working
-    even though its legislators drifted endlessly in and out of the parliamentary Chamber.</p>
-    <p>The trouble of governing with a part-time parliament corresponds remarkably to the trouble
-    faced by today’s fault-tolerant distributed systems: <strong>legislators play the role of
-    processes, and leaving the Chamber plays the role of failing.</strong> The Paxons’ solution may
-    therefore interest computer scientists. Here follows a short history of the protocol, and an
-    even shorter discussion of its relevance to distributed computing.</p>
-    <p>Paxon civilization was destroyed by foreign invaders, and archaeologists have only recently
-    begun digging up its history. Our knowledge of the Parliament is therefore fragmentary; the
-    basic protocols are known, but many details are lost. Where such details are interesting, I
-    will take the liberty of speculating on what the Paxons <em>might</em> have done.</p>
+    <p>Early in this millennium, the Aegean island of Paxos was a thriving mercantile center.<sup>1</sup> Wealth led to political sophistication, and the Paxons replaced their ancient theocracy with a parliamentary form of government. But trade came before civic duty, and no one in Paxos was willing to devote his life to Parliament. The Paxon Parliament had to function even though legislators continually wandered in and out of the parliamentary Chamber.</p>
+    <p>The problem of governing with a part-time parliament bears a remarkable correspondence to the problem faced by today’s fault-tolerant distributed systems, where legislators correspond to processes and leaving the Chamber corresponds to failing. The Paxons’ solution may therefore be of some interest to computer scientists. I present here a short history of the Paxos Parliament’s protocol, followed by an even shorter discussion of its relevance for distributed systems.</p>
+    <p>Paxon civilization was destroyed by a foreign invasion, and archeologists have just recently begun to unearth its history. Our knowledge of the Paxon Parliament is therefore fragmentary. Although the basic protocols are known, we are ignorant of many details. Where such details are of interest, I will take the liberty of speculating on what the Paxons might have done.</p>
   </div>
   <aside class="fn"><b>1.</b> The island should not be confused with the Ionian island of Paxoi,
   whose name is sometimes corrupted to <i>Paxos</i>.</aside>
@@ -488,12 +477,7 @@ footer.colophon{
 
   <h3 class="sect">1.2 · Requirements</h3>
   <div class="prose">
-    <p>Parliament’s primary task was to determine <em>the law of the land</em>, defined by the sequence
-    of decrees it passed. A modern parliament keeps a secretary to record its acts — but no Paxon
-    would sit in the Chamber all session long to play secretary. Instead, <strong>every legislator
-    carried a personal <em>ledger</em></strong>, in which he recorded the numbered decrees that were
-    passed. Legislator <span class="paxon" data-real="Nancy Lynch" data-note="Pioneer of distributed algorithms theory; co-author of the FLP impossibility result cited in this very paper.">Λινχ∂</span>’s
-    ledger, for instance, held the entry</p>
+    <p>Parliament’s primary task was to determine the law of the land, which was defined by the sequence of decrees it passed. A modern parliament will employ a secretary to record its actions, but no one in Paxos was willing to remain in the Chamber throughout the session to act as secretary. Instead, each Paxon legislator maintained a <i>ledger</i> in which he recorded the numbered sequence of decrees that were passed. For example, legislator <span class="paxon" data-real="Nancy Lynch" data-note="Pioneer of distributed algorithms theory; co-author of the FLP impossibility result cited in this very paper.">Λ˘ινχ∂</span>’s ledger had the entry</p>
   </div>
   <div class="decree"><b>155:</b> The olive tax is 3 drachmas per ton</div>
   <figure class="panel narrow tilt-l">
@@ -501,53 +485,30 @@ footer.colophon{
     <figcaption>LEDGERS WERE WRITTEN IN INDELIBLE INK — AN ENTRY, ONCE MADE, COULD NEVER BE CHANGED.</figcaption>
   </figure>
   <div class="prose">
-    <p>if she believed the 155<sup>th</sup> decree passed by Parliament set the olive tax at
-    3&nbsp;drachmas per ton. Ledgers were written with indelible ink, and their entries could not
-    be changed.</p>
-    <p>The first requirement of the parliamentary protocol was the <em>consistency of ledgers</em>:
-    <strong>no two ledgers could contain contradictory information.</strong> If legislator
-    <span class="paxon" data-real="Michael Fischer" data-note="The F of the FLP impossibility theorem — Fischer, Lynch &amp; Paterson, 1985.">Φισ∂ερ</span>
-    had the entry</p>
+    <p>if she believed that the 155<sup>th</sup> decree passed by Parliament set the tax on olives to 3 drachmas per ton. Ledgers were written with indelible ink, and their entries could not be changed.</p>
+    <p>The first requirement of the parliamentary protocol was the <em>consistency of ledgers</em>, meaning that no two ledgers could contain contradictory information. If legislator <span class="paxon" data-real="Michael Fischer" data-note="The F of the FLP impossibility theorem — Fischer, Lynch &amp; Paterson, 1985.">Φισ∂ερ</span> had the entry</p>
   </div>
   <div class="decree"><b>132:</b> Lamps must use only olive oil</div>
   <div class="prose">
-    <p>in his ledger, then no other ledger could hold a <em>different</em> entry for decree 132 —
-    though another legislator’s ledger might simply have <em>no</em> entry for 132 yet, if news of
-    its passage had not reached him.</p>
-    <p>Consistency alone was not enough: it could be satisfied trivially by leaving every ledger
-    blank forever. Some requirement had to guarantee that decrees eventually got passed and
-    recorded. In modern parliaments, the passing of decrees is slowed by disagreement among
-    legislators; not so on Paxos, where an atmosphere of mutual trust prevailed and legislators
-    would happily pass any decree that was proposed. Their <em>peripatetic propensity</em>, however,
-    posed a real danger. Consistency itself would be lost if one group of legislators passed the
-    decree</p>
+    <p>in his ledger, then no other legislator’s ledger could have a different entry for decree 132. However, another legislator might have no entry in his ledger for decree 132 if he hadn’t yet learned that the decree had been passed.</p>
+    <p>Consistency of ledgers was not sufficient, since it could be trivially fulfilled by leaving all ledgers blank. Some requirement was needed to guarantee that decrees were eventually passed and recorded in ledgers. In modern parliaments, the passing of decrees is hindered by disagreement among legislators. This was not the case in Paxos, where an atmosphere of mutual trust prevailed. Paxon legislators were willing to pass any decree that was proposed. However, their peripatetic propensity posed a problem. Consistency would be lost if one group of legislators passed the decree</p>
   </div>
   <div class="decree"><b>37:</b> Painting on temple walls is forbidden</div>
-  <div class="prose"><p style="text-align:center;margin:.2em 0"><em>…and then strolled off to a banquet, whereupon a wholly
-  different group wandered in and, knowing nothing of what had just happened, passed the
-  conflicting decree…</em></p></div>
+  <div class="prose"><p>and then left for a banquet, whereupon a different group of legislators entered the Chamber and, knowing nothing about what had just happened, passed the conflicting decree</p></div>
   <div class="decree bad"><b>37:</b> Freedom of artistic expression is guaranteed</div>
   <figure class="panel">
     <div class="frame"><img src="images/conflict_small.webp" alt="Two-panel comic: one group passes decree 37 forbidding temple painting and leaves for a banquet; a second group enters and passes a conflicting decree 37 guaranteeing artistic expression."></div>
     <figcaption>DISASTER! TWO GROUPS, ONE DECREE NUMBER, TWO CONTRADICTORY LAWS. THE PROTOCOL MUST MAKE THIS IMPOSSIBLE.</figcaption>
   </figure>
   <div class="prose">
-    <p>Progress could not be guaranteed unless enough legislators stayed in the Chamber long
-    enough. Since Paxon legislators refused to curtail their outside activities, no protocol could
-    ensure that any decree would <em>ever</em> be passed. But legislators were willing to promise
-    that, <em>while present in the Chamber</em>, they and their aides would act promptly on all
-    parliamentary business. That promise let the Paxons devise a protocol satisfying the following
-    <em>progress condition</em>:</p>
+    <p>Progress could not be guaranteed unless enough legislators stayed in the Chamber for a long enough time. Because Paxon legislators were unwilling to curtail their outside activities, it was impossible to ensure that any decree would ever be passed. However, legislators were willing to guarantee that, while in the Chamber, they and their aides would act promptly on all parliamentary matters. This guarantee allowed the Paxons to devise a parliamentary protocol satisfying the following <i>progress condition</i>.</p>
   </div>
   <div class="slab">
     <div class="slab-head">The Progress Condition</div>
-    <p class="stmt">If a majority of the legislators<sup>2</sup> were in the Chamber, and no one
-    entered or left the Chamber for a sufficiently long period of time, then any decree proposed
-    by a legislator in the Chamber would be passed, and every decree that had been passed would
-    appear in the ledger of every legislator in the Chamber.</p>
+    <p class="stmt">If a majority of the legislators<sup>2</sup> were in the Chamber and no one entered or left the Chamber for a sufficiently long period of time then any decree proposed by a legislator in the Chamber would be passed, and every decree that had been passed would appear in the ledger of every legislator in the Chamber.</p>
   </div>
   <aside class="fn"><b>2.</b> In translating the progress condition, I have rendered the Paxon
-  word <span class="paxon" data-real="“majority set”" data-note="Sound it out — the Paxon language is closer to English than it looks.">μαδζ∂ωριτϊσετ</span>
+  word <span class="paxon" data-real="“majority set”" data-note="Sound it out — the Paxon language is closer to English than it looks.">μαδζ∂ωριτ˘ισετ</span>
   as <i>majority of the legislators</i>. Alternative translations of this word have been proposed
   and are discussed in Section&nbsp;2.2.</aside>
 
@@ -557,24 +518,9 @@ footer.colophon{
     <figcaption>STANDARD ISSUE, ONE PER LEGISLATOR: STURDY LEDGER, PEN, INDELIBLE INK, HOURGLASS TIMER… AND A VERY LOSABLE SLIP OF PAPER.</figcaption>
   </figure>
   <div class="prose">
-    <p>The protocol’s requirements could be met only by equipping the legislators properly. Each
-    received a sturdy ledger for recording decrees, a pen, and a supply of indelible ink. A
-    legislator might forget what he had been doing if he left the Chamber,<sup>3</sup> so he would
-    jot reminders of important parliamentary tasks in the <em>back</em> of his ledger. Decree
-    entries were never changed, but these back-of-ledger notes could be crossed out. To meet the
-    progress condition legislators had to measure the passage of time, so each was given a simple
-    hourglass timer.</p>
-    <p>Legislators carried their ledgers at all times and could always read the decree list and
-    any un-crossed-out note. The ledgers, made of the finest parchment, were reserved for the most
-    important notes; anything else a legislator would scribble on a slip of paper — which he might
-    (or might not) lose upon leaving the Chamber.</p>
-    <p>The Chamber’s acoustics were dreadful, making oratory impossible, so <strong>legislators
-    could communicate only by messenger</strong>, and each had funds to hire as many messengers as
-    needed. A messenger could be trusted not to garble a message — but he might forget he had
-    already delivered it and deliver it again; and, like the legislators he served, he gave only
-    part of his time to parliamentary duties. A messenger might leave the Chamber on some
-    business — perhaps a six-month voyage — before delivering a message. He might even leave
-    forever, in which case the message would never arrive at all.</p>
+    <p>The requirements of the parliamentary protocol could be achieved only by providing the legislators with the necessary resources. Each legislator received a sturdy ledger in which to record the decrees, a pen, and a supply of indelible ink. Legislators might forget what they had been doing if they left the Chamber,<sup>3</sup> so they would write notes in the back of the ledgers to remind themselves of important parliamentary tasks. An entry in the list of decrees was never changed, but notes could be crossed out. Achieving the progress condition required that legislators be able to measure the passage of time, so they were given simple hourglass timers.</p>
+    <p>Legislators carried their ledgers at all times, and could always read the list of decrees and any note that had not been crossed out. The ledgers were made of the finest parchment and were used for only the most important notes. A legislator would write other notes on a slip of paper, which he might (or might not) lose if he left the Chamber.</p>
+    <p>The acoustics of the Chamber were poor, making oratory impossible. Legislators could communicate only by messenger, and were provided with funds to hire as many messengers as they needed. A messenger could be counted on not to garble messages, but he might forget that he had already delivered a message, and deliver it again. Like the legislators they served, messengers devoted only part of their time to parliamentary duties. A messenger might leave the Chamber to conduct some business—perhaps taking a six-month voyage—before delivering a message. He might even leave forever, in which case the message would never be delivered.</p>
   </div>
   <aside class="fn"><b>3.</b> In one tragic incident, legislator
   <span class="paxon" data-real="Sam Toueg" data-note="Distributed-computing researcher; a good sport about the falling statue.">Τωυεγ</span>
@@ -585,15 +531,8 @@ footer.colophon{
     <figcaption>THE MESSENGER: FAST, HONEST… AND LIABLE TO SAIL AWAY MID-ERRAND WITH YOUR SCROLL IN HIS BELT.</figcaption>
   </figure>
   <div class="prose">
-    <p>Though legislators and messengers came and went as they pleased, <strong>while inside the
-    Chamber they attended to Parliament with total devotion</strong>: messengers delivered promptly,
-    and legislators reacted promptly to every message received.</p>
-    <p>The official records of Paxos insist that legislators and messengers were scrupulously
-    honest and strictly obeyed the protocol. Most scholars dismiss this as propaganda meant to
-    paint Paxos as morally superior to its eastern neighbors. Dishonesty, though rare, surely
-    occurred — but since it was never admitted in official documents, we know little of how
-    Parliament coped with corrupt legislators or messengers. What evidence has been unearthed is
-    discussed in Section&nbsp;3.3.5.</p>
+    <p>Although legislators and messengers could enter and leave at any time, when inside the Chamber they devoted themselves to the business of Parliament. While they remained in the Chamber, messengers delivered messages in a timely fashion and legislators reacted promptly to any messages they received.</p>
+    <p>The official records of Paxos claim that legislators and messengers were scrupulously honest and strictly obeyed parliamentary protocol. Most scholars discount this as propaganda, intended to portray Paxos as morally superior to its eastern neighbors. Dishonesty, although rare, undoubtedly did occur. However, because it was never mentioned in official documents, we have little knowledge of how Parliament coped with dishonest legislators or messengers. What evidence has been uncovered is discussed in Section&nbsp;3.3.5.</p>
   </div>
 </section>
 
@@ -612,35 +551,20 @@ footer.colophon{
   </figure>
 
   <div class="prose">
-    <p>The Paxon Parliament evolved from an older, ceremonial <em>Synod</em> of priests, convened
-    every 19 years to choose one symbolic decree. For centuries the Synod used a traditional
-    procedure that required every priest to be present. But as commerce flourished, the priests
-    too began drifting in and out of the Chamber mid-session — until at last the old protocol
-    failed, and a Synod ended with <em>no decree chosen</em>. To prevent a repeat of this
-    theological disaster, Paxon religious leaders asked their mathematicians for a protocol to
-    choose the Synod’s decree. Its requirements and assumptions were essentially those of the
-    later Parliament, except that where the Parliament filled a ledger with a <em>sequence</em> of
-    decrees, a Synod ledger would hold <strong>at most one</strong>.</p>
-    <p>The mathematicians derived the Synod protocol in steps. First they proved that a protocol
-    satisfying certain <em>constraints</em> would guarantee consistency and allow progress. A
-    <em>preliminary protocol</em> was derived directly from these constraints; restricting it gave
-    the <em>basic protocol</em>, which guaranteed consistency but not progress; and restricting
-    <em>that</em> yielded the complete Synod protocol, which satisfied both.<sup>4</sup></p>
+    <p>The Paxon Parliament evolved from an earlier ceremonial Synod of priests that was convened every 19 years to choose a single, symbolic decree. For centuries, the Synod had chosen the decree by a conventional procedure that required all priests to be present. But as commerce flourished, priests began wandering in and out of the Chamber while the Synod was in progress. Finally, the old protocol failed, and a Synod ended with no decree chosen. To prevent a repetition of this theological disaster, Paxon religious leaders asked mathematicians to formulate a protocol for choosing the Synod’s decree. The protocol’s requirements and assumptions were essentially the same as those of the later Parliament except that instead of containing a sequence of decrees, a ledger would have at most one decree. The resulting Synod protocol is described here; the Parliamentary protocol is described in Section 3.</p>
+    <p>Mathematicians derived the Synod protocol in a series of steps. First, they proved results showing that a protocol satisfying certain constraints would guarantee consistency and allow progress. A <em>preliminary protocol</em> was then derived directly from these constraints. A restricted version of the preliminary protocol provided the <em>basic protocol</em> that guaranteed consistency, but not progress. The complete Synod protocol, satisfying the consistency and progress requirements, was obtained by restricting the basic protocol.<sup>4</sup></p>
+    <p>The mathematical results are described in Section 2.1, and the protocols are described informally in Sections 2.2–2.4. A more formal description and correctness proof of the basic protocol appears in the appendix.</p>
   </div>
-  <aside class="fn"><b>4.</b> The full history of the protocol’s discovery is unknown. Like modern
-  computer scientists, Paxon mathematicians would present elegant, logical derivations bearing no
-  resemblance to how the algorithms were actually found. It is known, however, that the
-  mathematical results (Theorems 1 and 2 below) genuinely came first — discovered while the
-  mathematicians were trying to prove that a satisfactory protocol was <em>impossible</em>.</aside>
+  <aside class="fn"><b>4.</b> The complete history of the Synod protocol’s discovery is not known. Like modern computer
+scientists, Paxon mathematicians would describe elegant, logical derivations that bore no resemblance to how the algorithms were actually derived. However, it is known that the mathematical
+results (Theorems 1 and 2 of Section 2.1) really did precede the protocol. They were discovered
+when mathematicians, in response to the request for a protocol, were attempting to prove that a
+satisfactory protocol was impossible. 
+  </aside>
 
   <h3 class="sect">2.1 · Mathematical Results</h3>
   <div class="prose">
-    <p>The Synod chose its decree through a series of numbered <em>ballots</em>, each ballot a
-    referendum on one decree. In a ballot, a priest had exactly two choices: vote for the decree,
-    or abstain.<sup>5</sup> Each ballot carried a designated set of priests called its
-    <em>quorum</em>; a ballot <em>succeeded</em> if and only if <strong>every priest in the quorum
-    voted</strong>. Formally, a ballot <var>B</var> had four parts (all <i>sets</i> here are finite
-    sets<sup>6</sup>):</p>
+    <p>The Synod’s decree was chosen through a series of numbered <em>ballots</em>, where a ballot was a referendum on a single decree. In each ballot, a priest had the choice only of voting for the decree or not voting.<sup>5</sup> Associated with a ballot was a set of priests called a <em>quorum</em>. A ballot succeeded iff (if and only if) every priest in the quorum voted for the decree. Formally, a ballot <var>B</var> consisted of the following four components. (Unless otherwise qualified, <i>set</i> is taken to mean <i>finite set</i>.<sup>6</sup>)</p>
   </div>
   <div class="slab">
     <div class="slab-head">Anatomy of a Ballot</div>
@@ -650,40 +574,34 @@ footer.colophon{
       <p style="margin:.35em 0"><var>B</var><sub>vot</sub> — <span class="rm">a set of priests (the ones who cast votes for the decree)</span><sup>7</sup></p>
       <p style="margin:.35em 0"><var>B</var><sub>bal</sub> — <span class="rm">a ballot number</span></p>
     </div>
-    <p style="font-size:.92rem">A ballot <var>B</var> was <em>successful</em> iff
-    <var>B</var><sub>qrm</sub>&nbsp;⊆&nbsp;<var>B</var><sub>vot</sub> — a successful ballot being
-    one in which every quorum member voted.</p>
+    <p>A ballot <var>B</var> was said to be <em>successful</em> iff <var>B</var><sub>qrm</sub>&nbsp;⊆&nbsp;<var>B</var><sub>vot</sub>, so a successful ballot was one in which every quorum member voted.</p>
+    <p>Ballot numbers were chosen from an unbounded ordered set of numbers. If <var>B′</var><sub>bal</sub>&nbsp;&gt;&nbsp;<var>B</var><sub>bal</sub>, then ballot <var>B′</var> was said to be <em>later</em> than ballot <var>B</var>. However, this indicated nothing about the order in which ballots were conducted; a later ballot could actually have taken place before an earlier one.</p>
   </div>
   <aside class="fn"><b>5.</b> Like some modern nations, Paxos had not fully grasped the nature of
   Athenian democracy.</aside>
-  <aside class="fn"><b>6.</b> Though remarkably advanced for their time, Paxon mathematicians
-  obviously knew no set theory. I have taken the liberty of translating their more primitive
-  notation into its modern language.</aside>
-  <aside class="fn"><b>7.</b> Only quorum members’ votes actually counted, but the Paxons found
-  the correctness proof easier if, in the proof, any priest was allowed to vote in any ballot.</aside>
+  <aside class="fn"><b>6.</b> Although Paxon mathematicians were remarkably advanced for their time, they obviously had
+no knowledge of set theory. I have taken the liberty of translating the Paxon’s more primitive
+notation into the language of modern set theory.
+</aside>
+  <aside class="fn"><b>7.</b> Only priests in the quorum actually voted, but Paxon mathematicians found it easier to convince
+people that the protocol was correct if, in their proof, they allowed any priest to vote in any ballot.
+  </aside>
   <div class="prose">
-    <p>Ballot numbers came from an unbounded, totally ordered set. If
-    <var>B′</var><sub>bal</sub>&nbsp;&gt;&nbsp;<var>B</var><sub>bal</sub>, ballot <var>B′</var> was said to be
-    <em>later</em> than <var>B</var> — but this said <strong>nothing</strong> about the order in which
-    the ballots were actually conducted; a “later” ballot could well have taken place before an
-    “earlier” one.</p>
-    <p>The mathematicians then defined three conditions on any set <var>ℬ</var> of ballots, and
-    showed that consistency was guaranteed and progress possible when the conducted ballots
-    satisfied them. The first two are simple:</p>
+    <p>Paxon mathematicians defined three conditions on a set <var>ℬ</var> of ballots, and then showed that consistency was guaranteed and progress was possible if the set of ballots that had taken place satisfied those conditions. </p>
   </div>
   <div class="slab">
     <div class="slab-head">The Three Sacred Conditions</div>
+    <p>The first two conditions were simple; they can be stated informally as follows.</p>
     <p><b><var>B</var>1(<var>ℬ</var>)</b> — Each ballot in <var>ℬ</var> has a unique ballot number.</p>
     <p><b><var>B</var>2(<var>ℬ</var>)</b> — The quorums of any two ballots in <var>ℬ</var> have at
     least one priest in common.</p>
-    <p><b><var>B</var>3(<var>ℬ</var>)</b> — For every ballot <var>B</var> in <var>ℬ</var>: if any
-    priest in <var>B</var>’s quorum voted in an earlier ballot in <var>ℬ</var>, then the decree of
-    <var>B</var> equals the decree of the <em>latest</em> of those earlier ballots.</p>
-    <p style="font-size:.85rem; color:#5a4a33"><em>The third condition was stated, rather
-    confusingly, in one Paxon manuscript. Interpreting it was made possible by the manuscript
-    reproduced below — study it yourself.</em></p>
+    <p>The third condition was more complicated. One Paxon manuscript contained the following, rather confusing, statement of it.</p>
+    <p><b><var>B</var>3(<var>ℬ</var>)</b> — For every ballot <var>B</var> in <var>ℬ</var>, if any priest in <var>B</var>’s quorum voted in an earlier ballot in <var>ℬ</var>, then the decree of <var>B</var> equals the decree of the latest of those earlier ballots.</p>
   </div>
 
+  <div class="prose">
+    <p>Interpretation of this cryptic text was aided by the manuscript pictured in Figure 1, which illustrates condition <var>B</var>3(<var>ℬ</var>) with a set <var>ℬ</var> of five ballots for a Synod consisting of the five priests A, B, Γ, Δ, and E. This set <var>ℬ</var> contains five ballots, where for each ballot, the set of voters is the subset of the priests in the quorum whose names are enclosed in boxes. For example, ballot number 14 has decree α, a quorum containing three priests, and a set of two voters. Condition <var>B</var>3(<var>ℬ</var>) has the form “for every <var>B</var> in <var>ℬ</var>: . . . ”, where “...” is a condition on ballot <var>B</var>. The conditions for the five ballots <var>B</var> of Figure 1 are as follows.</p>
+    </div>
   <!-- ========= WIDGET 1: FIG 1 ========= -->
   <div class="widget" id="w-fig1">
     <div class="whead"><h5>⚱ The Manuscript — Figure 1</h5><span class="badge">INTERACTIVE RELIC</span></div>
@@ -706,38 +624,17 @@ footer.colophon{
   </div>
 
   <div class="prose">
-    <p>To state <var>B</var>1–<var>B</var>3 formally requires more notation. A <em>vote</em>
-    <var>v</var> was a quantity with three components: a priest <var>v</var><sub>pst</sub>, a
-    ballot number <var>v</var><sub>bal</sub>, and a decree <var>v</var><sub>dec</sub> — the vote
-    cast by priest <var>v</var><sub>pst</sub> for decree <var>v</var><sub>dec</sub> in ballot
-    number <var>v</var><sub>bal</sub>. The Paxons also defined <em>null votes</em>: for each priest
-    <var>p</var>, the unique vote <var>null</var><sub><var>p</var></sub> with
-    <var>v</var><sub>bal</sub>&nbsp;=&nbsp;−∞ and <var>v</var><sub>dec</sub>&nbsp;=&nbsp;<span style="font-variant:small-caps">blank</span>,
-    where −∞&nbsp;&lt;&nbsp;<var>b</var>&nbsp;&lt;&nbsp;∞ for every ballot number <var>b</var>, and
-    <span style="font-variant:small-caps">blank</span> is not a decree. Votes were totally ordered
-    such that <var>v</var>&nbsp;&lt;&nbsp;<var>v′</var> whenever
-    <var>v</var><sub>bal</sub>&nbsp;&lt;&nbsp;<var>v′</var><sub>bal</sub> (the part of the manuscript
-    ordering votes with equal ballot numbers has been lost).</p>
-    <p>For any set <var>ℬ</var> of ballots, <var>Votes</var>(<var>ℬ</var>) is the set of all votes
-    cast in ballots of <var>ℬ</var>. If <var>p</var> is a priest and <var>b</var> a ballot number
-    or ±∞, then</p>
-  </div>
-  <div class="mathblock"><var>MaxVote</var>(<var>b</var>,&nbsp;<var>p</var>,&nbsp;<var>ℬ</var>)</div>
-  <div class="prose">
-    <p>is the <strong>largest</strong> vote in <var>Votes</var>(<var>ℬ</var>) cast by <var>p</var>
-    with ballot number <strong>less than <var>b</var></strong> — or
-    <var>null</var><sub><var>p</var></sub> if there was none. Since
-    <var>null</var><sub><var>p</var></sub> is smaller than any real vote, this makes
-    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>p</var>,&nbsp;<var>ℬ</var>) the largest vote in the set</p>
+    <p>To state <var>B</var>1(<var>ℬ</var>)–<var>B</var>3(<var>ℬ</var>) formally requires some more notation. A <em>vote</em> <var>v</var> was defined to be a quantity consisting of three components: a priest <var>v</var><sub>pst</sub>, a ballot number <var>v</var><sub>bal</sub>, and a decree <var>v</var><sub>dec</sub>. It represents a vote cast by priest <var>v</var><sub>pst</sub> for decree <var>v</var><sub>dec</sub> in ballot number <var>v</var><sub>bal</sub>. The Paxons also defined <em>null</em> votes to be votes <var>v</var> with <var>v</var><sub>bal</sub>&nbsp;=&nbsp;−∞ and <var>v</var><sub>dec</sub>&nbsp;=&nbsp;<span style="font-variant:small-caps">blank</span>, where −∞&nbsp;&lt;&nbsp;<var>b</var>&nbsp;&lt;&nbsp;∞ for any ballot number <var>b</var>, and <span style="font-variant:small-caps">blank</span> is not a decree. For any priest <var>p</var>, they defined <var>null</var><sub><var>p</var></sub> to be the unique null vote <var>v</var> with <var>v</var><sub>pst</sub>&nbsp;=&nbsp;<var>p</var>.</p>
+    <p>Paxon mathematicians defined a total ordering on the set of all votes, but part of the manuscript containing the definition has been lost. The remaining fragment indicates that, for any votes <var>v</var> and <var>v′</var>, if <var>v</var><sub>bal</sub>&nbsp;&lt;&nbsp;<var>v′</var><sub>bal</sub> then <var>v</var>&nbsp;&lt;&nbsp;<var>v′</var>. It is not known how the relative order of <var>v</var> and <var>v′</var> was defined if <var>v</var><sub>bal</sub>&nbsp;=&nbsp;<var>v′</var><sub>bal</sub>.</p>
+    <p>For any set <var>ℬ</var> of ballots, the set <var>Votes</var>(<var>ℬ</var>) of votes in <var>ℬ</var> was defined to consist of all votes <var>v</var> such that <var>v</var><sub>pst</sub>&nbsp;∈&nbsp;<var>B</var><sub>vot</sub>, <var>v</var><sub>bal</sub>&nbsp;=&nbsp;<var>B</var><sub>bal</sub>, and <var>v</var><sub>dec</sub>&nbsp;=&nbsp;<var>B</var><sub>dec</sub> for some <var>B</var>&nbsp;∈&nbsp;<var>ℬ</var>. If <var>p</var> is a priest and <var>b</var> is either a ballot number or ±∞, then
+  <var>MaxVote</var>(<var>b</var>,&nbsp;<var>p</var>,&nbsp;<var>ℬ</var>)
+    was defined to be the largest vote <var>v</var> in <var>Votes</var>(<var>ℬ</var>) cast by <var>p</var> with <var>v</var><sub>bal</sub>&nbsp;&lt;&nbsp;<var>b</var>, or to be <var>null</var><sub><var>p</var></sub> if there was no such vote. Since <var>null</var><sub><var>p</var></sub> is smaller than any real vote cast by <var>p</var>, this means that <var>MaxVote</var>(<var>b</var>,&nbsp;<var>p</var>,&nbsp;<var>ℬ</var>) is the largest vote in the set</p>
   </div>
   <div class="mathblock">{<var>v</var> ∈ <var>Votes</var>(<var>ℬ</var>) :
     (<var>v</var><sub>pst</sub> = <var>p</var>) ∧ (<var>v</var><sub>bal</sub> &lt; <var>b</var>)}
     ∪ {<var>null</var><sub><var>p</var></sub>}</div>
   <div class="prose">
-    <p>For a nonempty set <var>Q</var> of priests,
-    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>Q</var>,&nbsp;<var>ℬ</var>) is the maximum of
-    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>p</var>,&nbsp;<var>ℬ</var>) over all <var>p</var> in
-    <var>Q</var>. With this, the three conditions become:<sup>8</sup></p>
+    <p>For any nonempty set <var>Q</var> of priests, <var>MaxVote</var>(<var>b</var>,&nbsp;<var>Q</var>,&nbsp;<var>ℬ</var>) was defined to equal the maximum of all votes <var>MaxVote</var>(<var>b</var>,&nbsp;<var>p</var>,&nbsp;<var>ℬ</var>) with <var>p</var> in <var>Q</var>.<br>Conditions <var>B</var>1(<var>ℬ</var>)–<var>B</var>3(<var>ℬ</var>) are stated formally as follows.<sup>8</sup></p>
   </div>
   <div class="slab">
     <div class="mathblock">
@@ -753,18 +650,13 @@ footer.colophon{
       (<var>MaxVote</var>(<var>B</var><sub>bal</sub>, <var>B</var><sub>qrm</sub>, <var>ℬ</var>)<sub>bal</sub> ≠ −∞) ⇒
       (<var>B</var><sub>dec</sub> = <var>MaxVote</var>(<var>B</var><sub>bal</sub>, <var>B</var><sub>qrm</sub>, <var>ℬ</var>)<sub>dec</sub>)
     </div>
-    <p style="font-size:.85rem">Although <var>MaxVote</var>’s definition leans on the ordering of
-    votes, <var>B</var>1(<var>ℬ</var>) implies
-    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>Q</var>,&nbsp;<var>ℬ</var>)<sub>dec</sub> does not
-    depend on how votes with equal ballot numbers are ordered.</p>
+    <p>Although the definition of <var>MaxVote</var> depends upon the ordering of votes, <var>B</var>1(<var>ℬ</var>) implies that <var>MaxVote</var>(<var>b</var>,&nbsp;<var>Q</var>,&nbsp;<var>ℬ</var>)<sub>dec</sub> is independent of how votes with equal ballot numbers were ordered.</p>
   </div>
   <aside class="fn"><b>8.</b> I use the Paxon mathematical symbol ≜, which meant <i>equals by
   definition</i>.</aside>
 
   <div class="prose">
-    <p>To show these conditions imply consistency, the Paxons first proved that
-    <var>B</var>1–<var>B</var>3 force any ballot later than a successful one to choose the same
-    decree:</p>
+    <p>To show that these conditions imply consistency, the Paxons first showed that <var>B</var>1(<var>ℬ</var>)–<var>B</var>3(<var>ℬ</var>) imply that, if a ballot <var>B</var> in <var>ℬ</var> is successful, then any later ballot in <var>ℬ</var> is for the same decree as <var>B</var>.</p>
   </div>
   <div class="slab">
     <div class="slab-head">Lemma</div>
@@ -863,126 +755,135 @@ footer.colophon{
 
   <h3 class="sect">2.2 · The Preliminary Protocol</h3>
   <div class="prose">
-    <p>The <em>preliminary protocol</em> was derived from the requirement that conditions
-    <var>B</var>1(<var>ℬ</var>)–<var>B</var>3(<var>ℬ</var>) stay true, where <var>ℬ</var> is the
-    set of all ballots that had been or were being conducted. The set <var>ℬ</var> itself was
-    never explicitly computed anywhere — <strong>the Paxons spoke of <var>ℬ</var> as a quantity
-    observed only by the gods</strong>, since it might never be known to any mortal.</p>
-    <p>Each ballot was initiated by a priest, who chose its number, decree, and quorum; each
-    quorum member then decided whether or not to vote in it. The rules governing those choices
-    came straight from the three conditions:</p>
-    <p><strong>Maintaining <var>B</var>1</strong> — every ballot needs a unique number. A priest
-    could remember (with back-of-ledger notes) which ballots he himself had initiated, so it
-    sufficed to <em>partition</em> the ballot numbers among the priests. How the Paxons did this is
-    not known; an obvious method is to make each ballot number a pair — an integer and a priest —
-    ordered lexicographically, so that</p>
+    <p>The Paxons derived the <em>preliminary protocol</em> from the requirement that conditions
+    <var>B</var>1(<var>ℬ</var>)–<var>B</var>3(<var>ℬ</var>) remain true, where <var>ℬ</var> was the
+    set of all ballots that had been or were being conducted. The definition of the protocol specified how the set <var>ℬ</var> changed,
+    but the set was never explicitly calculated. The Paxons referred to <var>ℬ</var> as a quantity
+    observed only by the gods, since it might never be known to any mortal.</p>
+    <p>Each ballot was initiated by a priest, who chose its number, decree, and quorum.
+    Each priest in the quorum then decided whether or not to vote in the ballot. The
+    rules determining how the initiator chose a ballot’s number, decree, and quorum,
+    and how a priest decided whether or not to vote in a ballot were derived directly
+    from the need to maintain <var>B</var>1(<var>ℬ</var>)–<var>B</var>3(<var>ℬ</var>).</p>
+    <p>To maintain <var>B</var>1, each ballot had to receive a unique number. By remembering
+    (with notes in his ledger) what ballots he had previously initiated, a priest could
+    easily avoid initiating two different ballots with the same number. To keep different
+    priests from initiating ballots with the same number, the set of possible ballot
+    numbers was partitioned among the priests. While it is not known how this was
+    done, an obvious method would have been to let a ballot number be a pair consisting
+    of an integer and a priest, using a lexicographical ordering, where</p>
   </div>
-  <div class="mathblock">(13, <span class="paxon rm" data-real="Jim Gray" data-note="Database systems legend; Turing Award 1998.">Γραϊ</span>)
-    &lt; (13, <span class="paxon rm" data-real="Bruce Lindsay" data-note="IBM database researcher, of System R fame.">Λινσεϊ</span>)
-    &lt; (15, <span class="paxon rm" data-real="Jim Gray" data-note="Database systems legend; Turing Award 1998.">Γραϊ</span>)</div>
+  <div class="mathblock">(13, Γρα˘ι) &lt; (13, Λινσ˘ει) &lt; (15, Γρα˘ι)</div>
   <div class="prose">
-    <p>since Γ came before Λ in the Paxon alphabet. In any case, every priest owned an unbounded
-    set of ballot numbers reserved for him alone.</p>
-    <p><strong>Maintaining <var>B</var>2</strong> — a ballot’s quorum was chosen to contain a
-    <span class="paxon" data-real="“majority set”" data-note="μαδζ∂ωριτϊσετ — say it aloud.">μαδζ∂ωριτϊσετ</span>
-    of priests. At first this meant a simple majority. Later it was observed that fat priests were
-    less mobile and lingered longer in the Chamber, so a
-    <span class="paxon" data-real="“majority set”" data-note="Weighted majorities are alive and well in modern quorum systems.">μαδζ∂ωριτϊσετ</span>
-    was redefined as any set of priests whose total <em>weight</em> exceeded half the total weight
-    of all priests. When a bloc of thin priests protested, actual weights gave way to symbolic
-    weights based on attendance records. The one property that mattered: <strong>any two majority
-    sets have at least one priest in common</strong>. So the initiating priest chose
-    <var>B</var><sub>qrm</sub> to be a majority set.</p>
-    <p><strong>Maintaining <var>B</var>3</strong> — before initiating a ballot with number
-    <var>b</var> and quorum <var>Q</var>, priest <var>p</var> had to learn
-    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>q</var>,&nbsp;<var>ℬ</var>) for every priest
-    <var>q</var> in <var>Q</var> — obtained by an exchange of messages. If
-    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>Q</var>,&nbsp;<var>ℬ</var>)<sub>dec</sub> was not
-    <span style="font-variant:small-caps">blank</span>, the ballot was <em>compelled</em> to carry
-    that decree; only if it was <span style="font-variant:small-caps">blank</span> could the ballot
-    carry any decree. Hence the first two steps of conducting a ballot, initiated by
-    <var>p</var>:<sup>10</sup></p>
+    <p>since Γ came before Λ in the Paxon alphabet. In any case, it is known that every
+    priest had an unbounded set of ballot numbers reserved for his use.</p>
+    <p>To maintain <var>B</var>2, a ballot’s quorum was chosen to contain a µαδζ∂ωριτ˘ιστ of
+    priests. Initially, µαδζ∂ωριτ˘ιστ just meant a simple majority. Later, it was observed that fat priests were less mobile and spent more time in the Chamber than
+    thin ones, so a µαδζ∂ωριτ˘ιστ was taken to mean any set of priests whose total
+    weight was more than half the total weight of all priests, rather than a simple majority of the priests. When a group of thin priests complained that this was unfair,
+    actual weights were replaced with symbolic weights based on a priest’s attendance
+    record. The primary requirement for a µαδζ∂ωριτ˘ιστ was that any two sets containing a µαδζ∂ωριτ˘ιστ of priests had at least one priest in common. To maintain
+    <var>B</var>2, the priest initiating a ballot <var>B</var> chose <var>B</var><sub>qrm</sub> to be a majority set.</p>
+    <p>Condition <var>B</var>3 requires that if <var>MaxVote</var>(<var>b</var>, <var>Q</var>, <var>ℬ</var>)<sub>dec</sub> is not equal to <span style="font-variant:small-caps">blank</span>, then
+    a ballot with number <var>b</var> and quorum <var>Q</var> must have decree <var>MaxVote</var>(<var>b</var>, <var>Q</var>, <var>ℬ</var>)<sub>dec</sub>. If
+    <var>MaxVote</var>(<var>b</var>, <var>Q</var>, <var>ℬ</var>)<sub>dec</sub> equals <span style="font-variant:small-caps">blank</span>, then the ballot can have any decree. To maintain <var>B</var>3(<var>ℬ</var>), before initiating a new ballot with ballot number <var>b</var> and quorum <var>Q</var>, a
+    priest <var>p</var> had to find <var>MaxVote</var>(<var>b</var>, <var>Q</var>, <var>ℬ</var>)<sub>dec</sub>. To do this, <var>p</var> had to find <var>MaxVote</var>(<var>b</var>, <var>q</var>, <var>ℬ</var>)
+    for each priest <var>q</var> in <var>Q</var>.</p>
+    <p>Recall that <var>MaxVote</var>(<var>b</var>, <var>q</var>, <var>ℬ</var>) is the vote with the largest ballot number less than
+    <var>b</var> among all the votes cast by <var>q</var>, or <var>null</var><sub><var>q</var></sub> if <var>q</var> did not vote in any ballot numbered
+    less than <var>b</var>. Priest <var>p</var> obtains <var>MaxVote</var>(<var>b</var>, <var>q</var>, <var>ℬ</var>) from <var>q</var> by an exchange of messages.
+    Therefore, the first two steps in the protocol for conducting a single ballot initiated
+    by <var>p</var> are:<sup>10</sup></p>
+    <p>(1) Priest <var>p</var> chooses a new ballot number <var>b</var> and sends a <em>NextBallot</em>(<var>b</var>) message to
+    some set of priests.</p>
   </div>
-
-  <div class="slab">
-    <div class="slab-head">The Preliminary Protocol — Six Steps of a Ballot</div>
-    <ol style="font-size:.95rem">
-      <li>Priest <var>p</var> chooses a new ballot number <var>b</var> and sends a
-        <em>NextBallot</em>(<var>b</var>) message to some set of priests.</li>
-      <li>A priest <var>q</var> answers a <em>NextBallot</em>(<var>b</var>) message by sending
-        <var>p</var> a <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) message, where <var>v</var>
-        is the vote with the largest ballot number less than <var>b</var> that <var>q</var> has
-        cast, or <var>null</var><sub><var>q</var></sub> if he has cast none.
-        <em>(He must consult the notes in the back of his ledger to remember his votes.)</em></li>
-      <li>After receiving <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>) messages from every
-        priest in some majority set <var>Q</var>, priest <var>p</var> initiates a new ballot with
-        number <var>b</var>, quorum <var>Q</var>, and decree <var>d</var> chosen to satisfy
-        <var>B</var>3. He records the ballot in the back of his ledger and sends a
-        <em>BeginBallot</em>(<var>b</var>,&nbsp;<var>d</var>) message to every priest in <var>Q</var>.</li>
-      <li>On receiving <em>BeginBallot</em>(<var>b</var>,&nbsp;<var>d</var>), priest <var>q</var>
-        decides whether to cast his vote in ballot <var>b</var>. (He may not, if that would break a
-        promise implied by a <em>LastVote</em> he has since sent for another ballot.) If he votes,
-        he sends <em>Voted</em>(<var>b</var>,&nbsp;<var>q</var>) to <var>p</var> and records the
-        vote in the back of his ledger.</li>
-      <li>If <var>p</var> receives <em>Voted</em>(<var>b</var>,&nbsp;<var>q</var>) from
-        <em>every</em> priest <var>q</var> in the quorum <var>Q</var>, he writes <var>d</var> in his
-        ledger and sends a <em>Success</em>(<var>d</var>) message to every priest.</li>
-      <li>On receiving <em>Success</em>(<var>d</var>), a priest enters decree <var>d</var> in his
-        ledger.</li>
-    </ol>
-  </div>
-  <aside class="fn"><b>10.</b> Priests <var>p</var> and <var>q</var> could be one and the same.
-  For simplicity the protocol has <var>p</var> send messages to himself in that case — though in
-  reality, a priest could talk to himself without hiring a messenger.</aside>
-
   <figure class="panel tilt-l">
     <div class="frame"><img src="images/nextballot_small.webp" alt="A priest dispatches messengers fanning out in all directions, each carrying a NextBallot scroll numbered 14."></div>
     <figcaption>STEP 1: PRIEST <i>p</i> CHOOSES BALLOT NUMBER <i>b</i> AND HIS MESSENGERS FAN OUT WITH <i>NextBallot(b)</i> SCROLLS.</figcaption>
   </figure>
+  <div class="prose">
+    <p>(2) A priest <var>q</var> responds to the receipt of a <em>NextBallot</em>(<var>b</var>) message by sending a
+    <em>LastVote</em>(<var>b</var>, <var>v</var>) message to <var>p</var>, where <var>v</var> is the vote with the largest ballot number
+    less than <var>b</var> that <var>q</var> has cast, or his null vote <var>null</var><sub><var>q</var></sub> if <var>q</var> did not vote in any ballot
+    numbered less than <var>b</var>.</p>
+  </div>
   <figure class="panel narrow tilt-r">
     <div class="frame"><img src="images/lastvote_small.webp" alt="An old priest consults the notes in the back of his ledger and hands a messenger his LastVote scroll."></div>
     <figcaption>STEP 2: EACH PRIEST CHECKS THE BACK OF HIS LEDGER AND REPLIES <i>LastVote(b, v)</i> — A SOLEMN PROMISE TO CAST NO NEW VOTE BELOW <i>b</i>.</figcaption>
   </figure>
-
   <div class="prose">
-    <p>When <var>q</var> sends <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>), the vote
-    <var>v</var> equals <var>MaxVote</var>(<var>b</var>,&nbsp;<var>q</var>,&nbsp;<var>ℬ</var>) —
-    but <var>ℬ</var> keeps growing as new ballots start and new votes are cast. Since <var>p</var>
-    will use <var>v</var> when choosing his decree, <var>B</var>3 demands that
-    <var>MaxVote</var>(<var>b</var>,&nbsp;<var>q</var>,&nbsp;<var>ℬ</var>) <em>not change</em>
-    afterward. So by sending <em>LastVote</em>(<var>b</var>,&nbsp;<var>v</var>), priest
-    <var>q</var> makes a <strong>promise</strong>: he will cast no new vote in any ballot numbered
-    between <var>v</var><sub>bal</sub> and <var>b</var>. (To keep the promise, he must record it in
-    his ledger.)</p>
-    <p>Step 3 adds a ballot <var>B</var> to <var>ℬ</var> — with
-    <var>B</var><sub>bal</sub>&nbsp;=&nbsp;<var>b</var>, <var>B</var><sub>qrm</sub>&nbsp;=&nbsp;<var>Q</var>,
-    <var>B</var><sub>vot</sub>&nbsp;=&nbsp;∅ (no one has voted yet), and
-    <var>B</var><sub>dec</sub>&nbsp;=&nbsp;<var>d</var>. In step 4, a priest deciding to vote adds
-    himself to <var>B</var><sub>vot</sub>.</p>
-    <p>Crucially, <strong>every step of the protocol is optional</strong>. A priest may ignore a
-    <em>NextBallot</em> message; he may decline to vote in step 4 even if no promise forbids it.
-    Skipping an action can stall progress, but it can never cause inconsistency, because it cannot
-    make <var>B</var>1–<var>B</var>3 false. And since losing a message only <em>prevents</em>
-    actions, message loss cannot hurt consistency either. <em>Consistency survives priests
-    wandering off and scrolls sinking with their ships.</em></p>
-    <p>Duplicated messages are equally harmless: receiving a message twice can only cause an
-    action to be repeated, and every action except step 3 is idempotent — sending several
-    <em>Voted</em>(<var>b</var>,&nbsp;<var>q</var>) messages is no different from sending one. Step
-    3’s repetition is prevented by the note made in the back of the ledger when it executes.</p>
-    <p>In step 3, when the decree <var>d</var> is dictated by <var>B</var>3, it may well already
-    be written in the ledger of some priest — a priest who need not even be in the quorum
-    <var>Q</var>, having long since left the Chamber. <strong>This is why step 3 permits no greater
-    freedom in choosing <var>d</var>: consistency itself is at stake.</strong></p>
+    <p>Priest <var>q</var> must use notes in the back of his ledger to remember what votes he had
+    previously cast.</p>
+    <p>When <var>q</var> sends the <em>LastVote</em>(<var>b</var>, <var>v</var>) message, <var>v</var> equals <var>MaxVote</var>(<var>b</var>, <var>q</var>, <var>ℬ</var>). But the
+    set <var>ℬ</var> of ballots changes as new ballots are initiated and votes are cast. Since priest
+    <var>p</var> is going to use <var>v</var> as the value of <var>MaxVote</var>(<var>b</var>, <var>q</var>, <var>ℬ</var>) when choosing a decree, to keep
+    <var>B</var>3(<var>ℬ</var>) true it is necessary that <var>MaxVote</var>(<var>b</var>, <var>q</var>, <var>ℬ</var>) not change after <var>q</var> has sent the
+    <em>LastVote</em>(<var>b</var>, <var>v</var>) message. To keep <var>MaxVote</var>(<var>b</var>, <var>q</var>, <var>ℬ</var>) from changing, <var>q</var> must cast no
+    new votes with ballot numbers between <var>v</var><sub>bal</sub> and <var>b</var>. By sending the <em>LastVote</em>(<var>b</var>, <var>v</var>)
+    message, <var>q</var> is promising not to cast any such vote. (To keep this promise, <var>q</var> must
+    record the necessary information in his ledger.)</p>
+    <p>The next two steps in the balloting protocol (begun in step 1 by priest <var>p</var>) are:</p>
+    <p>(3) After receiving a <em>LastVote</em>(<var>b</var>, <var>v</var>) message from every priest in some majority
+    set <var>Q</var>, priest <var>p</var> initiates a new ballot with number <var>b</var>, quorum <var>Q</var>, and decree <var>d</var>,
+    where <var>d</var> is chosen to satisfy <var>B</var>3. He then records the ballot in the back of his
+    ledger and sends a <em>BeginBallot</em>(<var>b</var>, <var>d</var>) message to every priest in <var>Q</var>.</p>
   </div>
-
   <figure class="panel">
     <div class="frame"><img src="images/voting_small.webp" alt="Priests cast bronze tokens and messengers rush Voted scrolls back to the tallying priest."></div>
     <figcaption>STEPS 3–5: <i>BeginBallot</i> GOES OUT, THE QUORUM VOTES, AND <i>Voted</i> SCROLLS RACE BACK TO BE TALLIED.</figcaption>
   </figure>
+  <div class="prose">
+    <p>(4) Upon receipt of the <em>BeginBallot</em>(<var>b</var>, <var>d</var>) message, priest <var>q</var> decides whether or not
+    to cast his vote in ballot number <var>b</var>. (He may not cast the vote if doing so
+    would violate a promise implied by a <em>LastVote</em>(<var>b′</var>, <var>v′</var>) message he has sent for
+    some other ballot.) If <var>q</var> decides to vote for ballot number <var>b</var>, then he sends a
+    <em>Voted</em>(<var>b</var>, <var>q</var>) message to <var>p</var> and records the vote in the back of his ledger.</p>
+    <p>The execution of step 3 is considered to add a ballot <var>B</var> to <var>ℬ</var>, where <var>B</var><sub>bal</sub> = <var>b</var>,
+    <var>B</var><sub>qrm</sub> = <var>Q</var>, <var>B</var><sub>vot</sub> = ∅ (no one has yet voted in this ballot), and <var>B</var><sub>dec</sub> = <var>d</var>. In step 4,
+    if priest <var>q</var> decides to vote in the ballot, then executing that step is considered to
+    change the set <var>ℬ</var> of ballots by adding <var>q</var> to the set <var>B</var><sub>vot</sub> of voters in the ballot <var>B</var> ∈ <var>ℬ</var>.</p>
+    <p>A priest has the option not to vote in step 4, even if casting a vote would not
+    violate any previous promise. In fact, all the steps in this protocol are optional.
+    For example, a priest <var>q</var> can ignore a <em>NextBallot</em>(<var>b</var>) message instead of executing
+    step 2. Failure to take an action can prevent progress, but it cannot cause any
+    inconsistency because it cannot make <var>B</var>1(<var>ℬ</var>)–<var>B</var>3(<var>ℬ</var>) false. Since the only effect not
+    receiving a message can have is to prevent an action from happening, message loss
+    also cannot cause inconsistency. Thus, the protocol guarantees consistency even if
+    priests leave the chamber or messages are lost.</p>
+    <p>Receiving multiple copies of a message can cause an action to be repeated. Except
+    in step 3, performing the action a second time has no effect. For example, sending
+    several <em>Voted</em>(<var>b</var>, <var>q</var>) messages in step 4 has the same effect as sending just one.
+    The repetition of step 3 is prevented by using the entry made in the back of the
+    ledger when it is executed. Thus, the consistency condition is maintained even if a
+    messenger delivers the same message several times.</p>
+    <p>Steps 1–4 describe the complete protocol for initiating a ballot and voting on it.
+    All that remains is to determine the results of the balloting and announce when a
+    decree has been selected. Recall that a ballot is successful iff every priest in the
+    quorum has voted. The decree of a successful ballot is the one chosen by the Synod.
+    The rest of the protocol is:</p>
+    <p>(5) If <var>p</var> has received a <em>Voted</em>(<var>b</var>, <var>q</var>) message from every priest <var>q</var> in <var>Q</var> (the quorum
+    for ballot number <var>b</var>), then he writes <var>d</var> (the decree of that ballot) in his ledger
+    and sends a <em>Success</em>(<var>d</var>) message to every priest.</p>
+    <p>(6) Upon receiving a <em>Success</em>(<var>d</var>) message, a priest enters decree <var>d</var> in his ledger.</p>
+  </div>
   <figure class="panel tilt-l">
     <div class="frame"><img src="images/success_small.webp" alt="Celebration as the decree is passed and Success scrolls stream out to every priest."></div>
     <figcaption>STEP 6: <i>Success(d)</i> TO ALL — EVERY PRIEST WRITES THE DECREE IN HIS LEDGER. THE SYNOD HAS CHOSEN!</figcaption>
   </figure>
+  <div class="prose">
+    <p>Steps 1–6 describe how an individual ballot is conducted. The preliminary protocol
+    allows any priest to initiate a new ballot at any time. Each step maintains <var>B</var>1(<var>ℬ</var>)–
+    <var>B</var>3(<var>ℬ</var>), so the entire protocol also maintains these conditions. Since a priest enters
+    a decree in his ledger only if it is the decree of a successful ballot, Theorem 1 implies
+    that the priests’ ledgers are consistent. The protocol does not address the question
+    of progress.</p>
+    <p>In step 3, if the decree <var>d</var> is determined by condition <var>B</var>3, then it is possible that
+    this decree is already written in the ledger of some priest. That priest need not be
+    in the quorum <var>Q</var>; he could have left the Chamber. Thus, consistency would not be
+    guaranteed if step 3 allowed any greater freedom in choosing <var>d</var>.</p>
+  </div>
+
+  <aside class="fn"><b>10.</b> Priests <var>p</var> and <var>q</var> could be the same. For simplicity, the protocol is described with <var>p</var> sending messages to himself in this case. In reality, a priest could talk to himself without the use of messengers.</aside>
 
   <h3 class="sect">2.3 · The Basic Protocol</h3>
   <div class="prose">
@@ -1134,10 +1035,10 @@ footer.colophon{
     staying in the Chamber, was the one initiating ballots.</p>
   </div>
   <aside class="fn"><b>11.</b> I assume a value of 30 seconds for the
-  <span class="paxon" data-real="“jiffy”" data-note="δζ∂ιφι — the Paxon unit of time. Say it fast.">δζ∂ιφι</span>,
+  <span class="paxon" data-real="“jiffy”" data-note="δζ∂ιφ˘ι — the Paxon unit of time. Say it fast.">δζ∂ιφ˘ι</span>,
   the Paxon unit of time — a value within the range determined from studies of hourglass shards.
   Priests’ reaction time was so long because each had to respond to every message within 7 minutes
-  (14 <span class="paxon" data-real="jiffies" data-note="δζ∂ιφι, plural.">δζ∂ιφι</span>), even when
+  (14 <span class="paxon" data-real="jiffies" data-note="δζ∂ιφ˘ι, plural.">δζ∂ιφ˘ι</span>), even when
   several arrived at once.</aside>
   <figure class="panel narrow tilt-r">
     <div class="frame"><img src="images/hourglass_small.webp" alt="A brass hourglass in the foreground; behind it, the Chamber doors are barred with a majority of priests inside."></div>
@@ -1199,49 +1100,17 @@ footer.colophon{
 
   <h3 class="sect">3.1 · The Protocol</h3>
   <div class="prose">
-    <p>When Parliament was established, its protocol was derived from the Synod protocol. Instead
-    of choosing one decree, the Parliament had to pass a <em>series</em> of numbered decrees. As in
-    the Synod, a president was elected; anyone wanting a decree passed would tell the president,
-    who assigned it a number and attempted to pass it. Logically, Parliament ran a
-    <strong>separate instance of the complete Synod protocol for every decree number</strong> — but
-    with a single president elected for all instances at once, performing the first two steps of
-    the protocol <em>just once</em>.</p>
-    <p>The key observation: in the Synod protocol, the president does not choose the decree or the
-    quorum until step 3. So a newly elected president <var>p</var> can send a <em>single</em>
-    message serving as the <em>NextBallot</em>(<var>b</var>) message of <strong>all</strong>
-    instances — one per decree number, infinitely many. A legislator <var>q</var> can reply with a
-    single message serving as the <em>LastVote</em> messages of all instances; it carries only a
-    finite amount of information, since <var>q</var> can have voted in only finitely many
-    instances.</p>
-    <p>Once the new president hears from a majority set, he is ready to perform step 3 in every
-    instance. For some finite number of instances (decree numbers), condition <var>B</var>3 forces
-    a decree upon him — he performs step 3 for each of those immediately, trying to pass those
-    forced decrees. Thereafter, whenever a citizen asks him to pass a decree, he picks the
-    lowest-numbered decree he is still free to choose and runs step 3 of that instance for it.</p>
-    <p>Two refinements led to the actual Paxon Parliament’s protocol:</p>
-    <p><strong>Skip what is already known.</strong> There is no reason to run the Synod protocol
-    for a decree number whose outcome is already written down. So a newly elected president
-    <var>p</var>, whose ledger already holds all decrees numbered up through <var>n</var>, sends a
-    <em>NextBallot</em>(<var>b</var>,&nbsp;<var>n</var>) message that acts as a
-    <em>NextBallot</em>(<var>b</var>) in all instances for decree numbers above <var>n</var>. In
-    his reply, legislator <var>q</var> informs <var>p</var> of every decree above <var>n</var>
-    already in <var>q</var>’s ledger (besides the usual <em>LastVote</em> information for decrees
-    not in his ledger), and asks <var>p</var> to send him any decrees numbered ≤&nbsp;<var>n</var>
-    that <em>he</em> is missing.</p>
-    <p><strong>Fill the gaps.</strong> Suppose decrees 125 and 126 are introduced late on a Friday
-    afternoon; 126 is passed and written in a ledger or two, 125 gets nowhere — and everyone goes
-    home for the weekend. Monday morning,
-    <span class="paxon" data-real="Cynthia Dwork" data-note="Of Dwork, Lynch &amp; Stockmeyer — consensus under partial synchrony, cited by this paper.">Δφωρκ</span>
-    is elected the new president. She learns of decree 126, but nothing of 125: the old president
-    and everyone who voted for it are still out of the Chamber. Her ledger has a gap. Passing an
-    important new decree as number 125 would make it appear <em>earlier in the books</em> than
-    decree 126, passed the week before — possibly confusing citizens who had acted on
-    knowledge of 126. Instead, Δφωρκ fills the gap with the traditional do-nothing decree:</p>
+    <p>When Parliament was established, a protocol to satisfy its consistency and progress requirements was derived from the Synod protocol. The derivation and properties of the original parliamentary protocol are described in Sections 3.1 and 3.2. Section 3.3 discusses the further evolution of the protocol.</p>
+    <p>Instead of passing just one decree, the Paxon Parliament had to pass a series of numbered decrees. As in the Synod protocol, a president was elected. Anyone who wanted a decree passed would inform the president, who would assign a number to the decree and attempt to pass it. Logically, the parliamentary protocol used a separate instance of the complete Synod protocol for each decree number. However, a single president was selected for all these instances, and he performed the first two steps of the protocol just once.</p>
+    <p>The key to deriving the parliamentary protocol is the observation that, in the Synod protocol, the president does not choose the decree or the quorum until step 3. A newly elected president <var>p</var> can send to some set of legislators a single message that serves as the <em>NextBallot</em>(<var>b</var>) message for all instances of the Synod protocol. (There are an infinite number of instances—one for each decree number.) A legislator <var>q</var> can reply with a single message that serves as the <em>LastVote</em> messages for step 2 of all instances of the Synod protocol. This message contains only a finite amount of information, since <var>q</var> can have voted in only a finite number of instances.</p>
+    <p>When the new president has received a reply from every member of a majority set, he is ready to perform step 3 for every instance of the Synod protocol. For some finite number of instances (decree numbers), the choice of decree in step 3 will be determined by <var>B</var>3. The president immediately performs step 3 for each of those instances to try passing these decrees. Then, whenever he receives a request to pass a decree, he chooses the lowest-numbered decree that he is still free to choose, and he performs step 3 for that decree number (instance of the Synod protocol) to try to pass the decree.</p>
+    <p>The following modifications to this simple protocol lead to the actual Paxon Parliament’s protocol.</p>
+    <p>—There is no reason to go through the Synod protocol for a decree number whose outcome is already known. Therefore, if a newly elected president <var>p</var> has all decrees with numbers less than or equal to <var>n</var> written in his ledger, then he sends a <em>NextBallot</em>(<var>b</var>,&nbsp;<var>n</var>) message that serves as a <em>NextBallot</em>(<var>b</var>) message in all instances of the Synod protocol for decree numbers larger than <var>n</var>. In his response to this message, legislator <var>q</var> informs <var>p</var> of all decrees numbered greater than <var>n</var> that already appear in <var>q</var>’s ledger (in addition to sending the usual <em>LastVote</em> information for decrees not in his ledger), and he asks <var>p</var> to send him any decrees numbered <var>n</var> or less that are not in his ledger.</p>
+    <p>—Suppose decrees 125 and 126 are introduced late Friday afternoon, decree 126 is passed and is written in one or two ledgers, but before anything else happens, the legislators all go home for the weekend. Suppose also that the following Monday, <span class="paxon" data-real="Cynthia Dwork" data-note="Of Dwork, Lynch &amp; Stockmeyer — consensus under partial synchrony, cited by this paper.">Δφωρκ</span> is elected the new president and learns about decree 126, but she has no knowledge of decree 125 because the previous president and all legislators who had voted for it are still out of the Chamber. She will hold a ballot that passes decree 126, which leaves a gap in the ledgers. Assigning number 125 to a new decree would cause it to appear earlier in the ledger than decree 126, which had been passed the previous week. Passing decrees out of order in this way might cause confusion—for example, if the citizen who proposed the new decree did so because he knew decree 126 had already passed. Instead, Δφωρκ would attempt to pass</p>
   </div>
   <div class="decree"><b>125:</b> The ides of February is national olive day</div>
   <div class="prose">
-    <p>In general, a new president filled every gap in his ledger by attempting to pass the
-    “olive-day” decree — a decree that made absolutely no difference to anyone in Paxos.</p>
+    <p>a traditional decree that made absolutely no difference to anyone in Paxos. In general, a new president would fill any gaps in his ledger by passing the “olive-day” decree.</p>
   </div>
 
   <!-- ========= WIDGET 3: LEDGER GAPS ========= -->
@@ -1261,26 +1130,14 @@ footer.colophon{
   </div>
 
   <div class="prose">
-    <p>The consistency and progress of the parliamentary protocol follow immediately from those of
-    the Synod protocol it was built on. To our knowledge, the Paxons never bothered writing a
-    precise description of the parliamentary protocol — it was so easily derived from the Synod
-    protocol.</p>
+    <p>The consistency and progress properties of the parliamentary protocol follow immediately from the corresponding properties of the Synod protocol from which it was derived. To our knowledge, the Paxons never bothered writing a precise description of the parliamentary protocol because it was so easily derived from the Synod protocol.</p>
   </div>
 
   <h3 class="sect">3.2 · Properties of the Protocol</h3>
   <h4 class="subsect">3.2.1 · The Ordering of Decrees</h4>
   <div class="prose">
-    <p>Balloting could run concurrently for many decree numbers, with ballots initiated by
-    different legislators — each believing himself president. We cannot say precisely in what
-    order decrees were passed, especially without knowing how presidents were selected. But one
-    ordering property can be deduced.</p>
-    <p>A decree was <em>proposed</em> when the president chose it in step 3 of its instance; it was
-    <em>passed</em> when first written in a ledger. Before proposing any new decree, a president
-    had to learn from a majority set what decrees they had voted for — and any decree already
-    passed had been voted for by at least one member of every majority set. So a president
-    learned of all previously passed decrees before proposing a new one. He would not fill a gap
-    with an <em>important</em> decree (only with olive-day decrees), and he would not propose
-    decrees out of order — hence the <em>decree-ordering property</em>:</p>
+    <p>Balloting could take place concurrently for many different decree numbers, with ballots initiated by different legislators—each thinking he was president when he initiated the ballot. We cannot say precisely in what order decrees would be passed, especially without knowing how a president was selected. However, there is one important property about the ordering of decrees that can be deduced.</p>
+    <p>A decree was said to to be <em>proposed</em> when it was chosen by the president in step 3 of the corresponding instance of the Synod protocol. The decree was said to be <em>passed</em> when it was written for the first time in a ledger. Before a president could propose any new decrees, he had to learn from all the members of a majority set what decrees they had voted for. Any decree that had already been passed must have been voted for by at least one legislator in the majority set. Therefore, the president must have learned about all previously passed decrees before initiating any new decree. The president would not fill a gap in the ledgers with an important decree—that is, with any decree other than the “olive-day” decree. He would also not propose decrees out of order. Therefore, the protocol satisfied the following <em>decree-ordering property</em>.</p>
   </div>
   <div class="slab">
     <div class="slab-head">Decree-Ordering Property</div>
@@ -1291,25 +1148,18 @@ footer.colophon{
 
   <h4 class="subsect">3.2.2 · Behind Closed Doors</h4>
   <div class="prose">
-    <p>Whatever the mysteries of choosing a president, we know exactly how Parliament ran once a
-    president was in place and no one was entering or leaving. On receiving a request to pass a
-    decree — from a citizen directly, or relayed by another legislator — the president assigned it
-    a number and passed it with this exchange (numbers refer to Synod-protocol steps):</p>
+    <p>Although we don’t know the details involved in choosing a new president, we do know exactly how Parliament functioned when the president had been chosen and no one was entering or leaving the Chamber. Upon receiving a request to pass a decree—either directly from a citizen or relayed from another legislator—the president assigned the decree a number and passed it with the following exchange of messages. (The numbers refer to the corresponding steps in the Synod protocol.)</p>
     <ol start="3" style="max-width:60ch; margin:1em auto">
       <li>The president sent a <em>BeginBallot</em> message to each legislator in a quorum.</li>
       <li>Each legislator in the quorum sent a <em>Voted</em> message to the president.</li>
       <li>The president sent a <em>Success</em> message to every legislator.</li>
     </ol>
-    <p>That is <strong>three message delays and about 3<var>N</var> messages</strong>, for a
-    parliament of <var>N</var> legislators and a quorum of about <var>N</var>/2. And when
-    Parliament was busy, the president would combine the <em>BeginBallot</em> for one decree with
-    the <em>Success</em> for a previous one — only <strong>2<var>N</var> messages per decree</strong>.</p>
+    <p>This is a total of three message delays and about 3<var>N</var> messages, assuming a parliament of <var>N</var> legislators and a quorum of about <var>N</var>/2. Moreover, if Parliament was busy, the president would combine the <em>BeginBallot</em> message for one decree with the <em>Success</em> message for a previous one, for a total of only 2<var>N</var> messages per decree.</p>
   </div>
 
   <h3 class="sect">3.3 · Further Developments</h3>
   <div class="prose">
-    <p>Governing the island turned out to be more complicated than the Paxons expected, and a
-    series of problems forced changes to the protocol. The most important are described below.</p>
+    <p>Governing the island turned out to be a more complex task than the Paxons realized. A number of problems arose whose solutions required changes to the protocol. The most important of these changes are described below.</p>
   </div>
 
   <h4 class="subsect">3.3.1 · Picking a President</h4>
@@ -1318,85 +1168,45 @@ footer.colophon{
     <figcaption>LEGISLATOR Ωκι RETURNS FROM SIX MONTHS ABROAD… AND IS INSTANTLY MADE PRESIDENT, ALPHABETICALLY. PARLIAMENT HALTS WHILE HE COPIES SIX MONTHS OF DECREES.</figcaption>
   </figure>
   <div class="prose">
-    <p>The president was originally chosen the Synod way — pure alphabetical order. Thus when
-    legislator <span class="paxon" data-real="Brian Oki" data-note="Co-inventor (with Barbara Liskov) of Viewstamped Replication — independently equivalent to Paxos, as Marzullo notes at the end of Section 4.">Ωκι</span>
-    returned from a six-month vacation, he was instantly made president — knowing nothing of what
-    had happened in his absence. Parliamentary business stopped dead while Ωκι, a slow writer,
-    laboriously copied six months of decrees to bring his ledger up to date.</p>
-    <p>The incident sparked a debate on presidential selection. Some urged that once a legislator
-    became president, he should stay president until he left the Chamber. An influential bloc of
-    citizens wanted the <em>richest</em> legislator in the Chamber as president, since he could
-    hire scribes and servants to help with presidential duties — arguing that once a rich
-    legislator had caught his ledger up, there was no reason not to let him assume the
-    presidency. Others countered that the most <em>upstanding</em> citizen should preside,
-    regardless of wealth — “upstanding” presumably meaning less likely to be dishonest, though no
-    Paxon would publicly admit official malfeasance was possible. The outcome of the debate is
-    unknown; no record survives of the presidential selection protocol ultimately used.</p>
+    <p>The president of parliament was originally chosen by the method that had been used in the Synod, which was based purely on the alphabetical ordering of names. Thus, when legislator <span class="paxon" data-real="Brian Oki" data-note="Co-inventor (with Barbara Liskov) of Viewstamped Replication — independently equivalent to Paxos, as Marzullo notes at the end of Section 4.">Ωκι</span> returned from a six-month vacation, he was immediately made president—even though he had no idea what had happened in his absence. Parliamentary activity came to a halt while Ωκι, who was a slow writer, laboriously copied six months worth of decrees to bring his ledger up to date.</p>
+    <p>This incident led to a debate about the best way to choose a president. Some Paxons urged that once a legislator became president, he should remain president until he left the Chamber. An influential group of citizens wanted the richest legislator in the Chamber to be president, since he could afford to hire more scribes and other servants to help him with the presidential duties. They argued that once a rich legislator had brought his ledger up to date, there was no reason for him not to assume the presidency. Others, however, argued that the most upstanding citizen should be made president, regardless of wealth. Upstanding probably meant less likely to be dishonest, although no Paxon would publicly admit the possibility of official malfeasance. Unfortunately, the outcome of this debate is not known; no record exists of the presidential selection protocol that was ultimately used.</p>
   </div>
 
   <h4 class="subsect">3.3.2 · Long Ledgers</h4>
   <div class="prose">
-    <p>As the years passed and decrees accumulated, finding the current olive tax — or what color
-    goat could legally be sold — meant poring over an ever longer list. A legislator returning
-    from a long voyage faced a mountain of copying. Eventually legislators converted their
-    ledgers from decree lists into <strong>law books</strong> holding just the current state of the
-    law, annotated with the number of the last decree reflected in that state.</p>
-    <p>To learn the olive tax one now looked in the law book under “taxes.” If a legislator’s law
-    book was complete through decree 1298 and he learned decree 1299 set the olive tax to
-    6&nbsp;drachmas per ton, he simply updated the olive-tax entry and noted his book was complete
-    through 1299. If he then learned of decree 1302, he would hold it in the back of the ledger
-    until 1300 and 1301 arrived, and only then incorporate it.</p>
-    <p>To let a briefly absent legislator catch up without copying an entire law book, legislators
-    also kept the past week’s decrees in the back of the book. They could have kept this list on a
-    slip of paper, but it proved convenient to enter decrees in the back of the ledger as they
-    passed and update the law book only two or three times a week.</p>
+    <p>As the years progressed and Parliament passed more and more decrees, Paxons had to pore over an ever longer list of decrees to find the current olive tax or what color goat could be sold. A legislator who returned to the Chamber after an extended voyage had to do quite a bit of copying to bring his ledger up to date. Eventually, the legislators were forced to convert their ledgers from lists of decrees into law books that contained only the current state of the law and the number of the last decree whose passage was reflected in that state.</p>
+    <p>To learn the current olive tax, one looked in the law book under “taxes”; to learn what color goat could be sold, one looked under “mercantile law”. If a legislator’s ledger contained the law through decree 1298 and he learned that decree 1299 set the olive tax to 6 drachmas per ton, he just changed the entry for the olive-tax law and noted that his ledger was complete through decree 1299. If he then learned about decree 1302, he would write it down in the back of the ledger and wait until he learned about decrees 1300 and 1301 before incorporating decree 1302 into the law book.</p>
+    <p>To enable a legislator who had been gone for a short time to catch up without copying the entire law book, legislators kept a list of the past week’s decrees in the back of the book. They could have kept this list on a slip of paper, but it was convenient for a legislator to enter decrees in the back of the ledger as they were passed and update the law book only two or three times a week.</p>
   </div>
 
   <h4 class="subsect">3.3.3 · Bureaucrats</h4>
   <figure class="panel tilt-r">
     <div class="frame"><img src="images/cheese_small.webp" alt="Two rival cheese inspectors stamp the same wheel of cheese FIT and UNFIT while a merchant despairs."></div>
-    <figcaption>TWO CHEESE INSPECTORS AT ONCE! Δίκστρα SAYS “UNFIT,” Γωυδα SAYS “FIT,” AND THE CHEESE MARKET DESCENDS INTO CHAOS.</figcaption>
+    <figcaption>TWO CHEESE INSPECTORS AT ONCE! Δ˘ικστρα SAYS “UNFIT,” Γωυδα SAYS “FIT,” AND THE CHEESE MARKET DESCENDS INTO CHAOS.</figcaption>
   </figure>
   <div class="prose">
-    <p>As Paxos prospered, legislators grew too busy for the details of government, and a
-    bureaucracy was established: instead of decreeing whether each lot of cheese was fit for
-    sale, Parliament passed a decree appointing a <em>cheese inspector</em> to decide.</p>
-    <p>Selecting bureaucrats proved trickier than expected. Parliament made
-    <span class="paxon" data-real="Edsger W. Dijkstra" data-note="Famously exacting — of course he was too strict a cheese inspector. His 1974 self-stabilization paper is cited in Section 3.3.5.">Δίκστρα</span>
-    the first cheese inspector. Months later, merchants complained he was too strict, rejecting
-    perfectly good cheese, and Parliament replaced him by passing</p>
+    <p>As Paxos prospered, legislators became very busy. Parliament could no longer handle all details of government, so a bureaucracy was established. Instead of passing a decree to declare whether each lot of cheese was fit for sale, Parliament passed a decree appointing a cheese inspector to make those decisions.</p>
+    <p>It soon became evident that selecting bureaucrats was not as simple as it first seemed. Parliament passed a decree making <span class="paxon" data-real="Edsger W. Dijkstra" data-note="Famously exacting — of course he was too strict a cheese inspector. His 1974 self-stabilization paper is cited in Section 3.3.5.">Δ˘ικστρα</span> the first cheese inspector. After some months, merchants complained that Δ˘ικστρα was too strict and was rejecting perfectly good cheese. Parliament then replaced him by passing the decree</p>
   </div>
   <div class="decree"><b>1375:</b> <span class="paxon" data-real="Mohamed Gouda" data-note="Distributed-computing researcher — and, conveniently, a cheese.">Γωυδα</span> is the new cheese inspector</div>
   <div class="prose">
-    <p>But Δίκστρα paid no attention to what Parliament did, so he did not learn of the decree
-    right away — and for a while both Δίκστρα and Γωυδα inspected cheese, issuing conflicting
-    rulings. To prevent such confusion, the Paxons had to guarantee that <strong>a position was held
-    by at most one bureaucrat at a time</strong>. The solution: the president stamped each decree
-    with the time and date it was proposed. A decree appointing Δίκστρα might read</p>
+    <p>But Δ˘ικστρα did not pay close attention to what Parliament did, so he did not learn of this decree right away. There was a period of confusion in the cheese market when both Δ˘ικστρα and Γωυδα were inspecting cheese and making conflicting decisions.</p>
+    <p>To prevent such confusion, the Paxons had to guarantee that a position could be held by at most one bureaucrat at any time. To do this, a president included as part of each decree the time and date when it was proposed. A decree making Δ˘ικστρα the cheese inspector might read</p>
   </div>
-  <div class="decree"><b>2716:</b> 8:30 15 Jan 72 — Δίκστρα is cheese inspector for 3 months</div>
+  <div class="decree"><b>2716:</b> 8:30 15 Jan 72 — Δ˘ικστρα is cheese inspector for 3 months</div>
   <div class="prose">
-    <p>declaring his term to begin at 8:30 on 15 January <em>or</em> when the previous inspector’s
-    term ended, whichever came later — and to end at 8:30 on 15 March, unless he resigned earlier
-    by having the president pass a decree such as</p>
+    <p>This declares his term to begin either at 8:30 on 15 January or when the previous inspector’s term ended—whichever was later. His term would end at 8:30 on 15 March, unless he explicitly resigned by asking the president to pass a decree like</p>
   </div>
-  <div class="decree"><b>2834:</b> 9:15 3 Mar 72 — Δίκστρα resigns as cheese inspector</div>
+  <div class="decree"><b>2834:</b> 9:15 3 Mar 72 — Δ˘ικστρα resigns as cheese inspector</div>
   <div class="prose">
-    <p>Terms were kept short so a bureaucrat who left the island could be replaced quickly;
-    Parliament simply extended the term of anyone doing a satisfactory job. A bureaucrat needed to
-    tell time to know if he currently held his post. Mechanical clocks were unknown on Paxos, but
-    Paxons could read the sun or the stars to within 15 minutes.<sup>13</sup> If Δίκστρα’s term
-    began at 8:30, he would not start inspecting cheese until his celestial observations showed
-    8:45.</p>
-    <p>This scheme plainly works if higher-numbered decrees always carry later proposal times.
-    But what if Parliament passed</p>
+    <p>A bureaucrat was appointed for a short term, so he could be replaced quickly—for example, if he left the island. Parliament would pass a decree to extend the bureaucrat’s term if he was doing a satisfactory job.</p>
+    <p>A bureaucrat needed to tell time to determine if he currently held a post. Mechanical clocks were unknown on Paxos, but Paxons could tell time accurately to within 15 minutes by the position of the sun or the stars.<sup>13</sup> If Δ˘ικστρα’s term began at 8:30, he would not start inspecting cheese until his celestial observations indicated that it was 8:45.</p>
+    <p>It is easy to make this method of appointing bureaucrats work if higher-numbered decrees always have later proposal times. But what if Parliament passed the decrees</p>
   </div>
   <div class="decree"><b>2854:</b> 9:45 9 Apr 78 — <span class="paxon" data-real="Nissim Francez" data-note="Programming-languages and verification researcher.">Φρανσεζ</span> is wine taster for 2 months</div>
-  <div class="decree"><b>2855:</b> 9:20 9 Apr 78 — <span class="paxon" data-real="Amir Pnueli" data-note="Brought temporal logic to computer science; Turing Award 1996.">Πνυελϊ</span> is wine taster for 1 month</div>
+  <div class="decree"><b>2855:</b> 9:20 9 Apr 78 — <span class="paxon" data-real="Amir Pnueli" data-note="Brought temporal logic to computer science; Turing Award 1996.">Πνυελ˘ι</span> is wine taster for 1 month</div>
   <div class="prose">
-    <p>— proposal times running <em>backward</em>, courtesy of two legislators who each thought he
-    was president? Such inversions are impossible, because the protocol satisfies this
-    property:</p>
+    <p>that were proposed between 9:30 and 9:35 by different legislators who both thought they were president? Such out-of-order proposal times are easily prevented because the parliamentary protocol satisfies the following property.</p>
   </div>
   <div class="slab">
     <p class="stmt">If two decrees are passed by different presidents, then one of the presidents
@@ -1417,25 +1227,15 @@ footer.colophon{
   <h4 class="subsect">3.3.4 · Learning the Law</h4>
   <figure class="panel tilt-l">
     <div class="frame"><img src="images/goats_small.webp" alt="A farmer presents black goats to a refusing merchant while a legislator shrugs over his out-of-date ledger."></div>
-    <figcaption>THE LAW SAYS BLACK GOATS MAY BE SOLD — BUT LEGISLATOR Σπωκμεϊρ’S LEDGER STOPS AT DECREE 76, AND THE DEAL COLLAPSES.</figcaption>
+    <figcaption>THE LAW SAYS BLACK GOATS MAY BE SOLD — BUT LEGISLATOR Στωκμ˘ιρ’S LEDGER STOPS AT DECREE 76, AND THE DEAL COLLAPSES.</figcaption>
   </figure>
   <div class="prose">
-    <p>Citizens, not just legislators, needed to learn the law. At first the Paxons assumed a
-    citizen could simply read any legislator’s ledger — until this incident. For centuries it had
-    been legal to sell only white goats. A farmer named
-    <span class="paxon" data-real="Danny Dolev" data-note="Distributed-computing researcher; Byzantine agreement and clock synchronization.">Δωλεφ</span>
-    got Parliament to pass the decree</p>
+    <p>In addition to requesting the passage of decrees, ordinary citizens needed to inquire about the current law of the land. The Paxons at first thought that a citizen could simply examine the ledger of any legislator, but the following incident demonstrated that a more sophisticated approach was needed. For centuries, it had been legal to sell only white goats. A farmer named <span class="paxon" data-real="Danny Dolev" data-note="Distributed-computing researcher; Byzantine agreement and clock synchronization.">Δωλεφ</span> got Parliament to pass the decree</p>
   </div>
   <div class="decree"><b>77:</b> The sale of black goats is permitted</div>
   <div class="prose">
-    <p>and told his goatherd to sell some black goats to a merchant named
-    <span class="paxon" data-real="Dale Skeen" data-note="Of three-phase commit fame — see Section 4.2.">Σκεεν</span>.
-    A law-abiding man, Σκεεν asked legislator
-    <span class="paxon" data-real="Larry Stockmeyer" data-note="Complexity theorist; the S of Dwork–Lynch–Stockmeyer.">Σπωκμεϊρ</span>
-    whether the sale would be legal. But Σπωκμεϊρ had been away from the Chamber and his ledger
-    stopped short of decree 77 — so he advised that the sale would be illegal, and Σκεεν refused
-    the goats.</p>
-    <p>The incident led to the <em>monotonicity condition</em> on inquiries about the law:</p>
+    <p>Δωλεφ then instructed his goatherd to sell some black goats to a merchant named <span class="paxon" data-real="Dale Skeen" data-note="Of three-phase commit fame — see Section 4.2.">Σκεεν</span>. As a law-abiding citizen, Σκεεν asked legislator <span class="paxon" data-real="Larry Stockmeyer" data-note="Complexity theorist; the S of Dwork–Lynch–Stockmeyer.">Στωκμ˘ιρ</span> if such a sale would be legal. But Στωκμ˘ιρ had been out of the Chamber and had no entry in his ledger past decree 76. He advised Σκεεν that the sale would be illegal under the current law, so Σκεεν refused to buy the goats.</p>
+    <p>This incident led to the formulation of the following <em>monotonicity condition</em> on inquiries about the law.</p>
   </div>
   <div class="slab">
     <div class="slab-head">Monotonicity Condition</div>
@@ -1443,122 +1243,47 @@ footer.colophon{
     reveal an earlier state of the law than the first.</p>
   </div>
   <div class="prose">
-    <p>(If a citizen learns a decree has passed, acquiring that knowledge counts as an implicit
-    inquiry.) The interpretation of this condition evolved over the years — three times:</p>
-    <p><strong>First interpretation: pass a decree per inquiry.</strong> If
-    <span class="paxon" data-real="Fred Schneider" data-note="Author of the state-machine-approach survey cited in Section 4.">Σ∂νϊδερ</span>
-    wanted to know the current olive tax, he had Parliament pass</p>
+    <p>If a citizen learns that a particular decree has been passed, then the process of acquiring that knowledge is considered to be an implicit inquiry to which this condition applies. As we will see, the interpretation of the monotonicity condition changed over the years.</p>
+    <p>Initially, the monotonicity condition was achieved by passing a decree for each inquiry. If <span class="paxon" data-real="Fred Schneider" data-note="Author of the state-machine-approach survey cited in Section 4.">Σ∂ν˘ιδερ</span> wanted to know the current tax on olives, he would get Parliament to pass a decree such as</p>
   </div>
-  <div class="decree"><b>87:</b> Citizen Σ∂νϊδερ is reading the law</div>
+  <div class="decree"><b>87:</b> Citizen Σ∂ν˘ιδερ is reading the law</div>
   <div class="prose">
-    <p>then read any ledger complete through decree 86. If citizen
-    <span class="paxon" data-real="David Gries" data-note="Textbook author and programming methodologist.">Γρεες</span>
-    inquired afterward, his inquiry-decree was proposed after 87 had passed, so by the
-    decree-ordering property it got a number above 87 — Γρεες could not see an older olive tax
-    than Σ∂νϊδερ. This satisfies monotonicity when <em>precedes</em> means “finished before the
-    other began.” But a decree per inquiry proved far too cumbersome.</p>
-    <p><strong>Second interpretation: causality and decree numbers.</strong> The Paxons weakened
-    <em>precedes</em>: inquiry <var>A</var> precedes inquiry <var>B</var> only if <var>A</var>
-    happened earlier <em>and could causally affect</em> <var>B</var>. This still prevents the
-    black-goat fiasco — a causal chain runs from farmer Δωλεφ’s implicit inquiry to merchant
-    Σκεεν’s. The weaker condition was met by quoting decree numbers in all business transactions.
-    Farmer Δωλεφ, whose flock had grown colorful, got Parliament to pass</p>
+    <p>He would then read any ledger complete at least through decree 86 to learn the olive tax as of that decree. If citizen <span class="paxon" data-real="David Gries" data-note="Textbook author and programming methodologist.">Γρεες</span> then inquired about the olive tax, the decree for his inquiry was proposed after decree 87 was passed, so the decree-ordering property (Section 3.2.1) implies that it received a decree number greater than 87. Therefore, Γρεες could not obtain an earlier value of the olive tax than Σ∂ν˘ιδερ.</p>
+    <p>This method of reading the law satisfied the monotonicity condition when <em>precedes</em> was interpreted to mean that inquiry <var>A</var> precedes inquiry <var>B</var> iff <var>A</var> finished at an earlier time than <var>B</var> began.</p>
+    <p>Passing a decree for every inquiry soon proved too cumbersome. The Paxons realized that a simpler method was possible if they weakened the monotonicity condition by changing the interpretation of <em>precedes</em>. They decided that for one event to precede another, the first event not only had to happen at an earlier time, but it had to be able to causally affect the second event. The weaker monotonicity condition prevents the problem first encountered by farmer Δωλεφ and merchant Σκεεν because there is a causal chain of events between the end of the implicit inquiry by Δωλεφ and the beginning of the inquiry by Σκεεν.</p>
+    <p>The weaker monotonicity condition was met by using decree numbers in all business transactions and inquiries. For example, farmer Δωλεφ, whose flock included many nonwhite goats, got Parliament to pass the decree</p>
   </div>
   <div class="decree"><b>277:</b> The sale of brown goats is permitted</div>
   <div class="prose">
-    <p>and, selling brown goats to Σκεεν, declared the sale legal <em>as of decree 277</em>. Σκεεν
-    then asked legislator Σπωκμεϊρ whether the sale was legal under the law through at least
-    decree 277. If Σπωκμεϊρ’s ledger fell short, he would wait for it to catch up — or tell Σκεεν
-    to ask someone else. If his ledger ran through decree 298, he would answer that the sale was
-    legal as of 298, and Σκεεν would carry the number 298 into his next transaction or inquiry.</p>
-    <p><strong>Third interpretation: one specialist per area.</strong> Ordinary citizens disliked
-    remembering decree numbers, so the Paxons re-read the condition once more — this time
-    reinterpreting <em>the state of the law</em>. The law was divided into areas, and a legislator
-    was chosen as <em>specialist</em> for each; the current state of each area was
-    <strong>defined</strong> to be whatever that specialist’s ledger said. If decree 1517 changed
-    tariff law and 1518 changed tax law, the tax law could genuinely change first — if the tax
-    specialist learned of both decrees before the tariff specialist learned of either — a state of
-    the law unobtainable by enacting the decrees in numerical order, yet now perfectly lawful.</p>
-    <p>To avoid conflicting definitions of the current state, at most one specialist at a time was
-    allowed per area — enforced by the same time-stamped-term method used for bureaucrats
-    (Section&nbsp;3.3.3). An inquiry touching a single area went to that area’s specialist, who
-    answered from his ledger. Since learning that a law had passed was itself an implicit inquiry,
-    a decree was required to change at most one area, and news of its passage could come only from
-    that area’s specialist.</p>
-    <p>Inquiries spanning areas were handled by cooperation. When merchant
-    <span class="paxon" data-real="Barbara Liskov" data-note="Turing Award 2008; with Oki, invented Viewstamped Replication.">Λισκωφ</span>
-    asked whether the tariff on an imported golden fleece exceeded the sales tax on a local one,
-    the tax specialist could answer by first asking the tariff specialist for the fleece tariff —
-    valid so long as he made no changes to his own ledger before the reply came back. This worked
-    until sweeping changes across several areas of the law were needed at once. Then the Paxons
-    realized the real requirement was not that a decree affect a single area, but that
-    <strong>every area it affects have the same specialist</strong>: Parliament could change several
-    areas with one decree by first appointing one legislator specialist for all of them. Moreover
-    the same area could have several specialists, provided that area of the law was not allowed to
-    change — just before income taxes came due, Parliament would appoint a seasonal flood of
-    tax-law specialists to answer everyone’s questions.</p>
+    <p>When selling his brown goats to Σκεεν, he informed the merchant that the sale was legal as of decree number 277. Σκεεν then asked legislator Στωκμ˘ιρ if the sale were legal under the law through at least decree 277. If Στωκμ˘ιρ’s ledger was not complete through decree 277, he would either wait until it was or else tell Σκεεν to ask someone else. If Στωκμ˘ιρ’s ledger went through decree 298, then he would tell Σκεεν that the sale was legal as of decree number 298. Merchant Σκεεν would remember the number 298 for use in his next business transaction or inquiry about the law.</p>
+    <p>The Paxons had satisfied the monotonicity condition, but ordinary citizens disliked having to remember decree numbers. Again, the Paxons solved the problem by re-interpreting the monotonicity condition—this time, by changing the meaning of <em>state of the law</em>. They divided the law into separate areas, and a legislator was chosen as specialist for each area. The current state of each area of the law was determined by that specialist’s ledger. For example, suppose decree 1517 changed the tariff law and decree 1518 changed the tax law. The tax law would change first if the tax-law specialist learned of both decrees before the tariff-law specialist learned of either, yielding a state of the law that could not be obtained by enacting the decrees in numerical order.</p>
+    <p>To avoid conflicting definitions of the current state, the Paxons required that there be at most one specialist at a time for any area. This requirement was satisfied by using the same method to choose specialists that was used to choose bureaucrats (see Section 3.3.3). If each inquiry involved only a single area of the law, monotonicity was then achieved by directing the inquiry to that area’s specialist, who answered it from his ledger. Since learning that a law had passed constituted the result of an implicit inquiry, the Paxons required that a decree change at most one area of the law, and that notification of the decree’s passage could come only from the area’s specialist.</p>
+    <p>Inquiries involving multiple areas were not hard to handle. When merchant <span class="paxon" data-real="Barbara Liskov" data-note="Turing Award 2008; with Oki, invented Viewstamped Replication.">Λισκωφ</span> asked if the tariff on an imported golden fleece was higher than the sales tax on one purchased locally, the tax-law and tariff-law specialists had to cooperate to provide an answer. For example, the tax specialist could answer Λισκωφ by first asking the tariff specialist for the tariff on golden fleeces, so long as he made no changes to his ledger before receiving a reply.</p>
+    <p>This method proved satisfactory until it became necessary to make a sweeping change to several areas of the law at one time. The Paxons then realized that the necessary requirement for maintaining monotonicity was not that a decree affect only a single area, but that every area it affects have the same specialist. Parliament could change several areas of the law with a single decree by first appointing a single legislator to be the specialist for all those areas. Moreover, the same area could have multiple specialists, so long as that area of the law was not allowed to change. Just before income taxes were due, Parliament would appoint several tax-law specialists to handle the seasonal flood of inquiries about the tax law.</p>
   </div>
 
   <h4 class="subsect">3.3.5 · Dishonest Legislators and Honest Mistakes</h4>
   <div class="prose">
-    <p>Whatever the official assertions, there must have been a few dishonest legislators in the
-    history of Paxos; when caught, they were probably exiled. By sending contradictory messages, a
-    malicious legislator could drive different ledgers into inconsistency — as could a simple
-    lapse of memory by an honest legislator or messenger.</p>
-    <p>Recognized inconsistencies were easy to repair by decree: disagreement over the olive tax
-    could be ended by passing a fresh decree fixing the tax at a definite value. The hard problem
-    was correcting inconsistent ledgers <em>when no one knew they were inconsistent</em>. Its
-    solution can be inferred from the redundant decrees that begin appearing in ledgers some years
-    into Parliament’s history — for example</p>
+    <p>Despite official assertions to the contrary, there must have been a few dishonest legislators in the history of Paxos. When caught, they were probably exiled. By sending contradictory messages, a malicious legislator could cause different legislators’ ledgers to be inconsistent. Inconsistency could also result from a lapse of memory by an honest legislator or messenger.</p>
+    <p>When inconsistencies were recognized, they could easily be corrected by passing decrees. For example, disagreement about the current olive tax could be eliminated by passing a new decree declaring the tax to have a certain value. The difficult problem lay in correcting inconsistent ledgers even if no one was aware of the inconsistency.</p>
+    <p>The existence of dishonesty or mistakes by legislators can be inferred from the redundant decrees that began appearing in ledgers several years after the founding of Parliament. For example, the decree</p>
   </div>
   <div class="decree"><b>2605:</b> The olive tax is 9 drachmas per ton</div>
   <div class="prose">
-    <p>passed although decree 2155 had already set the olive tax to 9&nbsp;drachmas per ton and
-    nothing in between had changed it. Parliament apparently <strong>cycled through its entire body
-    of law every six months</strong>, so that even if ledgers started out inconsistent, all
-    legislators would agree on the current law of the land within six months. It is believed that
-    with these redundant decrees the Paxons made their Parliament <em>self-stabilizing</em>.
-    (<em>Self-stabilizing</em> is a modern term due to Dijkstra [1974].)</p>
-    <p>Precisely what self-stabilization meant in a Parliament of legislators forever coming and
-    going is unclear. The Paxons would not have accepted a definition requiring every legislator
-    to be in the Chamber at once before consistency could be guaranteed. But achieving consistency
-    did require that if one legislator had a ledger entry for some decree number and another did
-    not, the second would eventually fill it in. Exactly what self-stabilization property the
-    Parliament possessed, and how it was achieved, we do not know. Paxon mathematicians surely
-    addressed the problem, but their work has not yet been found. One hopes that future
-    archaeological expeditions to Paxos will give the search for manuscripts on self-stabilization
-    the highest priority.</p>
+    <p>was passed even though decree 2155 had already set the olive tax to 9 drachmas per ton, and no intervening decree had changed it. Parliament apparently cycled through its laws every six months so that even if legislators’ ledgers were initially inconsistent, all legislators would agree on the current law of the land within six months. It is believed that by the use of these redundant decrees, the Paxons made their Parliament self-stabilizing. (<em>Self-stabilizing</em> is a modern term due to Dijkstra [1974].)</p>
+    <p>It is not clear precisely what self-stabilization meant in a Parliament with legislators coming and going at will. The Paxons would not have been satisfied with a definition that required all legislators to be in the Chamber at one time before consistency could be guaranteed. However, achieving consistency required that if one legislator had an entry in his ledger for a certain decree number and another did not, then the second legislator would eventually fill in that entry.</p>
+    <p>Unfortunately, we don’t know exactly what sort of self-stabilization property the Paxon Parliament possessed or how it was achieved. Paxon mathematicians undoubtedly addressed the problem, but their work has not yet been found. I hope that future archaeological expeditions to Paxos will give high priority to the search for manuscripts on self-stabilization.</p>
   </div>
 
   <h4 class="subsect">3.3.6 · Choosing New Legislators</h4>
   <div class="prose">
-    <p>At first, membership in Parliament was hereditary, passed from parent to child. When elder
-    statesman <span class="paxon" data-real="David Parnas" data-note="Of information-hiding fame — here, the very model of institutional continuity.">Παρνας</span>
-    retired, he handed his ledger to his son, who carried on without interruption; the other
-    legislators neither knew nor cared <em>which</em> Παρνας they were corresponding with.</p>
-    <p>As old families emigrated and new ones arrived, the Paxons decided to add and remove
-    members of Parliament <em>by decree</em>. This posed a circularity: membership was determined
-    by which decrees were passed, but passing a decree required knowing what a majority set was —
-    which depended on the membership. The circle was broken by letting <strong>the membership used
-    in passing decree <var>n</var> be specified by the law as of decree
-    <var>n</var>&nbsp;−&nbsp;3</strong>. A president could not try to pass decree 3255 until he knew
-    all decrees through 3252. In practice, after passing</p>
+    <p>At first, membership in Parliament was hereditary, passing from parent to child. When the elder statesman <span class="paxon" data-real="David Parnas" data-note="Of information-hiding fame — here, the very model of institutional continuity.">Παρνας</span> retired, he gave his ledger to his son, who carried on without interruption. It made no difference to other legislators which Παρνας they communicated with.</p>
+    <p>As old families emigrated and new ones immigrated, this system had to change. The Paxons decided to add and remove members of Parliament by decree. This posed a circularity problem: membership in Parliament was determined by which decrees were passed, but passing a decree required knowing what constituted a majority set, which in turn depended upon who was a member of Parliament. The circularity was broken by letting the membership of Parliament used in passing decree <var>n</var> be specified by the law as of decree <var>n</var>&nbsp;−&nbsp;3. A president could not try to pass decree 3255 until he knew all decrees through decree 3252. In practice, after passing the decree</p>
   </div>
-  <div class="decree"><b>3252:</b> <span class="paxon" data-real="Ray Strong" data-note="H. Raymond Strong, IBM — Byzantine agreement and clock synchronization.">Σπρωυνγ</span> is now a legislator</div>
+  <div class="decree"><b>3252:</b> <span class="paxon" data-real="Ray Strong" data-note="H. Raymond Strong, IBM — Byzantine agreement and clock synchronization.">Στρωνγ</span> is now a legislator</div>
   <div class="prose">
-    <p>the president would immediately pass olive-day decrees as 3253 and 3254.</p>
-    <p>Changing Parliament’s composition this way was <strong>dangerous, and had to be done with
-    care</strong>. The consistency and progress conditions would always hold — but the progress
-    condition only promises progress when a majority set is in the Chamber, and it does not
-    promise that a majority set will ever exist. Indeed, this very mechanism brought the
-    parliamentary system of Paxos down. Because of a scribe’s error, a decree meant to honor
-    sailors who had drowned in a shipwreck instead declared the drowned sailors to be <em>the only
-    members of Parliament</em>. Its passage made the passing of any further decree impossible —
-    including the decrees proposed to correct the mistake. Government on Paxos came to a halt. A
-    general named <span class="paxon" data-real="Butler Lampson" data-note="Turing Award 1992 — and the great popularizer of Paxos among systems builders; his 1996 paper is cited in the editor's preface. Casting him as the coup general is the paper's finest joke.">Λαμπσων</span>
-    seized the moment to stage a coup, establishing a military dictatorship that ended centuries
-    of progressive government. Paxos grew weak under a series of corrupt dictators, and proved
-    unable to repel the invasion from the east that destroyed its civilization.</p>
+    <p>the president would immediately pass the “olive-day” decree as decrees 3253 and 3254.</p>
+    <p>Changing the composition of Parliament in this way was dangerous and had to be done with care. The consistency and progress conditions would always hold. However, the progress condition guaranteed progress only if a majority set was in the Chamber; it did not guarantee that a majority set would ever be there. In fact, the mechanism for choosing legislators led to the downfall of the Parliamentary system in Paxos. Because of a scribe’s error, a decree that was supposed to honor sailors who had drowned in a shipwreck instead declared them to be the only members of Parliament. Its passage prevented any new decrees from being passed—including the decrees proposed to correct the mistake. Government in Paxos came to a halt. A general named <span class="paxon" data-real="Butler Lampson" data-note="Turing Award 1992 — and the great popularizer of Paxos among systems builders; his 1996 paper is cited in the editor's preface. Casting him as the coup general is the paper's finest joke.">Λαμπσων</span> took advantage of the confusion to stage a coup, establishing a military dictatorship that ended centuries of progressive government. Paxos grew weak under a series of corrupt dictators, and was unable to repel an invasion from the east that led to the destruction of its civilization.</p>
   </div>
   <figure class="panel">
     <div class="frame"><img src="images/fall_small.webp" alt="Storm clouds over Paxos: a horrified scribe with a botched decree, the empty cobwebbed Chamber, and a general watching soldiers march."></div>
@@ -1581,12 +1306,8 @@ footer.colophon{
     <figcaption>THE CHAMBER, TRANSLATED: LEGISLATOR ↔ SERVER · CITIZEN ↔ CLIENT · CURRENT LAW ↔ DATABASE STATE.</figcaption>
   </figure>
   <div class="prose">
-    <p>Paxos’s Parliament was destroyed many centuries ago, but its protocol remains useful.
-    Consider a simple distributed database, used perhaps as a name server. Its state assigns
-    values to names; copies of the database live on multiple servers. A client may ask any server
-    to read or change a name’s value, and there are two kinds of read: a <em>slow read</em>, which
-    returns the value currently assigned, and a <em>fast read</em>, which is quicker but may miss a
-    recent change. The correspondence with the Paxon Parliament is immediate:</p>
+    <p>Although Paxos’s Parliament was destroyed many centuries ago, its protocol is still useful. For example, consider a simple distributed database system that might be used as a name server. A state of the database consists of an assignment of values to names. Copies of the database are maintained by multiple servers. A client program can issue, to any server, a request to read or change the value assigned to a name. There are two kinds of read request: a <em>slow read</em>, which returns the value currently assigned to a name, and a <em>fast read</em>, which is faster but might not reflect a recent change to the database.</p>
+    <p>There is an obvious correspondence between this database system and the Paxon Parliament:</p>
   </div>
   <div class="slab">
     <div class="mathblock" style="font-style:normal">
@@ -1599,16 +1320,8 @@ footer.colophon{
     </div>
   </div>
   <div class="prose">
-    <p>A client’s request to change a value is performed by passing a decree; a slow read likewise
-    passes a decree, exactly as in Section&nbsp;3.3.4; a fast read simply reads the server’s current
-    copy. The Paxon Parliament protocol thus provides a distributed, fault-tolerant implementation
-    of the database.</p>
-    <p>This is an instance of the <em>state machine approach</em>, first proposed in [Lamport
-    1978]. One defines a <em>state machine</em> — a set of states, a set of commands, a set of
-    responses, and a function assigning a response/state pair to every command/state pair.
-    Intuitively, a state machine executes a command by producing a response and a new state, both
-    determined by the command and the current state. For the database, a state-machine state is
-    just a database state, and the commands are:</p>
+    <p>A client’s request to change a value is performed by passing a decree. A <em>slow read</em> involves passing a decree, as described in Section 3.3.4. A <em>fast read</em> is performed by reading the server’s current version of the database. The Paxon Parliament protocol provides a distributed, fault-tolerant implementation of the database system,</p>
+    <p>This method of implementing a distributed database is an instance of the state machine approach, first proposed in [Lamport 1978]. In this approach, one first defines a <em>state machine</em>, which consists of a set of states, a set of commands, a set of responses, and a function that assigns a response/state pair (a pair consisting of a response and a state) to each command/state pair. Intuitively, a state machine executes a command by producing a response and changing its state; the command and the machine’s current state determine its response and its new state. For the distributed database, a state-machine state is just a database state. The state-machine commands and the function specifying the response and new state are described in Figure 2.</p>
   </div>
   <div class="slab">
     <div class="slab-head">Fig. 2 — State machine for a simple database</div>
@@ -1621,62 +1334,21 @@ footer.colophon{
     </div>
   </div>
   <div class="prose">
-    <p>In the state-machine approach, a network of servers transforms client requests into
-    state-machine commands, executes the commands, and turns the responses into replies to
-    clients. A general algorithm ensures <strong>all servers obtain the same sequence of
-    commands</strong> — so, starting from the same initial state, they produce the same sequence of
-    responses and state changes. In the database example, a slow read or an update becomes a
-    <b>read</b> or <b>update</b> command; the server that received the request sends the reply. All
-    servers hold consistent copies — though at any moment some may hold earlier versions than
-    others, since commands need not execute everywhere simultaneously; a server answers
-    <em>fast reads</em> from its current version, without a command.</p>
-    <p>The beauty of the approach: the system’s functionality lives entirely in the state machine
-    — a mere function from command/state pairs to response/state pairs — while synchronization and
-    fault tolerance live in the general algorithm that distributes the commands. Designing a new
-    system means designing only a new state machine; the command-distribution algorithm is
-    standard and already proved correct. <strong>Functions are far easier to design, and to get
-    right, than distributed algorithms.</strong></p>
-    <p>The first algorithm for implementing an arbitrary state machine appeared in [Lamport 1978];
-    later algorithms tolerate up to any fixed number <var>f</var> of arbitrary failures.<sup>14</sup>
-    Those algorithms guarantee that if fewer than <var>f</var> processes fail, commands execute
-    within a fixed time — suitable for real-time applications — but if more than <var>f</var>
-    failures occur, servers may become inconsistent; and since two servers unable to communicate
-    are equivalent to one of them having failed, a low probability of losing consistency demands a
-    large <var>f</var>, hence great cost in redundant hardware, bandwidth, and response time.</p>
-    <p>The Paxon Parliament offers another way. The legislators’ law book corresponds to the
-    machine state; passing a decree corresponds to executing a command. The resulting algorithm is
-    less robust and less expensive: it tolerates neither malicious failures nor guarantees
-    bounded-time response — but <strong>consistency survives the benign failure of any number of
-    processes and communication paths</strong>. The Paxon algorithm suits systems with modest
-    reliability requirements that do not justify an extremely fault-tolerant, real-time
-    implementation.</p>
-    <p>With bounded-time algorithms, time can be made part of the state, and machine actions can
-    be triggered by the passage of time — say, automatically revoking a client’s ownership of a
-    resource held too long. The Paxon algorithm permits no such thing: under failures, passing a
-    decree can take arbitrarily long, and one command can be executed (appear earlier in the
-    decree sequence) than another issued before it. Yet a state machine can still use real time
-    the way the Parliament did — the cheese-inspector method of Section&nbsp;3.3.3 serves perfectly
-    well for deciding who currently owns a resource.</p>
+    <p>In the state-machine approach, a system is implemented with a network of server processes. The servers transform client requests into state machine commands, execute the commands, and transform the state-machine responses into replies to clients. A general algorithm ensures that all servers obtain the same sequence of commands, thereby ensuring that they all produce the same sequence of responses and state changes—assuming they all start from the same initial state. In the database example, a client request to perform a slow read or to change a value is transformed into a state-machine <b>read</b> or <b>update</b> command. That command is executed, and the state-machine response is transformed into a reply to the client, which is sent to him by the server who received his request. Since all servers perform the same sequence of state-machine commands, they all maintain consistent versions of the database. However, at any time, some servers may have earlier versions than others because a state-machine command need not be executed at the same time by all servers. A server uses his current version of the state to reply to a fast read request, without executing a state-machine command.</p>
+    <p>The functionality of the system is expressed by the state machine, which is just a function from command/state pairs to response/state pairs. Problems of synchronization and fault-tolerance are handled by the general algorithm with which servers obtain the sequence of commands. When designing a new system, only the state machine is new. The servers obtain the state-machine commands by a standard distributed algorithm that has already been proved correct. Functions are much easier to design, and to get right, than distributed algorithms.</p>
+    <p>The first algorithm for implementing an arbitrary state machine appeared in [Lamport 1978]. Later, algorithms were devised to tolerate up to any fixed number <var>f</var> of arbitrary failures [Lamport 1984]. These algorithms guarantee that, if fewer than <var>f</var> processes fail, then state machine commands are executed within a fixed length of time. The algorithms are thus suitable for applications requiring real-time response.<sup>14</sup> But if more than <var>f</var> failures occur, then different servers may have inconsistent copies of the state machine. Moreover, the inability of two servers to communicate with each other is equivalent to the failure of one of them. For a system to have a low probability of losing consistency, it must use an algorithm with a large value of <var>f</var>, which in turn implies a large cost in redundant hardware, communication bandwidth, and response time.</p>
+    <p>The Paxon Parliament’s protocol provides another way to implement an arbitrary state machine. The legislators’ law book corresponds to the machine state, and passing a decree corresponds to executing a state-machine command. The resulting algorithm is less robust and less expensive than the earlier algorithms. It does not tolerate arbitrary, malicious failures, nor does it guarantee bounded-time response. However, consistency is maintained despite the (benign) failure of any number of processes and communication paths. The Paxon algorithm is suitable for systems with modest reliability requirements that do not justify the expense of an extremely fault-tolerant, real-time implementation.</p>
+    <p>If the state machine is executed with an algorithm that guarantees bounded-time response, then time can be made part of the state, and machine actions can be triggered by the passage of time. For example, consider a system for granting ownership of resources. The state can include the time at which a client was granted a resource, and the state machine can automatically execute a command to revoke ownership if the client has held the resource too long.</p>
+    <p>With the Paxon algorithm, time cannot be made part of the state in such a natural way. If failures occur, it can take arbitrarily long to execute a command (pass a decree), and one command can be executed before (appear earlier in the sequence of decrees than) another command that was issued earlier. However, a state machine can still use real time the same way the Paxon Parliament did. For example, the method described in Section 3.3.3 for deciding who was the current cheese inspector can be used to decide who is the current owner of a resource.</p>
   </div>
   <aside class="fn"><b>14.</b> These algorithms were derived from the military protocols of
   another Mediterranean state — <em>Byzantine</em> ones, the scholars say.</aside>
 
   <h3 class="sect">4.2 · Commit Protocols</h3>
   <div class="prose">
-    <p>The Paxon Synod protocol resembles standard three-phase commit protocols [Bernstein et al.
-    1987; Skeen 1982]. A Paxon ballot and a three-phase commit both exchange five messages between
-    a coordinator (the president) and the other quorum members (legislators). A commit protocol
-    chooses between exactly two values — <em>commit</em> or <em>abort</em> — while the Synod
-    protocol chooses an arbitrary decree. To convert a commit protocol into a Synod protocol, one
-    sends the decree in the initial round of messages: a <em>commit</em> decision then means the
-    decree was passed, an <em>abort</em> decision means the “olive-day” decree was passed.</p>
-    <p>The Synod protocol differs in not sending the decree until the second phase — which is
-    precisely what lets the parliamentary protocol execute the first phase <em>just once</em> for
-    all decrees, so that passing each individual decree costs only three messages… err, three
-    message <em>delays</em> and the 2<var>N</var>–3<var>N</var> messages of Section&nbsp;3.2.2.</p>
-    <p>The theorems underlying the Synod protocol are similar to results of Dwork, Lynch, and
-    Stockmeyer [1988] — though their algorithms run ballots sequentially in separate rounds, and
-    seem unrelated to the Synod protocol itself.</p>
+    <p>The Paxon Synod protocol is similar to standard three-phase commit protocols [Bernstein et al. 1987; Skeen 1982]. A Paxon ballot and a three-phase commit protocol both involve the exchange of five messages between a coordinator (the president) and the other quorum members (legislators). A commit protocol chooses one of two values—<em>commit</em> or <em>abort</em>—while the Synod protocol chooses an arbitrary decree. To convert a commit protocol to a Synod protocol, one sends the decree in the initial round of messages. A <em>commit</em> decision means that this decree was passed, and an <em>abort</em> decision means that the “olive-day” decree was passed.</p>
+    <p>The Synod protocol differs from a converted commit protocol because the decree is not sent until the second phase. This allows the corresponding parliamentary protocol to execute the first phase just once for all decrees, so the exchange of only three messages is needed to pass each individual decree.</p>
+    <p>The theorems on which the Synod protocol is based are similar to results obtained by Dwork, Lynch, and Stockmeyer [Dwork et al. 1988]. However, their algorithms execute ballots sequentially in separate rounds, and they seem to be unrelated to the Synod protocol.</p>
   </div>
 
   <div class="editor-note">
@@ -1726,10 +1398,7 @@ footer.colophon{
 
   <h3 class="sect">A1 · The Basic Protocol</h3>
   <div class="prose">
-    <p>Here is the Synod’s basic protocol of Section&nbsp;2.3, restated in modern algorithmic
-    notation. First, the variables a priest <var>p</var> keeps <strong>in his ledger</strong> (for
-    convenience, <var>prevVote</var>[<var>p</var>] is split into components
-    <var>prevBal</var>[<var>p</var>] and <var>prevDec</var>[<var>p</var>]):</p>
+    <p>The Synod’s basic protocol, described informally in Section 2.3, is stated here using modern algorithmic notation. We begin with the variables that a priest <var>p</var> must maintain. First come the variables that represent information kept in his ledger. (For convenience, the vote <var>prevVote</var>[<var>p</var>] used in Section 2.3 is replaced by its components <var>prevBal</var>[<var>p</var>] and <var>prevDec</var>[<var>p</var>].)</p>
   </div>
   <div class="slab">
     <div class="slab-head">Ledger variables (indelible ink, notes crossed out but never erased)</div>
@@ -1762,18 +1431,10 @@ footer.colophon{
     ballot’s decree; else meaningless.</p>
   </div>
   <div class="prose">
-    <p>There is also the history variable <var>ℬ</var> — the set of ballots started, with their
-    progress (who has cast votes). A history variable is used in developing and proving the
-    algorithm but is not actually implemented. Recall too that ballot numbers were partitioned
-    among the priests: <var>owner</var>(<var>b</var>) is the priest allowed to use ballot number
-    <var>b</var>.</p>
-    <p>Priest <var>p</var>’s actions are <em>atomic</em> — once begun, an action completes before
-    <var>p</var> begins another. Each action has an enabling condition and a list of effects;
-    receive-actions are enabled whenever a messenger arrives with the right message; each action
-    sends at most one message. These are <strong>allowed</strong> actions — the protocol never
-    requires a priest to do anything, and no attempt is made at efficiency: the actions cheerfully
-    let <var>p</var> do silly things, like sending another <em>BeginBallot</em> to a priest who has
-    already answered with a <em>LastVote</em>.</p>
+    <p>There is also the history variable <var>ℬ</var>, which is the set of ballots that have been started and their progress—namely, which priests have cast votes. (A history variable is one used in the development and proof of an algorithm, but not actually implemented.)</p>
+    <p>Next come the actions that priest <var>p</var> may take. These actions are assumed to be atomic, meaning that once an action is begun, it must be completed before priest <var>p</var> begins any other action. An action is described by an enabling condition and a list of effects. The enabling condition describes when the action can be performed; actions that receive a message are enabled whenever a messenger has arrived with the appropriate message. The list of effects describes how the action changes the algorithm’s variables and what message, if any, it sends. (Each individual action sends at most one message.)</p>
+    <p>Recall that ballot numbers were partitioned among the priests. For any ballot number <var>b</var>, the Paxons defined <var>owner</var>(<var>b</var>) to be the priest who was allowed to use that ballot number.</p>
+    <p>The actions in the basic protocol are allowed actions; the protocol does not require that a priest ever do anything. No attempt at efficiency has been made; the actions allow <var>p</var> to do silly things, such as sending another <em>BeginBallot</em> message to a priest from whom he has already received a <em>LastVote</em> message.</p>
   </div>
   <details class="proof" open>
     <summary>The nine allowed actions of the basic protocol</summary>
@@ -1835,32 +1496,19 @@ footer.colophon{
     </div>
   </details>
   <div class="prose">
-    <p>Is this abstract algorithm a fair model of what real priests did? A priest could perform
-    three kinds of action “atomically”: receive a message, write a note or ledger entry, and send
-    a message. Each is one action of the algorithm — except that <b>Receive</b> actions both
-    receive a message and set a variable. We may pretend a message was received only when the
-    priest acted on it; if he left the Chamber first, we pretend it was never received. Since the
-    pretense cannot affect consistency, the consistency of the basic Synod protocol follows from
-    the consistency of the algorithm.</p>
+    <p>This algorithm is an abstract description of the real protocol performed by Paxon priests. Do the algorithm’s actions accurately model the actions of the real priests? There were three kinds of actions that a priest could perform “atomically”: receiving a message, writing a note or ledger entry, and sending a message. Each of these is represented by a single action of the algorithm, except that <b>Receive</b> actions both receive a message and set a variable. We can pretend that the receipt of a message occurred when a priest acted upon the message; if he left the Chamber before acting upon it, then we can pretend that the message was never received. Since this pretense does not affect the consistency condition, we can infer the consistency of the basic Synod protocol from the consistency of the algorithm.</p>
   </div>
 
   <h3 class="sect">A2 · Proof of Consistency</h3>
   <div class="prose">
-    <p>Consistency means: whenever <var>outcome</var>[<var>p</var>] and
-    <var>outcome</var>[<var>q</var>] are both different from
-    <span style="font-variant:small-caps">blank</span>, they are equal. A rigorous proof needs a
-    complete description of the algorithm; the description above is almost complete. Missing is a
-    variable <var>ℳ</var> whose value is the multiset<sup>15</sup> of messages in transit — each
-    <b>Send</b> adds a message to <var>ℳ</var>, each <b>Receive</b> removes one — together with
-    actions for the <em>loss</em> and <em>duplication</em> of messages, and a <b>Forget</b> action
-    representing a priest losing his slip of paper.</p>
-    <p>With these additions, each change of state corresponds to one allowed action. The Paxons
-    proved correctness by exhibiting a predicate <var>I</var> such that: (1) <var>I</var> is true
-    initially; (2) <var>I</var> implies the correctness condition; and (3) every allowed action
-    leaves <var>I</var> true. The predicate was a conjunction
-    <var>I</var>1&nbsp;∧&nbsp;…&nbsp;∧&nbsp;<var>I</var>7, where <var>I</var>1–<var>I</var>5 were in
-    turn conjunctions of <var>I</var>1(<var>p</var>)–<var>I</var>5(<var>p</var>) over all priests
-    <var>p</var>. Each conjunct constrains one variable (bracketed below).</p>
+    <p>To prove the consistency condition, it is necessary to show that whenever <var>outcome</var>[<var>p</var>] and <var>outcome</var>[<var>q</var>] are both different from <span style="font-variant:small-caps">blank</span>, they are equal. A rigorous correctness proof requires a complete description of the algorithm. The description given above is almost complete. Missing is a variable <var>ℳ</var> whose value is the multiset of all messages in transit.<sup>15</sup> Each <b>Send</b> action adds a message to this multiset and each <b>Receive</b> action removes one. Also needed are actions to represent the loss and duplication of messages, as well as a <b>Forget</b> action that represents a priest losing his slip of paper.</p>
+    <p>With these additions, we get an algorithm that defines a set of possible behaviors, in which each change of state corresponds to one of the allowed actions. The Paxons proved correctness by finding a predicate <var>I</var> such that</p>
+    <ol class="proofsteps">
+      <li><var>I</var> is true initially.</li>
+      <li><var>I</var> implies the desired correctness condition.</li>
+      <li>Each allowed action leaves <var>I</var> true.</li>
+    </ol>
+    <p>The predicate <var>I</var> was written as a conjunction <var>I</var>1&nbsp;∧&nbsp;...&nbsp;∧&nbsp;<var>I</var>7, where <var>I</var>1–<var>I</var>5 were in turn the conjunction of predicates <var>I</var>1(<var>p</var>)–<var>I</var>5(<var>p</var>) for all priests <var>p</var>. Although most variables are mentioned in several of the conjuncts, each variable except <var>status</var>[<var>p</var>] is naturally associated with one conjunct, and each conjunct can be thought of as a constraint on its associated variables. The definitions of the individual conjuncts of <var>I</var> are given below, where a list of items marked by ∧ symbols denotes the conjunction of those items. The variables associated with a conjunct are listed in bracketed comments.</p>
   </div>
   <aside class="fn"><b>15.</b> A multiset is a set that may contain multiple copies of the same
   element.</aside>
@@ -2390,7 +2038,7 @@ footer.colophon{
       {no:126, txt:'Wine may not be sold before the spring festival', kind:'learned'},
     ];
     passed127 = false;
-    msgEl.innerHTML = 'Your ledger, freshly reconciled with a majority of legislators. Decree 126 you learned from Λινχ∂’s ledger — but of 125, no legislator you can reach knows anything. The old president is on a fishing trip.';
+    msgEl.innerHTML = 'Your ledger, freshly reconciled with a majority of legislators. Decree 126 you learned from Λ˘ινχ∂’s ledger — but of 125, no legislator you can reach knows anything. The old president is on a fishing trip.';
     render();
   }
   function render(){
@@ -2430,29 +2078,29 @@ footer.colophon{
 /* ================= WIDGET 4: hidden names ================= */
 (function(){
   const names = [
-    ['Λινχ∂','Nancy Lynch','Keeper of ledger entry 155; co-author of the FLP impossibility result the paper cites.'],
+    ['Λ˘ινχ∂','Nancy Lynch','Keeper of ledger entry 155; co-author of the FLP impossibility result the paper cites.'],
     ['Φισ∂ερ','Michael Fischer','Holder of decree 132; the F in FLP.'],
     ['Τωυεγ','Sam Toueg','Struck by a falling statue; developed irreversible amnesia.'],
     ['Γραϊ','Jim Gray','Ballot number (13, Γραϊ); database transactions legend.'],
     ['Λινσεϊ','Bruce Lindsay','Ballot number (13, Λινσεϊ); System R database pioneer.'],
     ['Ωκι','Brian Oki','Made president straight off the boat; co-invented Viewstamped Replication — the protocol equivalent to Paxos.'],
     ['Δφωρκ','Cynthia Dwork','The Monday-morning president who filled gaps with olive days.'],
-    ['Δίκστρα','Edsger W. Dijkstra','First cheese inspector of Paxos — famously strict. Invented self-stabilization (Section 3.3.5).'],
+    ['Δ˘ικστρα','Edsger W. Dijkstra','First cheese inspector of Paxos — famously strict. Invented self-stabilization (Section 3.3.5).'],
     ['Γωυδα','Mohamed Gouda','Second cheese inspector. Also a cheese.'],
     ['Φρανσεζ','Nissim Francez','Wine taster, two months.'],
-    ['Πνυελϊ','Amir Pnueli','Wine taster, one month; temporal-logic Turing laureate.'],
+    ['Πνυελ˘ι','Amir Pnueli','Wine taster, one month; temporal-logic Turing laureate.'],
     ['Δωλεφ','Danny Dolev','The farmer with the black (and brown) goats.'],
     ['Σκεεν','Dale Skeen','The law-abiding merchant; three-phase-commit pioneer.'],
-    ['Σπωκμεϊρ','Larry Stockmeyer','The legislator with the out-of-date ledger.'],
-    ['Σ∂νϊδερ','Fred Schneider','Citizen reading the law via decree 87; wrote THE state-machine survey.'],
+    ['Στωκμ˘ιρ','Larry Stockmeyer','The legislator with the out-of-date ledger.'],
+    ['Σ∂ν˘ιδερ','Fred Schneider','Citizen reading the law via decree 87; wrote THE state-machine survey.'],
     ['Γρεες','David Gries','The second inquirer about the olive tax.'],
     ['Λισκωφ','Barbara Liskov','Merchant comparing fleece tariffs; the Liskov of Viewstamped Replication.'],
     ['Παρνας','David Parnas','Elder statesman whose son inherited his ledger — information hiding at its finest.'],
-    ['Σπρωυνγ','Ray Strong','Made a legislator by decree 3252.'],
+    ['Στρωνγ','Ray Strong','Made a legislator by decree 3252.'],
     ['Λαμπσων','Butler Lampson','The general who staged the coup — and, in our world, the great champion of the Paxos algorithm.'],
     ['Λεωνίδας Γκίμπας','Leonidas Guibas','Provided invaluable assistance with the Paxon dialect.'],
-    ['μαδζ∂ωριτϊσετ','“majority set”','The most contested word in Paxon philology.'],
-    ['δζ∂ιφι','“jiffy”','The Paxon unit of time: 30 seconds, per hourglass-shard studies.']
+    ['μαδζ∂ωριτ˘ισετ','“majority set”','The most contested word in Paxon philology.'],
+    ['δζ∂ιφ˘ι','“jiffy”','The Paxon unit of time: 30 seconds, per hourglass-shard studies.']
   ];
   const grid = document.getElementById('names-grid');
   names.forEach(([gr,an,role])=>{
