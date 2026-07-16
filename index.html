@@ -335,6 +335,55 @@ select.gk{border:3px solid var(--ink); background:#fdf6e4; padding:6px 8px; box-
 #sim .log .t-big{color:#ffd76e; font-weight:700}
 #sim .scenarios{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:12px}
 
+/* six-steps walkthrough widget */
+#stepsw .stepper{display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin:4px 0 16px}
+#stepsw .stepper button{
+  font-family:Optima,'Gill Sans',sans-serif; font-size:.78rem; letter-spacing:.04em;
+  border:2.5px solid var(--ink); background:#f6eed6; padding:5px 10px; cursor:pointer;
+  box-shadow:2px 2px 0 var(--shadow); color:#5a4a33;
+}
+#stepsw .stepper button.done{background:#dfe8d0}
+#stepsw .stepper button.on{
+  background:var(--caption); color:var(--ink); font-weight:700;
+  transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--shadow);
+}
+#stepsw .stage{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:14px}
+#stepsw .priest{width:150px}
+#stepsw .priest .phead{cursor:default}
+#stepsw .priest .stat{display:block}
+#stepsw .mail{
+  min-height:44px; margin-top:6px; border:2px dashed rgba(28,21,18,.45); border-radius:2px;
+  background:rgba(255,255,255,.5); padding:3px 6px; font-size:.71rem; line-height:1.4;
+}
+#stepsw .mail .out{color:var(--aegean-d)}
+#stepsw .mail .in{color:var(--olive-d)}
+#stepsw .mail .zzz{color:#8a7a5e; font-style:italic}
+#stepsw .vars .note{display:block}
+#stepsw .vars .note.new{background:var(--caption); outline:2px solid var(--ink); padding:0 3px; animation:pop .18s ease}
+#stepsw .gods{
+  margin:2px 0 12px; border:3px solid var(--ink); background:#241c14; color:#efe2c2;
+  padding:8px 14px; font-family:Menlo,Consolas,monospace; font-size:.72rem; line-height:1.7;
+  box-shadow:inset 0 0 18px rgba(0,0,0,.6);
+}
+#stepsw .gods .glabel{
+  color:#9fb4c7; font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.14em;
+  font-size:.66rem; text-transform:uppercase; display:block;
+}
+#stepsw .gods .bnew{color:#ffd76e; font-weight:700}
+#stepsw .gods .gdim{color:#8a7a5e; font-style:italic}
+#stepsw .commentary{
+  background:#fff9e6; border:3px solid var(--ink); padding:12px 16px; font-size:.92rem;
+  min-height:84px; box-shadow:4px 4px 0 var(--shadow);
+}
+#stepsw .commentary .stepname{
+  font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.1em; text-transform:uppercase;
+  font-size:.78rem; color:var(--terra); display:block; margin-bottom:4px;
+}
+#stepsw .conds{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 0}
+#stepsw .conds .cond{border:2.5px solid var(--ink); padding:3px 10px; font-family:Optima,sans-serif; font-size:.76rem; background:#dfe8d0}
+#stepsw .conds .cond.info{background:#dce8f0}
+#stepsw .controls{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:14px}
+
 /* parliament ledger widget */
 #ledgerw .book{
   max-width:520px; margin:0 auto; background:linear-gradient(180deg,#fdfaf1,#f1e8cf);
@@ -884,6 +933,27 @@ people that the protocol was correct if, in their proof, they allowed any priest
   </div>
 
   <aside class="fn"><b>10.</b> Priests <var>p</var> and <var>q</var> could be the same. For simplicity, the protocol is described with <var>p</var> sending messages to himself in this case. In reality, a priest could talk to himself without the use of messengers.</aside>
+
+  <!-- ========= WIDGET: THE SIX STEPS ========= -->
+  <div class="widget" id="w-steps">
+    <div class="whead"><h5>⚱ The Six Steps — One Ballot, Move by Move</h5><span class="badge">GUIDED PROCESSION</span></div>
+    <div class="wbody" id="stepsw">
+      <p class="hint">Priest Γ dreams of passing his own decree <var>δ</var>. Follow a single ballot
+      of the preliminary protocol from beginning to end: <b>press “Next step”</b> (or click a
+      numbered step) and watch the messengers, the notes in each ledger, and the set <var>ℬ</var>
+      that only the gods can see. Pay attention to who chooses the decree in step&nbsp;3.
+      <em>Hint: it is not Γ.</em></p>
+      <div class="stepper" id="steps-tabs"></div>
+      <div class="stage" id="steps-stage"></div>
+      <div class="gods" id="steps-gods"></div>
+      <div class="commentary" id="steps-explain"></div>
+      <div class="controls">
+        <button class="gk" id="steps-back">← Back</button>
+        <button class="gk primary" id="steps-next">Next step →</button>
+        <button class="gk" id="steps-reset">Restart the ballot</button>
+      </div>
+    </div>
+  </div>
 
   <h3 class="sect">2.3 · The Basic Protocol</h3>
   <div class="prose">
@@ -1824,6 +1894,176 @@ people that the protocol was correct if, in their proof, they allowed any priest
     explainEl.innerHTML = 'The manuscript is restored. Click one of the five ballots above to read the scholars’ commentary on it.';
   });
   ballots = clone(); render();
+})();
+
+/* ================= WIDGET: The six steps, move by move ================= */
+(function(){
+  const P = ['Γ','Α','Β','Δ','Ε'];
+  const COLOR = {Α:'#136f9e', Β:'#bf4a26', Γ:'#66722c', Δ:'#8e5aa0', Ε:'#b8860b'};
+  const BASE_NOTES = {
+    Γ: [], Δ: [], Ε: [],
+    Α: ['✍ cast vote ⟨14, α⟩'],
+    Β: ['✍ cast vote ⟨5, β⟩']
+  };
+  const OLD_B = '⟨#5,&nbsp;β⟩ quorum {…} voters {Β}\n⟨#14,&nbsp;α⟩ quorum {…} voters {Α}';
+
+  const STEPS = [
+    { tab:'⚑ the cast',
+      name:'Before the ballot',
+      mail:{},
+      add:{}, stamp:{}, loc:{},
+      gods: OLD_B + '\n<span class="gdim">…ballot 16 does not exist yet.</span>',
+      conds: [['a Synod of five — any 3 priests form a majority','info']],
+      html: 'Five priests are in the Chamber. <b>Γ</b> wants to get a decree passed — ideally his '+
+        'own pet decree <i>δ</i>. The cards show what each priest has scribbled in the <em>back</em> '+
+        'of his ledger: Α once voted for <i>α</i> in ballot 14, Β voted for <i>β</i> long ago in '+
+        'ballot 5, and Δ and Ε have never voted at all. Step through the six steps and watch '+
+        'conditions <var>B</var>1–<var>B</var>3 quietly steer everything.' },
+    { tab:'1 · NextBallot',
+      name:'Step 1 — NextBallot(b)',
+      mail:{ Γ:'<span class="out">📤 NextBallot(16) → Α, Β, Δ, Ε</span>',
+             Α:'<span class="in">📥 NextBallot(16)</span>', Β:'<span class="in">📥 NextBallot(16)</span>',
+             Δ:'<span class="in">📥 NextBallot(16)</span>', Ε:'<span class="in">📥 NextBallot(16)</span>' },
+      add:{ Γ:['✍ tried ballot 16'] }, stamp:{Γ:'b := 16'}, loc:{},
+      gods: OLD_B + '\n<span class="gdim">…still no ballot 16. Sending NextBallot changes nothing in ℬ.</span>',
+      conds: [['B1: ballot numbers can never collide ✓',''],['every step is optional','info']],
+      html: '<b>(1)</b> Γ chooses a new ballot number — <b>16</b>, from the unbounded set of numbers '+
+        'reserved for him alone — notes it in his ledger so he never reuses it, and his messengers '+
+        'fan out with <i>NextBallot(16)</i> scrolls. Because the possible numbers are partitioned '+
+        'among the priests and each remembers what he has used, no two ballots ever share a number: '+
+        'condition <var>B</var>1 is maintained by bookkeeping alone.' },
+    { tab:'2 · LastVote',
+      name:'Step 2 — LastVote(b, v): report… and promise',
+      mail:{ Α:'<span class="out">📤 LastVote(16, ⟨14, α⟩)</span>', Β:'<span class="out">📤 LastVote(16, ⟨5, β⟩)</span>',
+             Δ:'<span class="out">📤 LastVote(16, null<sub>Δ</sub>)</span>',
+             Ε:'<span class="zzz">💤 ignores the scroll</span>',
+             Γ:'<span class="in">📥 three LastVote scrolls</span>' },
+      add:{ Α:['🤝 no new vote inside (14…16)'], Β:['🤝 no new vote inside (5…16)'], Δ:['🤝 no new vote below 16'] },
+      stamp:{Α:'PROMISED!', Β:'PROMISED!', Δ:'PROMISED!', Ε:'ASLEEP'}, loc:{Ε:'😴'},
+      gods: OLD_B + '\n<span class="gdim">…the promises freeze MaxVote(16, q, ℬ) for Α, Β, Δ.</span>',
+      conds: [['LastVote = MaxVote, frozen by a promise','info'],['Ε ignores it — consistency unharmed ✓','']],
+      html: '<b>(2)</b> Each priest who cares to respond looks in the <em>back of his ledger</em> for '+
+        'the last vote he cast before ballot 16 and reports it: Α answers ⟨14, <i>α</i>⟩, Β answers '+
+        '⟨5, <i>β</i>⟩, Δ answers his null vote. Each <i>LastVote(16, v)</i> is more than a report — '+
+        'it is a <b>promise to cast no new vote between <var>v</var><sub>bal</sub> and 16</b>, written '+
+        'down so it will be kept. Without that promise, the value Γ is about to use could go stale '+
+        'and <var>B</var>3 could not be enforced. Ε simply ignores the message — allowed! Skipping a '+
+        'step can stall progress but can never make the ledgers disagree.' },
+    { tab:'3 · BeginBallot',
+      name:'Step 3 — BeginBallot(b, d): the decree is forced',
+      mail:{ Γ:'<span class="out">📤 BeginBallot(16, α) → Α, Β, Δ</span>',
+             Α:'<span class="in">📥 BeginBallot(16, α)</span>', Β:'<span class="in">📥 BeginBallot(16, α)</span>',
+             Δ:'<span class="in">📥 BeginBallot(16, α)</span>', Ε:'<span class="zzz">💤</span>' },
+      add:{ Γ:['✍ ballot 16: α, quorum {Α, Β, Δ}'] },
+      stamp:{Γ:'d := α, not δ!'}, loc:{Ε:'😴'},
+      gods: OLD_B + '\n<span class="bnew">⟨#16,&nbsp;α⟩ quorum {Α,Β,Δ} voters { } ← just added to ℬ</span>',
+      conds: [['B2: quorum is a majority ✓',''],['B3: decree forced to α ✓','']],
+      html: '<b>(3)</b> Γ now holds <i>LastVote</i> scrolls from {Α, Β, Δ} — a majority, so any two '+
+        'quorums must share a priest (<var>B</var>2). Then comes the heart of the protocol: among the '+
+        'reported votes ⟨14, <i>α</i>⟩, ⟨5, <i>β</i>⟩, <i>null</i><sub>Δ</sub>, the one with the '+
+        '<b>highest ballot number</b> is ⟨14, <i>α</i>⟩. It is not <span style="font-variant:small-caps">'+
+        'blank</span>, so <var>B</var>3 leaves Γ no choice: <b>the decree must be <i>α</i></b>. His '+
+        'beloved <i>δ</i> must wait for some future ballot (where, alas, <var>B</var>3 will force '+
+        '<i>α</i> again). He records the ballot and sends <i>BeginBallot(16, α)</i> to the quorum — '+
+        'and only now, say the gods, does ballot 16 join the set ℬ.' },
+    { tab:'4 · Voted',
+      name:'Step 4 — Voted(b, q): the quorum votes',
+      mail:{ Α:'<span class="out">📤 Voted(16, Α)</span>', Β:'<span class="out">📤 Voted(16, Β)</span>',
+             Δ:'<span class="out">📤 Voted(16, Δ)</span>', Ε:'<span class="zzz">💤</span>',
+             Γ:'<span class="in">📥 Voted ×3 — the whole quorum!</span>' },
+      add:{ Α:['✍ cast vote ⟨16, α⟩'], Β:['✍ cast vote ⟨16, α⟩'], Δ:['✍ cast vote ⟨16, α⟩'] },
+      stamp:{Α:'VOTED!', Β:'VOTED!', Δ:'VOTED!', Ε:'ASLEEP'}, loc:{Ε:'😴'},
+      gods: OLD_B + '\n<span class="bnew">⟨#16,&nbsp;α⟩ quorum {Α,Β,Δ} voters {Α,Β,Δ} ← votes cast</span>',
+      conds: [['each priest checks his promises — none broken ✓',''],['voting is never compulsory','info']],
+      html: '<b>(4)</b> Each quorum priest consults the promises in his ledger before voting. Α '+
+        'promised no new vote <em>strictly between</em> 14 and 16 — voting in ballot 16 itself is '+
+        'fine. No promise is violated, so all three choose to cast their vote: each records '+
+        '⟨16, <i>α</i>⟩ in the back of his ledger and sends <i>Voted(16, q)</i> to Γ. Any of them '+
+        'could also have declined — a lost or refused vote leaves the ballot unfinished, never '+
+        'inconsistent. In the gods’ ledger each vote adds a priest to <var>B</var><sub>vot</sub>.' },
+    { tab:'5 · Success',
+      name:'Step 5 — Success(d): tally and proclaim',
+      mail:{ Γ:'<span class="out">📤 Success(α) → every priest</span>',
+             Α:'<span class="zzz">scroll on its way…</span>', Β:'<span class="zzz">scroll on its way…</span>',
+             Δ:'<span class="zzz">scroll on its way…</span>', Ε:'<span class="zzz">scroll on its way… 💤</span>' },
+      add:{}, stamp:{Γ:'SUCCESS! 🏆'}, loc:{Ε:'😴'}, outcome:{Γ:'α'},
+      gods: OLD_B + '\n<span class="bnew">⟨#16,&nbsp;α⟩ quorum {Α,Β,Δ} voters {Α,Β,Δ} 🏆 quorum ⊆ voters: successful!</span>',
+      conds: [['successful ballot: every quorum member voted 🏆','']],
+      html: '<b>(5)</b> Γ has a <i>Voted</i> scroll from <em>every</em> priest in the quorum — ballot '+
+        '16 is <b>successful</b>, and its decree is the one the Synod has chosen. Γ writes <i>α</i> '+
+        'in his ledger (the front pages now, where decrees live) and sends <i>Success(α)</i> to '+
+        'every priest on the island.' },
+    { tab:'6 · Ledgers',
+      name:'Step 6 — every ledger agrees',
+      mail:{ Α:'<span class="in">📥 Success(α) ✒ enters α</span>', Β:'<span class="in">📥 Success(α) ✒ enters α</span>',
+             Δ:'<span class="in">📥 Success(α) ✒ enters α</span>', Ε:'<span class="in">📥 Success(α) ✒ enters α</span>',
+             Γ:'<span class="zzz">his work is done</span>' },
+      add:{}, stamp:{Γ:'AGREED ✓', Α:'AGREED ✓', Β:'AGREED ✓', Δ:'AGREED ✓', Ε:'AGREED ✓'}, loc:{},
+      outcome:{Γ:'α', Α:'α', Β:'α', Δ:'α', Ε:'α'},
+      gods: OLD_B + '\n⟨#16,&nbsp;α⟩ quorum {Α,Β,Δ} voters {Α,Β,Δ} 🏆\n<span class="gdim">any later ballot’s quorum must overlap {Α,Β,Δ} — so B3 will force α forever after.</span>',
+      conds: [['Theorem 1 ⇒ all ledgers consistent ✓',''],['progress? see Ε — and Section 2.4','info']],
+      html: '<b>(6)</b> On receiving <i>Success(α)</i>, each priest enters decree <i>α</i> in his '+
+        'ledger — even sleepy Ε, who ignored the whole affair and agrees anyway. A decree is entered '+
+        '<em>only</em> when a ballot succeeds, so by Theorem&nbsp;1 no ballot, past or future, can '+
+        'ever put anything but <i>α</i> in a ledger. Consistency is guaranteed even with lost '+
+        'messages and dozing priests. <em>Progress</em>, as Ε just demonstrated, is a different '+
+        'battle — fought in Section&nbsp;2.4.' }
+  ];
+
+  let cur = 0;
+  const tabsEl = document.getElementById('steps-tabs');
+  const stageEl = document.getElementById('steps-stage');
+  const godsEl = document.getElementById('steps-gods');
+  const explainEl = document.getElementById('steps-explain');
+  const backBtn = document.getElementById('steps-back');
+  const nextBtn = document.getElementById('steps-next');
+
+  function render(){
+    const s = STEPS[cur];
+    tabsEl.innerHTML = '';
+    STEPS.forEach((st, i)=>{
+      const b = document.createElement('button');
+      b.innerHTML = st.tab;
+      b.className = i===cur ? 'on' : (i<cur ? 'done' : '');
+      b.addEventListener('click', ()=>{ cur = i; render(); });
+      tabsEl.appendChild(b);
+    });
+    stageEl.innerHTML = P.map(p=>{
+      const notes = [...BASE_NOTES[p]];
+      const newNotes = [];
+      for(let i=1; i<=cur; i++){
+        for(const n of (STEPS[i].add[p]||[])){
+          notes.push(n);
+          if(i===cur) newNotes.push(n);
+        }
+      }
+      const dec = (s.outcome||{})[p];
+      const stamp = s.stamp[p];
+      return '<div class="priest">' +
+        (stamp ? '<div class="stat" style="display:block">'+stamp+'</div>' : '') +
+        '<div class="phead"><span class="avatar" style="background:'+COLOR[p]+'">'+p+'</span>' +
+        '<span class="pname">'+p+(p==='Γ'?'<span style="font-weight:400;font-size:.68rem"> · initiator</span>':'')+'</span>' +
+        '<span class="loc">'+(s.loc[p]||'🏛')+'</span></div>' +
+        '<div class="pbody">' +
+        '<div class="outcome'+(dec?' written':'')+'">'+(dec ? 'decree: <b>'+dec+'</b>' : 'decree page: <i>empty</i>')+'</div>' +
+        '<div class="mail">'+(s.mail[p]||'<span class="zzz">—</span>')+'</div>' +
+        '<div class="vars"><b>back of ledger:</b>' +
+        (notes.length ? notes.map(n=>'<span class="note'+(newNotes.includes(n)?' new':'')+'">'+n+'</span>').join('')
+                      : '<span class="note"><i>(blank)</i></span>') +
+        '</div></div></div>';
+    }).join('');
+    godsEl.innerHTML = '<span class="glabel">ℬ — the set of ballots, observed only by the gods</span>' +
+      s.gods.split('\n').join('<br>');
+    explainEl.innerHTML = '<span class="stepname">'+s.name+'</span>' + s.html +
+      '<div class="conds">'+s.conds.map(c=>'<span class="cond'+(c[1]?' '+c[1]:'')+'">'+c[0]+'</span>').join('')+'</div>';
+    backBtn.disabled = cur===0;
+    nextBtn.disabled = cur===STEPS.length-1;
+    nextBtn.textContent = cur===STEPS.length-1 ? 'The Synod has chosen ✓' : 'Next step →';
+  }
+  backBtn.addEventListener('click', ()=>{ if(cur>0){ cur--; render(); } });
+  nextBtn.addEventListener('click', ()=>{ if(cur<STEPS.length-1){ cur++; render(); } });
+  document.getElementById('steps-reset').addEventListener('click', ()=>{ cur = 0; render(); });
+  render();
 })();
 
 /* ================= WIDGET 2: Chamber simulator ================= */
