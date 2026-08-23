@@ -301,6 +301,10 @@ footer.colophon{margin-top:70px; text-align:center; font-size:.8rem; color:#6d5c
   #dossier th.q, #verdict th.q{width:auto}
   #dossier table, #verdict table{min-width:640px}
 }
+
+/* Heading links */
+.hlink { color: inherit; text-decoration: none; }
+.hlink:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -308,7 +312,7 @@ footer.colophon{margin-top:70px; text-align:center; font-size:.8rem; color:#6d5c
 
 <header class="cover">
   <div class="kicker">Paxos Comics · Distributed Classics · Companion Reel</div>
-  <h1>The Four Rulebooks</h1>
+  <h1 id="the-four-rulebooks"><a href="#the-four-rulebooks" class="hlink">The Four Rulebooks</a></h1>
   <p class="sub display">One Chamber. Five priests. Four protocols. Change nothing but the rulebook,
   and watch what the Paxons gained — and paid for — at every step from the <em>preliminary protocol</em>
   to the full Parliament of Paxos.</p>
@@ -324,7 +328,7 @@ forgetful messengers — only the rulebook changes.</div>
 
 <!-- ================= THE CAST ================= -->
 <div class="widget" id="cast">
-  <div class="whead"><h5>⚱ The Standing Cast</h5><span class="badge">FIVE PRIESTS, FOUR PROTOCOLS</span></div>
+  <div class="whead"><h5 id="the-standing-cast"><a href="#the-standing-cast" class="hlink">⚱ The Standing Cast</a></h5><span class="badge">FIVE PRIESTS, FOUR PROTOCOLS</span></div>
   <div class="wbody">
     <p class="hint">These five appear in every run below, with the same temperaments and the same
     ledgers. Any three of them form a majority set — which is the only fact about them the protocol
@@ -334,12 +338,12 @@ forgetful messengers — only the rulebook changes.</div>
 </div>
 
 <!-- ================= PICKER ================= -->
-<h3 class="sect">Choose a rulebook</h3>
+<h3 id="choose-a-rulebook" class="sect"><a href="#choose-a-rulebook" class="hlink">Choose a rulebook</a></h3>
 <div class="picker" id="picker"></div>
 
 <!-- ================= DOSSIER ================= -->
 <div class="widget" id="dossier">
-  <div class="whead"><h5>⚱ The Scholars’ Concordance</h5><span class="badge">WHAT CHANGES, LINE BY LINE</span></div>
+  <div class="whead"><h5 id="the-scholars-concordance"><a href="#the-scholars-concordance" class="hlink">⚱ The Scholars’ Concordance</a></h5><span class="badge">WHAT CHANGES, LINE BY LINE</span></div>
   <div class="wbody">
     <p class="hint">Each column is one rulebook. A <span style="border-left:3px solid var(--terra); padding-left:5px">red edge</span>
     marks a rule that changed from the column to its left — those edges are the entire story of Chapter II
@@ -351,7 +355,7 @@ forgetful messengers — only the rulebook changes.</div>
 
 <!-- ================= THE SIMULATOR ================= -->
 <div class="widget" id="w-sim">
-  <div class="whead"><h5>⚱ The Chamber — All Four Protocols, One Room</h5><span class="badge" id="sim-badge">HANDS-ON ORACLE</span></div>
+  <div class="whead"><h5 id="the-chamber-all-four-protocols-one-room"><a href="#the-chamber-all-four-protocols-one-room" class="hlink">⚱ The Chamber — All Four Protocols, One Room</a></h5><span class="badge" id="sim-badge">HANDS-ON ORACLE</span></div>
   <div class="wbody" id="sim">
     <p class="hint" id="sim-hint"></p>
     <div class="banner warn" id="sim-banner"></div>
@@ -383,7 +387,7 @@ forgetful messengers — only the rulebook changes.</div>
 
 <!-- ================= VERDICT ================= -->
 <div class="widget" id="verdict">
-  <div class="whead"><h5>⚱ The Same Story, Told Four Ways</h5><span class="badge">THE GRAND COMPARISON</span></div>
+  <div class="whead"><h5 id="the-same-story-told-four-ways"><a href="#the-same-story-told-four-ways" class="hlink">⚱ The Same Story, Told Four Ways</a></h5><span class="badge">THE GRAND COMPARISON</span></div>
   <div class="wbody">
     <p class="hint">Pick a legend above and the very same sequence of events — the same priests wandering
     out at the same moment, the same scrolls lost — is replayed under all four rulebooks at once. The

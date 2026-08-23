@@ -432,6 +432,10 @@ nav.toc a{text-decoration:none; border-bottom:1px dotted var(--aegean-d)}
 footer.colophon{
   margin-top:70px; text-align:center; font-size:.8rem; color:#6d5c42; font-style:italic;
 }
+
+/* Heading links */
+.hlink { color: inherit; text-decoration: none; }
+.hlink:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -450,7 +454,7 @@ footer.colophon{
 </header>
 
 <nav class="toc">
-  <h6>Table of Decrees</h6>
+  <h6 id="table-of-decrees"><a href="#table-of-decrees" class="hlink">Table of Decrees</a></h6>
   <ol>
     <li><a href="#preface">The Editor’s Discovery</a></li>
     <li><a href="#s1">The Problem</a></li>
@@ -511,10 +515,10 @@ footer.colophon{
 <section id="s1">
   <div class="issue">
     <span class="no">Chapter I</span>
-    <h2>The Problem</h2>
+    <h2 id="the-problem"><a href="#the-problem" class="hlink">The Problem</a></h2>
   </div>
 
-  <h3 class="sect">1.1 · The Island of Paxos</h3>
+  <h3 id="1-1-the-island-of-paxos" class="sect"><a href="#1-1-the-island-of-paxos" class="hlink">1.1 · The Island of Paxos</a></h3>
   <figure class="panel">
     <div class="frame"><img src="images/island_small.webp" alt="Panorama of the island of Paxos: bustling harbor, agora, and the Parliament Chamber on the hilltop."></div>
     <figcaption>EARLY IN THIS MILLENNIUM, THE AEGEAN ISLAND OF PAXOS WAS A THRIVING MERCANTILE CENTER.</figcaption>
@@ -532,7 +536,7 @@ footer.colophon{
     <figcaption>NO ONE WAS WILLING TO DEVOTE HIS LIFE TO PARLIAMENT — LEGISLATORS WANDERED IN AND OUT OF THE CHAMBER CONTINUALLY.</figcaption>
   </figure>
 
-  <h3 class="sect">1.2 · Requirements</h3>
+  <h3 id="1-2-requirements" class="sect"><a href="#1-2-requirements" class="hlink">1.2 · Requirements</a></h3>
   <div class="prose">
     <p>Parliament’s primary task was to determine the law of the land, which was defined by the sequence of decrees it passed. A modern parliament will employ a secretary to record its actions, but no one in Paxos was willing to remain in the Chamber throughout the session to act as secretary. Instead, each Paxon legislator maintained a <i>ledger</i> in which he recorded the numbered sequence of decrees that were passed. For example, legislator <span class="paxon" data-real="Nancy Lynch" data-note="Pioneer of distributed algorithms theory; co-author of the FLP impossibility result cited in this very paper.">Λ˘ινχ∂</span>’s ledger had the entry</p>
   </div>
@@ -569,7 +573,7 @@ footer.colophon{
   as <i>majority of the legislators</i>. Alternative translations of this word have been proposed
   and are discussed in Section&nbsp;2.2.</aside>
 
-  <h3 class="sect">1.3 · Assumptions</h3>
+  <h3 id="1-3-assumptions" class="sect"><a href="#1-3-assumptions" class="hlink">1.3 · Assumptions</a></h3>
   <figure class="panel mid tilt-r">
     <div class="frame"><img src="images/equipment_small.webp" alt="Museum-style panel of a legislator's equipment: ledger, pen, indelible ink, hourglass, and a flimsy slip of paper."></div>
     <figcaption>STANDARD ISSUE, ONE PER LEGISLATOR: STURDY LEDGER, PEN, INDELIBLE INK, HOURGLASS TIMER… AND A VERY LOSABLE SLIP OF PAPER.</figcaption>
@@ -599,7 +603,7 @@ footer.colophon{
 <section id="s2">
   <div class="issue">
     <span class="no">Chapter II</span>
-    <h2>The Single-Decree Synod</h2>
+    <h2 id="the-single-decree-synod"><a href="#the-single-decree-synod" class="hlink">The Single-Decree Synod</a></h2>
   </div>
 
   <figure class="panel">
@@ -619,7 +623,7 @@ when mathematicians, in response to the request for a protocol, were attempting 
 satisfactory protocol was impossible. 
   </aside>
 
-  <h3 class="sect">2.1 · Mathematical Results</h3>
+  <h3 id="2-1-mathematical-results" class="sect"><a href="#2-1-mathematical-results" class="hlink">2.1 · Mathematical Results</a></h3>
   <div class="prose">
     <p>The Synod’s decree was chosen through a series of numbered <em>ballots</em>, where a ballot was a referendum on a single decree. In each ballot, a priest had the choice only of voting for the decree or not voting.<sup>5</sup> Associated with a ballot was a set of priests called a <em>quorum</em>. A ballot succeeded iff (if and only if) every priest in the quorum voted for the decree. Formally, a ballot <var>B</var> consisted of the following four components. (Unless otherwise qualified, <i>set</i> is taken to mean <i>finite set</i>.<sup>6</sup>)</p>
   </div>
@@ -661,7 +665,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
     </div>
   <!-- ========= WIDGET 1: FIG 1 ========= -->
   <div class="widget" id="w-fig1">
-    <div class="whead"><h5>⚱ The Manuscript — Figure 1</h5><span class="badge">INTERACTIVE RELIC</span></div>
+    <div class="whead"><h5 id="the-manuscript-figure-1"><a href="#the-manuscript-figure-1" class="hlink">⚱ The Manuscript — Figure 1</a></h5><span class="badge">INTERACTIVE RELIC</span></div>
     <div class="wbody" id="fig1">
       <p class="hint">A set <var>ℬ</var> of five ballots for a Synod of five priests
       Α,&nbsp;Β,&nbsp;Γ,&nbsp;Δ,&nbsp;Ε. Each row lists a ballot’s number, decree, and quorum; the
@@ -810,7 +814,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
   NEVER PAINT YOU INTO A CORNER (THEOREM 2). ALL THAT REMAINS IS TO TURN THEM INTO A PROTOCOL
   PRIESTS CAN ACTUALLY FOLLOW…</div>
 
-  <h3 class="sect">2.2 · The Preliminary Protocol</h3>
+  <h3 id="2-2-the-preliminary-protocol" class="sect"><a href="#2-2-the-preliminary-protocol" class="hlink">2.2 · The Preliminary Protocol</a></h3>
   <div class="prose">
     <p>The Paxons derived the <em>preliminary protocol</em> from the requirement that conditions
     <var>B</var>1(<var>ℬ</var>)–<var>B</var>3(<var>ℬ</var>) remain true, where <var>ℬ</var> was the
@@ -944,7 +948,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
 
   <!-- ========= WIDGET: THE SIX STEPS ========= -->
   <div class="widget" id="w-steps">
-    <div class="whead"><h5>⚱ The Six Steps — One Ballot, Move by Move</h5><span class="badge">GUIDED PROCESSION</span></div>
+    <div class="whead"><h5 id="the-six-steps-one-ballot-move-by-move"><a href="#the-six-steps-one-ballot-move-by-move" class="hlink">⚱ The Six Steps — One Ballot, Move by Move</a></h5><span class="badge">GUIDED PROCESSION</span></div>
     <div class="wbody" id="stepsw">
       <p class="hint">Priest Γ dreams of passing his own decree <var>δ</var>. Follow a single ballot
       of the preliminary protocol from beginning to end: <b>press “Next step”</b> (or click a
@@ -963,7 +967,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
     </div>
   </div>
 
-  <h3 class="sect">2.3 · The Basic Protocol</h3>
+  <h3 id="2-3-the-basic-protocol" class="sect"><a href="#2-3-the-basic-protocol" class="hlink">2.3 · The Basic Protocol</a></h3>
   <div class="prose">
     <p>In the preliminary protocol, a priest must record (i) the number of every ballot
     he has initiated, (ii) every vote he has cast, and (iii) every <em>LastVote</em> message he
@@ -1043,7 +1047,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
 
   <!-- ========= WIDGET 2: SIMULATOR ========= -->
   <div class="widget" id="w-sim">
-    <div class="whead"><h5>⚱ The Chamber — Conduct a Ballot Yourself</h5><span class="badge">HANDS-ON ORACLE</span></div>
+    <div class="whead"><h5 id="the-chamber-conduct-a-ballot-yourself"><a href="#the-chamber-conduct-a-ballot-yourself" class="hlink">⚱ The Chamber — Conduct a Ballot Yourself</a></h5><span class="badge">HANDS-ON ORACLE</span></div>
     <div class="wbody" id="sim">
       <p class="hint">Five priests, one Chamber, and you. <b>Click a priest’s head-bar</b> to send
       him wandering out of the Chamber (or bring him back — if he was mid-ballot, his slip of paper
@@ -1086,7 +1090,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
     </div>
   </div>
 
-  <h3 class="sect">2.4 · The Complete Synod Protocol</h3>
+  <h3 id="2-4-the-complete-synod-protocol" class="sect"><a href="#2-4-the-complete-synod-protocol" class="hlink">2.4 · The Complete Synod Protocol</a></h3>
   <div class="prose">
     <p>The basic protocol maintains consistency, but it cannot ensure any progress because
     it states only what a priest may do; it does not require him to do anything. The
@@ -1215,13 +1219,13 @@ people that the protocol was correct if, in their proof, they allowed any priest
 <section id="s3">
   <div class="issue">
     <span class="no">Chapter III</span>
-    <h2>The Multi-Decree Parliament</h2>
+    <h2 id="the-multi-decree-parliament"><a href="#the-multi-decree-parliament" class="hlink">The Multi-Decree Parliament</a></h2>
   </div>
 
   <div class="prose">
     <p>When Parliament was established, a protocol to satisfy its consistency and progress requirements was derived from the Synod protocol. The derivation and properties of the original parliamentary protocol are described in Sections 3.1 and 3.2. Section 3.3 discusses the further evolution of the protocol.</p>
   </div>
-  <h3 class="sect">3.1 · The Protocol</h3>
+  <h3 id="3-1-the-protocol" class="sect"><a href="#3-1-the-protocol" class="hlink">3.1 · The Protocol</a></h3>
   <div class="prose">
     <p>Instead of passing just one decree, the Paxon Parliament had to pass a series of numbered decrees. As in the Synod protocol, a president was elected. Anyone who wanted a decree passed would inform the president, who would assign a number to the decree and attempt to pass it. Logically, the parliamentary protocol used a separate instance of the complete Synod protocol for each decree number. However, a single president was selected for all these instances, and he performed the first two steps of the protocol just once.</p>
     <p>The key to deriving the parliamentary protocol is the observation that, in the Synod protocol, the president does not choose the decree or the quorum until step 3. A newly elected president <var>p</var> can send to some set of legislators a single message that serves as the <em>NextBallot</em>(<var>b</var>) message for all instances of the Synod protocol. (There are an infinite number of instances—one for each decree number.) A legislator <var>q</var> can reply with a single message that serves as the <em>LastVote</em> messages for step 2 of all instances of the Synod protocol. This message contains only a finite amount of information, since <var>q</var> can have voted in only a finite number of instances.</p>
@@ -1237,7 +1241,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
 
   <!-- ========= WIDGET 3: LEDGER GAPS ========= -->
   <div class="widget" id="w-ledger">
-    <div class="whead"><h5>⚱ President Δφωρκ’s Monday Morning</h5><span class="badge">FILL THE GAPS</span></div>
+    <div class="whead"><h5 id="president-s-monday-morning"><a href="#president-s-monday-morning" class="hlink">⚱ President Δφωρκ’s Monday Morning</a></h5><span class="badge">FILL THE GAPS</span></div>
     <div class="wbody" id="ledgerw">
       <p class="hint">You are the newly elected president. Your ledger has gaps — decrees you know
       nothing about, below decrees you know passed. A citizen is waiting. <b>Click the gaps</b> to
@@ -1261,8 +1265,8 @@ people that the protocol was correct if, in their proof, they allowed any priest
   because <var>B</var>3 forces it on every later ballot; Parliament passes decree after decree, three
   messages apiece.</div>
 
-  <h3 class="sect">3.2 · Properties of the Protocol</h3>
-  <h4 class="subsect">3.2.1 · The Ordering of Decrees</h4>
+  <h3 id="3-2-properties-of-the-protocol" class="sect"><a href="#3-2-properties-of-the-protocol" class="hlink">3.2 · Properties of the Protocol</a></h3>
+  <h4 id="3-2-1-the-ordering-of-decrees" class="subsect"><a href="#3-2-1-the-ordering-of-decrees" class="hlink">3.2.1 · The Ordering of Decrees</a></h4>
   <div class="prose">
     <p>Balloting could take place concurrently for many different decree numbers, with ballots initiated by different legislators—each thinking he was president when he initiated the ballot. We cannot say precisely in what order decrees would be passed, especially without knowing how a president was selected. However, there is one important property about the ordering of decrees that can be deduced.</p>
     <p>A decree was said to to be <em>proposed</em> when it was chosen by the president in step 3 of the corresponding instance of the Synod protocol. The decree was said to be <em>passed</em> when it was written for the first time in a ledger. Before a president could propose any new decrees, he had to learn from all the members of a majority set what decrees they had voted for. Any decree that had already been passed must have been voted for by at least one legislator in the majority set. Therefore, the president must have learned about all previously passed decrees before initiating any new decree. The president would not fill a gap in the ledgers with an important decree—that is, with any decree other than the “olive-day” decree. He would also not propose decrees out of order. Therefore, the protocol satisfied the following <em>decree-ordering property</em>.</p>
@@ -1274,7 +1278,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
     than <var>B</var>.</p>
   </div>
 
-  <h4 class="subsect">3.2.2 · Behind Closed Doors</h4>
+  <h4 id="3-2-2-behind-closed-doors" class="subsect"><a href="#3-2-2-behind-closed-doors" class="hlink">3.2.2 · Behind Closed Doors</a></h4>
   <div class="prose">
     <p>Although we don’t know the details involved in choosing a new president, we do know exactly how Parliament functioned when the president had been chosen and no one was entering or leaving the Chamber. Upon receiving a request to pass a decree—either directly from a citizen or relayed from another legislator—the president assigned the decree a number and passed it with the following exchange of messages. (The numbers refer to the corresponding steps in the Synod protocol.)</p>
     <ol start="3" style="max-width:60ch; margin:1em auto">
@@ -1285,12 +1289,12 @@ people that the protocol was correct if, in their proof, they allowed any priest
     <p>This is a total of three message delays and about 3<var>N</var> messages, assuming a parliament of <var>N</var> legislators and a quorum of about <var>N</var>/2. Moreover, if Parliament was busy, the president would combine the <em>BeginBallot</em> message for one decree with the <em>Success</em> message for a previous one, for a total of only 2<var>N</var> messages per decree.</p>
   </div>
 
-  <h3 class="sect">3.3 · Further Developments</h3>
+  <h3 id="3-3-further-developments" class="sect"><a href="#3-3-further-developments" class="hlink">3.3 · Further Developments</a></h3>
   <div class="prose">
     <p>Governing the island turned out to be a more complex task than the Paxons realized. A number of problems arose whose solutions required changes to the protocol. The most important of these changes are described below.</p>
   </div>
 
-  <h4 class="subsect">3.3.1 · Picking a President</h4>
+  <h4 id="3-3-1-picking-a-president" class="subsect"><a href="#3-3-1-picking-a-president" class="hlink">3.3.1 · Picking a President</a></h4>
   <figure class="panel mid tilt-l">
     <div class="frame"><img src="images/president_small.webp" alt="A tanned legislator returning from vacation is crowned president to his horror, as an aide wheels in a towering stack of decrees to copy."></div>
     <figcaption>LEGISLATOR Ωκι RETURNS FROM SIX MONTHS ABROAD… AND IS INSTANTLY MADE PRESIDENT, ALPHABETICALLY. PARLIAMENT HALTS WHILE HE COPIES SIX MONTHS OF DECREES.</figcaption>
@@ -1300,14 +1304,14 @@ people that the protocol was correct if, in their proof, they allowed any priest
     <p>This incident led to a debate about the best way to choose a president. Some Paxons urged that once a legislator became president, he should remain president until he left the Chamber. An influential group of citizens wanted the richest legislator in the Chamber to be president, since he could afford to hire more scribes and other servants to help him with the presidential duties. They argued that once a rich legislator had brought his ledger up to date, there was no reason for him not to assume the presidency. Others, however, argued that the most upstanding citizen should be made president, regardless of wealth. Upstanding probably meant less likely to be dishonest, although no Paxon would publicly admit the possibility of official malfeasance. Unfortunately, the outcome of this debate is not known; no record exists of the presidential selection protocol that was ultimately used.</p>
   </div>
 
-  <h4 class="subsect">3.3.2 · Long Ledgers</h4>
+  <h4 id="3-3-2-long-ledgers" class="subsect"><a href="#3-3-2-long-ledgers" class="hlink">3.3.2 · Long Ledgers</a></h4>
   <div class="prose">
     <p>As the years progressed and Parliament passed more and more decrees, Paxons had to pore over an ever longer list of decrees to find the current olive tax or what color goat could be sold. A legislator who returned to the Chamber after an extended voyage had to do quite a bit of copying to bring his ledger up to date. Eventually, the legislators were forced to convert their ledgers from lists of decrees into law books that contained only the current state of the law and the number of the last decree whose passage was reflected in that state.</p>
     <p>To learn the current olive tax, one looked in the law book under “taxes”; to learn what color goat could be sold, one looked under “mercantile law”. If a legislator’s ledger contained the law through decree 1298 and he learned that decree 1299 set the olive tax to 6 drachmas per ton, he just changed the entry for the olive-tax law and noted that his ledger was complete through decree 1299. If he then learned about decree 1302, he would write it down in the back of the ledger and wait until he learned about decrees 1300 and 1301 before incorporating decree 1302 into the law book.</p>
     <p>To enable a legislator who had been gone for a short time to catch up without copying the entire law book, legislators kept a list of the past week’s decrees in the back of the book. They could have kept this list on a slip of paper, but it was convenient for a legislator to enter decrees in the back of the ledger as they were passed and update the law book only two or three times a week.</p>
   </div>
 
-  <h4 class="subsect">3.3.3 · Bureaucrats</h4>
+  <h4 id="3-3-3-bureaucrats" class="subsect"><a href="#3-3-3-bureaucrats" class="hlink">3.3.3 · Bureaucrats</a></h4>
   <figure class="panel tilt-r">
     <div class="frame"><img src="images/cheese_small.webp" alt="Two rival cheese inspectors stamp the same wheel of cheese FIT and UNFIT while a merchant despairs."></div>
     <figcaption>TWO CHEESE INSPECTORS AT ONCE! Δ˘ικστρα SAYS “UNFIT,” Γωυδα SAYS “FIT,” AND THE CHEESE MARKET DESCENDS INTO CHAOS.</figcaption>
@@ -1352,7 +1356,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
     proposing <var>D′</var>. <span class="qed">∎</span></p>
   </details>
 
-  <h4 class="subsect">3.3.4 · Learning the Law</h4>
+  <h4 id="3-3-4-learning-the-law" class="subsect"><a href="#3-3-4-learning-the-law" class="hlink">3.3.4 · Learning the Law</a></h4>
   <figure class="panel tilt-l">
     <div class="frame"><img src="images/goats_small.webp" alt="A farmer presents black goats to a refusing merchant while a legislator shrugs over his out-of-date ledger."></div>
     <figcaption>THE LAW SAYS BLACK GOATS MAY BE SOLD — BUT LEGISLATOR Στωκμ˘ιρ’S LEDGER STOPS AT DECREE 76, AND THE DEAL COLLAPSES.</figcaption>
@@ -1390,7 +1394,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
     <p>This method proved satisfactory until it became necessary to make a sweeping change to several areas of the law at one time. The Paxons then realized that the necessary requirement for maintaining monotonicity was not that a decree affect only a single area, but that every area it affects have the same specialist. Parliament could change several areas of the law with a single decree by first appointing a single legislator to be the specialist for all those areas. Moreover, the same area could have multiple specialists, so long as that area of the law was not allowed to change. Just before income taxes were due, Parliament would appoint several tax-law specialists to handle the seasonal flood of inquiries about the tax law.</p>
   </div>
 
-  <h4 class="subsect">3.3.5 · Dishonest Legislators and Honest Mistakes</h4>
+  <h4 id="3-3-5-dishonest-legislators-and-honest-mistakes" class="subsect"><a href="#3-3-5-dishonest-legislators-and-honest-mistakes" class="hlink">3.3.5 · Dishonest Legislators and Honest Mistakes</a></h4>
   <div class="prose">
     <p>Despite official assertions to the contrary, there must have been a few dishonest legislators in the history of Paxos. When caught, they were probably exiled. By sending contradictory messages, a malicious legislator could cause different legislators’ ledgers to be inconsistent. Inconsistency could also result from a lapse of memory by an honest legislator or messenger.</p>
     <p>When inconsistencies were recognized, they could easily be corrected by passing decrees. For example, disagreement about the current olive tax could be eliminated by passing a new decree declaring the tax to have a certain value. The difficult problem lay in correcting inconsistent ledgers even if no one was aware of the inconsistency.</p>
@@ -1403,7 +1407,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
     <p>Unfortunately, we don’t know exactly what sort of self-stabilization property the Paxon Parliament possessed or how it was achieved. Paxon mathematicians undoubtedly addressed the problem, but their work has not yet been found. I hope that future archaeological expeditions to Paxos will give high priority to the search for manuscripts on self-stabilization.</p>
   </div>
 
-  <h4 class="subsect">3.3.6 · Choosing New Legislators</h4>
+  <h4 id="3-3-6-choosing-new-legislators" class="subsect"><a href="#3-3-6-choosing-new-legislators" class="hlink">3.3.6 · Choosing New Legislators</a></h4>
   <div class="prose">
     <p>At first, membership in Parliament was hereditary, passing from parent to child. When the elder statesman <span class="paxon" data-real="David Parnas" data-note="Of information-hiding fame — here, the very model of institutional continuity.">Παρνας</span> retired, he gave his ledger to his son, who carried on without interruption. It made no difference to other legislators which Παρνας they communicated with.</p>
     <p>As old families emigrated and new ones immigrated, this system had to change. The Paxons decided to add and remove members of Parliament by decree. This posed a circularity problem: membership in Parliament was determined by which decrees were passed, but passing a decree required knowing what constituted a majority set, which in turn depended upon who was a member of Parliament. The circularity was broken by letting the membership of Parliament used in passing decree <var>n</var> be specified by the law as of decree <var>n</var>&nbsp;−&nbsp;3. A president could not try to pass decree 3255 until he knew all decrees through decree 3252. In practice, after passing the decree</p>
@@ -1425,10 +1429,10 @@ people that the protocol was correct if, in their proof, they allowed any priest
 <section id="s4">
   <div class="issue">
     <span class="no">Chapter IV</span>
-    <h2>Relevance to Computer Science</h2>
+    <h2 id="relevance-to-computer-science"><a href="#relevance-to-computer-science" class="hlink">Relevance to Computer Science</a></h2>
   </div>
 
-  <h3 class="sect">4.1 · The State Machine Approach</h3>
+  <h3 id="4-1-the-state-machine-approach" class="sect"><a href="#4-1-the-state-machine-approach" class="hlink">4.1 · The State Machine Approach</a></h3>
   <figure class="panel">
     <div class="frame"><img src="images/statemachine_small.webp" alt="Split panel: the ancient Chamber with legislators writing in ledgers on the left, mirrored by a modern server room with replicated databases on the right."></div>
     <figcaption>THE CHAMBER, TRANSLATED: LEGISLATOR ↔ SERVER · CITIZEN ↔ CLIENT · CURRENT LAW ↔ DATABASE STATE.</figcaption>
@@ -1472,7 +1476,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
   <aside class="fn"><b>14.</b> These algorithms were derived from the military protocols of
   another Mediterranean state — <em>Byzantine</em> ones, the scholars say.</aside>
 
-  <h3 class="sect">4.2 · Commit Protocols</h3>
+  <h3 id="4-2-commit-protocols" class="sect"><a href="#4-2-commit-protocols" class="hlink">4.2 · Commit Protocols</a></h3>
   <div class="prose">
     <p>The Paxon Synod protocol is similar to standard three-phase commit protocols [Bernstein et al. 1987; Skeen 1982]. A Paxon ballot and a three-phase commit protocol both involve the exchange of five messages between a coordinator (the president) and the other quorum members (legislators). A commit protocol chooses one of two values—<em>commit</em> or <em>abort</em>—while the Synod protocol chooses an arbitrary decree. To convert a commit protocol to a Synod protocol, one sends the decree in the initial round of messages. A <em>commit</em> decision means that this decree was passed, and an <em>abort</em> decision means that the “olive-day” decree was passed.</p>
     <p>The Synod protocol differs from a converted commit protocol because the decree is not sent until the second phase. This allows the corresponding parliamentary protocol to execute the first phase just once for all decrees, so the exchange of only three messages is needed to pass each individual decree.</p>
@@ -1496,7 +1500,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
 
   <!-- ========= WIDGET 4: NAMES ========= -->
   <div class="widget" id="w-names">
-    <div class="whead"><h5>⚱ The Hidden Names of Paxos</h5><span class="badge">DECODER RING</span></div>
+    <div class="whead"><h5 id="the-hidden-names-of-paxos"><a href="#the-hidden-names-of-paxos" class="hlink">⚱ The Hidden Names of Paxos</a></h5><span class="badge">DECODER RING</span></div>
     <div class="wbody" id="names">
       <p class="hint">The “Paxon dialect” is Greek letters wrapped around the names of real
       researchers — Lamport’s running joke, with each scholar cast in a fitting role. (You may have
@@ -1507,7 +1511,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
   </div>
 
   <div class="prose" style="margin-top:36px">
-    <h4 class="subsect" style="margin-top:0">Acknowledgments</h4>
+    <h4 id="acknowledgments" class="subsect" style="margin-top:0"><a href="#acknowledgments" class="hlink">Acknowledgments</a></h4>
     <p>Daniel Duchamp pointed out to the author the need for a new state-machine implementation.
     Discussions with Martín Abadi, Andy Hisgen, Tim Mann, and Garret Swart led him to Paxos.
     <span class="paxon" data-real="Leonidas Guibas" data-note="Stanford computational geometer — and, evidently, a native speaker of Paxon.">Λεωνίδας Γκίμπας</span>
@@ -1521,10 +1525,10 @@ people that the protocol was correct if, in their proof, they allowed any priest
 <section id="appendix">
   <div class="issue">
     <span class="no">Recovered Fragments</span>
-    <h2>Appendix: Proof of Consistency<br>of the Synodic Protocol</h2>
+    <h2 id="appendix-proof-of-consistencyof-the-synodic-protocol"><a href="#appendix-proof-of-consistencyof-the-synodic-protocol" class="hlink">Appendix: Proof of Consistency<br>of the Synodic Protocol</a></h2>
   </div>
 
-  <h3 class="sect">A1 · The Basic Protocol</h3>
+  <h3 id="a1-the-basic-protocol" class="sect"><a href="#a1-the-basic-protocol" class="hlink">A1 · The Basic Protocol</a></h3>
   <div class="prose">
     <p>The Synod’s basic protocol, described informally in Section 2.3, is stated here using modern algorithmic notation. We begin with the variables that a priest <var>p</var> must maintain. First come the variables that represent information kept in his ledger. (For convenience, the vote <var>prevVote</var>[<var>p</var>] used in Section 2.3 is replaced by its components <var>prevBal</var>[<var>p</var>] and <var>prevDec</var>[<var>p</var>].)</p>
   </div>
@@ -1631,7 +1635,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
     <p>This algorithm is an abstract description of the real protocol performed by Paxon priests. Do the algorithm’s actions accurately model the actions of the real priests? There were three kinds of actions that a priest could perform “atomically”: receiving a message, writing a note or ledger entry, and sending a message. Each of these is represented by a single action of the algorithm, except that <b>Receive</b> actions both receive a message and set a variable. We can pretend that the receipt of a message occurred when a priest acted upon the message; if he left the Chamber before acting upon it, then we can pretend that the message was never received. Since this pretense does not affect the consistency condition, we can infer the consistency of the basic Synod protocol from the consistency of the algorithm.</p>
   </div>
 
-  <h3 class="sect">A2 · Proof of Consistency</h3>
+  <h3 id="a2-proof-of-consistency" class="sect"><a href="#a2-proof-of-consistency" class="hlink">A2 · Proof of Consistency</a></h3>
   <div class="prose">
     <p>To prove the consistency condition, it is necessary to show that whenever <var>outcome</var>[<var>p</var>] and <var>outcome</var>[<var>q</var>] are both different from <span style="font-variant:small-caps">blank</span>, they are equal. A rigorous correctness proof requires a complete description of the algorithm. The description given above is almost complete. Missing is a variable <var>ℳ</var> whose value is the multiset of all messages in transit.<sup>15</sup> Each <b>Send</b> action adds a message to this multiset and each <b>Receive</b> action removes one. Also needed are actions to represent the loss and duplication of messages, as well as a <b>Forget</b> action that represents a priest losing his slip of paper.</p>
     <p>With these additions, we get an algorithm that defines a set of possible behaviors, in which each change of state corresponds to one of the allowed actions. The Paxons proved correctness by finding a predicate <var>I</var> such that</p>
@@ -1755,7 +1759,7 @@ people that the protocol was correct if, in their proof, they allowed any priest
 <section id="refs">
   <div class="issue">
     <span class="no">The Library</span>
-    <h2>References</h2>
+    <h2 id="references"><a href="#references" class="hlink">References</a></h2>
   </div>
   <ol class="refs prose">
     <li>Bernstein, P. A., Hadzilacos, V., and Goodman, N. 1987. <em>Concurrency Control and Recovery in Database Systems.</em> Addison-Wesley, Reading, Massachusetts.</li>
