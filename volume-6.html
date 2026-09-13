@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Volume VI: The Ledger of Many Decrees — Distributed Algorithms of Ancient Greece</title>
+<style>
+/* ============ PAXOS COMICS design system ============ */
+:root{
+  --ink:#1c1512;
+  --paper:#f2e7cd;
+  --paper-hi:#faf3e0;
+  --paper-lo:#e6d5ae;
+  --aegean:#136f9e;
+  --aegean-d:#0b4a6b;
+  --terra:#bf4a26;
+  --olive:#66722c;
+  --olive-d:#4c561e;
+  --gold:#c1912b;
+  --marble:#f8f5ee;
+  --caption:#ffe36e;
+  --blood:#8e2323;
+  --shadow:rgba(28,21,18,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+  font-size:17px; line-height:1.62;
+  background:
+    radial-gradient(1200px 500px at 50% -100px, rgba(255,255,255,.5), transparent 70%),
+    radial-gradient(900px 900px at 110% 15%, rgba(193,145,43,.10), transparent 60%),
+    radial-gradient(900px 900px at -10% 60%, rgba(19,111,158,.07), transparent 60%),
+    var(--paper);
+}
+/* faint halftone wash over the whole book */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:radial-gradient(rgba(28,21,18,.05) 1px, transparent 1.6px);
+  background-size:7px 7px; opacity:.5;
+}
+.page{position:relative; z-index:1; max-width:900px; margin:0 auto; padding:0 20px 90px}
+.prose{max-width:72ch; margin-left:auto; margin-right:auto}
+p{margin:.9em 0}
+em{font-style:italic}
+a{color:var(--aegean-d); text-underline-offset:3px}
+a:hover{color:var(--terra)}
+var, .m{font-family:Georgia,serif; font-style:italic}
+sub,sup{font-size:.72em}
+code{font-family:Menlo,Consolas,monospace; font-size:.85em; background:rgba(28,21,18,.07); padding:1px 4px; border-radius:3px}
+
+/* ---------- series top nav ---------- */
+.series-nav{
+  background:var(--ink); color:var(--paper-hi);
+  padding:12px 20px; font-family:Optima,'Gill Sans',sans-serif;
+  font-size:.85rem; letter-spacing:.04em;
+  border-bottom:3px solid var(--gold);
+}
+.series-nav-inner{
+  max-width:900px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+}
+.series-nav a{color:var(--paper-hi); text-decoration:none}
+.series-nav a:hover{color:var(--caption)}
+.series-nav .nav-back{font-weight:700; letter-spacing:.06em}
+.series-nav .nav-current{color:var(--caption); font-size:.82rem; text-transform:uppercase; letter-spacing:.12em}
+.series-nav .nav-arrows{display:flex; gap:14px}
+
+/* ---------- display faces ---------- */
+.display{font-family:Optima,'Gill Sans','Trebuchet MS',sans-serif; letter-spacing:.04em}
+.comic{font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS','Trebuchet MS',sans-serif}
+
+/* ---------- meander (Greek key) divider ---------- */
+.meander{height:18px; margin:34px auto; max-width:520px; border:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 36 18'><path d='M0 2h32v14h-8V8h-8v8h-4V6h12M0 16h8' fill='none' stroke='%231c1512' stroke-width='2.6'/></svg>");
+  background-repeat:repeat-x; background-size:36px 18px; opacity:.75}
+
+/* ---------- comic panels ---------- */
+figure.panel{margin:34px auto; padding:0; max-width:840px; position:relative}
+figure.panel .frame{
+  border:4px solid var(--ink); background:#fff; overflow:hidden;
+  box-shadow:8px 9px 0 var(--shadow);
+}
+figure.panel img{display:block; width:100%; height:auto}
+figure.panel figcaption{
+  display:inline-block; position:relative; margin:-16px 0 0 26px; max-width:82%;
+  background:var(--caption); border:3px solid var(--ink); padding:7px 14px 6px;
+  font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif;
+  font-size:.83rem; line-height:1.42; box-shadow:4px 4px 0 var(--shadow);
+  transform:rotate(-.6deg);
+}
+.tilt-l .frame{transform:rotate(-.7deg)}
+.tilt-r .frame{transform:rotate(.7deg)}
+.panel.narrow{max-width:560px}
+.panel.mid{max-width:700px}
+
+/* ---------- illustration placeholders (see IMAGE_PROMPTS.md) ---------- */
+.img-placeholder{
+  aspect-ratio:16/9; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; padding:22px 28px; text-align:center;
+  background:
+    repeating-linear-gradient(135deg, rgba(28,21,18,.05) 0 12px, transparent 12px 24px),
+    linear-gradient(180deg,#f7efd9,#eadbb4);
+  outline:3px dashed rgba(28,21,18,.35); outline-offset:-14px;
+}
+.panel.mid .img-placeholder, .panel.narrow .img-placeholder{aspect-ratio:4/3}
+.img-placeholder .ph-label{
+  font-family:Optima,'Gill Sans',sans-serif; font-size:.72rem; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--terra); background:var(--marble);
+  border:2px solid var(--ink); padding:2px 10px;
+}
+.img-placeholder .ph-desc{
+  font-style:italic; font-size:.86rem; line-height:1.45; color:#5a4a33; max-width:46ch;
+}
+
+/* ---------- cover ---------- */
+header.cover{padding:44px 0 8px; text-align:center}
+.cover .frame-cover{
+  display:inline-block; max-width:520px; width:90%;
+  border:5px solid var(--ink); box-shadow:12px 13px 0 var(--shadow); background:#fff;
+  transform:rotate(-.4deg);
+}
+.cover img{display:block; width:100%; height:auto}
+.kicker{
+  display:inline-block; margin:0 auto 18px; padding:6px 18px;
+  background:var(--ink); color:var(--paper-hi);
+  font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.34em; font-size:.78rem;
+  text-transform:uppercase;
+}
+.vol-badge{
+  display:inline-block; background:var(--terra); color:#fff; border:3px solid var(--ink);
+  font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif; font-size:.82rem;
+  padding:4px 16px; letter-spacing:.14em; text-transform:uppercase;
+  box-shadow:4px 4px 0 var(--shadow); transform:rotate(-1.4deg); margin-top:20px;
+}
+.cover .vol-title{
+  margin:18px auto 6px; font-family:Optima,'Gill Sans',sans-serif; font-weight:700;
+  font-size:clamp(1.7rem,4.4vw,2.4rem); letter-spacing:.05em; text-transform:uppercase;
+  color:var(--ink); text-shadow:2px 2px 0 rgba(193,145,43,.35);
+}
+.cover .sub{
+  margin:10px auto 4px; max-width:620px; font-family:Optima,'Gill Sans',sans-serif;
+  font-size:1.02rem; color:#4a3d2c; letter-spacing:.02em;
+}
+.cover .pub{margin:10px auto 0; max-width:560px; font-size:.8rem; color:#6d5c42; font-style:italic}
+
+/* ---------- status notice banner ---------- */
+.status-banner{
+  margin:34px auto; max-width:720px;
+  background:linear-gradient(180deg, var(--caption), #f7d653);
+  border:3px solid var(--ink); border-radius:4px;
+  padding:14px 24px; box-shadow:6px 6px 0 var(--shadow);
+  font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif;
+  font-size:.9rem; line-height:1.5; text-align:center;
+}
+.status-banner b{font-family:Optima,'Gill Sans',sans-serif; font-size:1.02rem; letter-spacing:.04em}
+
+/* ---------- section (issue) headers ---------- */
+.issue{margin:74px auto 30px; text-align:center; position:relative}
+.issue .no{
+  display:inline-block; background:var(--terra); color:#fff; border:3px solid var(--ink);
+  font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif; font-size:.82rem;
+  padding:4px 16px; letter-spacing:.14em; text-transform:uppercase;
+  box-shadow:4px 4px 0 var(--shadow); transform:rotate(-1.4deg);
+}
+.issue h2{
+  margin:14px 0 0; font-family:Optima,'Gill Sans',sans-serif; font-weight:700;
+  font-size:clamp(1.6rem,4.6vw,2.4rem); letter-spacing:.06em; text-transform:uppercase;
+  color:var(--ink); text-shadow:2px 2px 0 rgba(193,145,43,.35);
+}
+h3.sect{
+  margin:52px 0 12px; font-family:Optima,'Gill Sans',sans-serif; font-size:1.32rem;
+  letter-spacing:.05em; color:var(--aegean-d);
+  border-bottom:3px double rgba(28,21,18,.5); padding-bottom:6px;
+}
+h4.subsect{
+  margin:40px 0 8px; font-family:Optima,'Gill Sans',sans-serif; font-size:1.06rem;
+  letter-spacing:.05em; color:var(--olive-d); text-transform:uppercase;
+}
+.hlink{color:inherit; text-decoration:none}
+.hlink:hover{text-decoration:underline}
+
+/* ---------- decree plaques ---------- */
+.decree{
+  margin:22px auto; max-width:560px; text-align:center; position:relative;
+  background:linear-gradient(180deg,var(--marble),#eae4d4);
+  border:3px solid var(--ink); border-radius:4px;
+  padding:13px 26px 12px; font-style:italic; font-size:1.02rem;
+  box-shadow:5px 5px 0 var(--shadow), inset 0 0 0 4px rgba(193,145,43,.28);
+}
+.decree b{font-style:normal; font-family:Optima,'Gill Sans',sans-serif; margin-right:.5em}
+.decree.bad{background:linear-gradient(180deg,#f6e3dd,#ecd2c8); border-color:var(--blood)}
+.decree.rules{text-align:left; font-style:normal; max-width:640px}
+.decree.rules ol, .decree.rules ul{margin:.3em 0; padding-left:1.4em}
+.decree.rules li{margin:.35em 0}
+.decree.rules .rhead{
+  display:block; text-align:center; font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.2em;
+  text-transform:uppercase; font-size:.78rem; color:var(--terra); margin-bottom:4px;
+}
+
+/* ---------- narration ---------- */
+.narr{
+  margin:26px auto; max-width:640px; background:var(--caption); border:3px solid var(--ink);
+  padding:10px 18px; font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif;
+  font-size:.9rem; box-shadow:5px 5px 0 var(--shadow); transform:rotate(-.35deg);
+}
+.editor-note{
+  margin:30px auto; max-width:660px; background:#e7e2d6; border:3px solid var(--ink);
+  padding:18px 24px; font-size:.93rem; box-shadow:6px 6px 0 var(--shadow); position:relative;
+}
+.editor-note .tag{
+  position:absolute; top:-15px; left:18px; background:var(--aegean); color:#fff;
+  border:3px solid var(--ink); padding:2px 12px; font-family:Optima,sans-serif;
+  font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
+}
+.editor-note .sig{text-align:right; font-style:italic; margin-bottom:0}
+
+/* ---------- footnote scrolls ---------- */
+.fn{
+  margin:18px auto; max-width:620px; font-size:.82rem; line-height:1.5; color:#4d4030;
+  background:linear-gradient(180deg,#efe4c6,#e7d8b1);
+  border:2px dashed rgba(28,21,18,.55); border-radius:2px; padding:8px 14px 8px 40px;
+  position:relative;
+}
+.fn::before{content:"📜"; position:absolute; left:10px; top:7px; font-size:1rem}
+.fn b{color:var(--ink)}
+
+/* ---------- theorems / marble slabs ---------- */
+.slab{
+  margin:28px auto; max-width:680px; background:linear-gradient(180deg,#fbf9f4,#ece7da);
+  border:3px solid var(--ink); box-shadow:6px 6px 0 var(--shadow); padding:4px 24px 10px;
+}
+.slab .slab-head{
+  font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.22em; text-transform:uppercase;
+  font-size:.8rem; color:var(--terra); margin:12px 0 4px;
+}
+.slab .stmt{font-style:italic}
+.mathblock{
+  margin:14px auto; padding:10px 16px; overflow-x:auto; text-align:center;
+  font-family:Georgia,serif; font-style:italic; font-size:1.0rem;
+  background:rgba(255,255,255,.55); border:1px solid rgba(28,21,18,.25); border-radius:3px;
+}
+.mathblock .rm{font-style:normal}
+details.proof{
+  margin:14px auto 20px; max-width:680px; border:2px solid rgba(28,21,18,.5);
+  background:rgba(255,255,255,.4); padding:0 18px;
+}
+details.proof>summary{
+  cursor:pointer; padding:9px 2px; font-family:Optima,sans-serif; letter-spacing:.1em;
+  text-transform:uppercase; font-size:.8rem; color:var(--aegean-d);
+}
+details.proof[open]{padding-bottom:10px}
+ol.proofsteps{font-size:.92rem}
+ol.proofsteps li{margin:.5em 0}
+.qed{float:right; font-family:Optima,sans-serif; letter-spacing:.15em; color:var(--olive-d)}
+
+/* ---------- ledgers & tables ---------- */
+.table-wrap{overflow-x:auto; margin:22px auto; max-width:760px}
+table.chron{
+  border-collapse:collapse; width:100%; background:#f6eed6; font-size:.88rem;
+  border:3px solid var(--ink); box-shadow:5px 5px 0 var(--shadow);
+}
+table.chron th{
+  font-family:Optima,sans-serif; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase;
+  padding:7px 10px; border-bottom:3px solid var(--ink); color:#5a4a33; text-align:left; background:#ebdfbf;
+}
+table.chron td{padding:7px 10px; border-bottom:1px solid rgba(28,21,18,.22); vertical-align:top}
+table.chron td.c, table.chron th.c{text-align:center}
+table.chron caption{
+  caption-side:bottom; padding:8px 4px 0; font-size:.8rem; font-style:italic; color:#5a4a33; text-align:left;
+}
+pre.scroll{
+  margin:18px auto; max-width:680px; overflow-x:auto; background:#241c14; color:#efe2c2;
+  padding:12px 16px; font-family:Menlo,Consolas,monospace; font-size:.76rem; line-height:1.65;
+  border:3px solid var(--ink); box-shadow:5px 5px 0 var(--shadow);
+}
+
+/* ---------- Paxon name tooltips ---------- */
+.paxon{border-bottom:2px dotted var(--terra); cursor:help; font-style:italic; white-space:nowrap}
+#tip{
+  position:absolute; z-index:50; max-width:290px; display:none;
+  background:var(--ink); color:var(--paper-hi); padding:10px 14px; font-size:.82rem;
+  line-height:1.45; border:2px solid var(--gold); box-shadow:5px 5px 0 var(--shadow);
+  border-radius:4px; font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.02em;
+}
+#tip .who{color:var(--caption); font-weight:700; display:block; margin-bottom:2px}
+
+/* ---------- toc ---------- */
+nav.toc{
+  margin:36px auto; max-width:640px; border:3px solid var(--ink); background:#efe6cf;
+  box-shadow:6px 6px 0 var(--shadow); padding:16px 26px 18px;
+}
+nav.toc h6{margin:0 0 8px; font-family:Optima,sans-serif; letter-spacing:.24em; text-transform:uppercase; font-size:.78rem; color:var(--terra)}
+nav.toc ol{margin:0; padding-left:20px; font-size:.92rem; columns:2; column-gap:34px}
+nav.toc li{margin:3px 0; break-inside:avoid}
+nav.toc a{text-decoration:none; border-bottom:1px dotted var(--aegean-d)}
+@media (max-width:640px){ nav.toc ol{columns:1} }
+
+/* ---------- references ---------- */
+.refs{font-size:.82rem; line-height:1.55}
+.refs li{margin:6px 0}
+
+/* ---------- paper link card ---------- */
+.paper-card{
+  margin:38px auto; max-width:680px;
+  background:var(--marble); border:3px solid var(--ink);
+  box-shadow:6px 7px 0 var(--shadow); padding:20px 26px;
+}
+.paper-card h4{
+  margin:0 0 10px; font-family:Optima,'Gill Sans',sans-serif;
+  font-size:1.15rem; color:var(--aegean-d); letter-spacing:.04em;
+}
+.paper-item{margin:12px 0; padding-bottom:12px; border-bottom:1px dashed rgba(28,21,18,.2)}
+.paper-item:last-child{border-bottom:0; margin-bottom:0; padding-bottom:0}
+.paper-btn{
+  display:inline-block; margin-top:6px; background:var(--aegean); color:#fff;
+  border:2px solid var(--ink); padding:4px 12px; font-size:.82rem;
+  font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.06em; text-decoration:none;
+  box-shadow:3px 3px 0 var(--shadow); text-transform:uppercase; font-weight:700;
+}
+.paper-btn:hover{background:var(--aegean-d); color:#fff; transform:translateY(-1px)}
+
+footer.colophon{margin-top:70px; text-align:center; font-size:.8rem; color:#6d5c42; font-style:italic}
+
+/* ---------- bottom nav ---------- */
+.bottom-nav{
+  margin:40px auto 20px; max-width:680px;
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+}
+.bottom-btn{
+  background:var(--ink); color:var(--paper-hi); border:2px solid var(--ink);
+  padding:8px 18px; font-family:Optima,'Gill Sans',sans-serif;
+  font-size:.9rem; text-decoration:none; box-shadow:4px 4px 0 var(--shadow);
+}
+.bottom-btn:hover{background:var(--gold); color:var(--ink)}
+.bottom-btn.all{background:var(--terra); color:#fff}
+.bottom-btn.all:hover{background:var(--ink); color:#fff}
+</style>
+</head>
+<body>
+<nav class="series-nav">
+  <div class="series-nav-inner">
+    <a href="index.html" class="nav-back">← All Nine Volumes</a>
+    <span class="nav-current">Volume VI</span>
+    <div class="nav-arrows">
+      <a href="volume-5.html" class="nav-arrow">‹ Vol V</a>
+      <a href="volume-7.html" class="nav-arrow">Vol VII ›</a>
+    </div>
+  </div>
+</nav>
+<div id="tip" role="tooltip"></div>
+
+<div class="page">
+  <header class="cover">
+    <div class="kicker">Distributed Algorithms of Ancient Greece · Volume VI</div><br>
+    <div class="frame-cover">
+      <picture>
+        <source srcset="images/cover_volume_6_small.webp" type="image/webp">
+        <img src="images/cover_volume_6.png" alt="Cover for Volume VI: The Ledger of Many Decrees">
+      </picture>
+    </div>
+    <div class="vol-badge">Volume VI · The Chronicle</div>
+    <h1 class="vol-title">The Ledger of Many Decrees</h1>
+    <p class="sub display">Oki & Liskov, "Viewstamped Replication," 1988; Multi-Paxos</p>
+      <p class="pub">After B.&nbsp;M. Oki &amp; B.&nbsp;H. Liskov, “Viewstamped Replication,” <em>PODC ’88</em>, 8–17; and B. Liskov &amp; J. Cowling, “Viewstamped Replication Revisited,” MIT CSAIL technical report (2012). Retold as the account books of the granary of Knossos.</p>
+  </header>
+
+  <div class="status-banner">
+    <b>📜 The Chronicle Is Complete — Illustrations Pending</b><br>
+    The full allegory of this volume is set down below, drawn from the original papers.
+    Panels marked <i>Illustration pending</i> await the temple painters.
+  </div>
+
+<nav class="toc">
+    <h6 id="table-of-contents"><a href="#table-of-contents" class="hlink">Table of Contents</a></h6>
+    <ol>
+      <li><a href="#preface">The Translator’s Preface</a></li>
+      <li><a href="#s1">The Granary of Knossos</a></li>
+      <li><a href="#s2">Viewstamps</a></li>
+      <li><a href="#s3">Selling Grain Twice Over</a></li>
+      <li><a href="#s4">Changing Stewards</a></li>
+      <li><a href="#s5">The Revised Account Book</a></li>
+      <li><a href="#s6">When the Steward Falls Silent</a></li>
+      <li><a href="#s7">The Clerk Who Forgot</a></li>
+      <li><a href="#s8">Practical Matters of the Granary</a></li>
+      <li><a href="#s9">The Standing Consul of Paxos</a></li>
+      <li><a href="#s10">Relevance to Computer Science</a></li>
+      <li><a href="#refs">References</a></li>
+    </ol>
+  </nav>
+
+<!-- ================= PREFACE ================= -->
+<section id="preface">
+  <div class="editor-note">
+    <span class="tag">The translator’s preface</span>
+    <p>Volume V passes <em>one</em> decree, and then, almost as an afterthought, a ledger of them. An
+    empire needs the ledger. This volume concerns the other people who built one.</p>
+    <p>Two account books were found together in the palace storerooms at Knossos. The first, written
+    by the clerks
+    <span class="paxon" data-real="Brian M. Oki" data-note="MIT Laboratory for Computer Science. First author of “Viewstamped Replication” (1988), from his Ph.D. thesis.">Ὄκι</span>
+    and
+    <span class="paxon" data-real="Barbara Liskov" data-note="MIT. Turing Award 2008. Co-author of both VR papers, and of PBFT (Volume VII).">Λίσκοφ</span>,
+    describes how the granary kept several identical copies of its records so that grain could still be
+    sold when a storehouse burned or a storm cut the palace off from the harbour. It is written in the dry
+    hand of people who were keeping a granary, not telling a story, and its method is tangled up with the
+    granary’s rules for selling grain on credit. It was deposited in the same years that the Paxon
+    Parliament’s account was being written, by clerks who had never heard of Paxos, and it attracted almost
+    no attention whatever.</p>
+    <p>The second book, written a generation later by Λίσκοφ and her apprentice
+    <span class="paxon" data-real="James Cowling" data-note="MIT CSAIL. Co-author of “Viewstamped Replication Revisited” (2012).">Κάουλινγκ</span>,
+    restates the method on its own, without the grain, simplified and improved. I translate both, the
+    older first. The evidence they offer — that it was the togas, not the geometry, that made the Paxos scrolls
+    famous — I leave to the reader.</p>
+    <p class="sig">— The Translator</p>
+  </div>
+
+  <div class="narr">One storehouse is the steward. It decides the order in which grain is sold and tells the others. When the steward cannot be reached, the remaining clerks hold an election and choose a new one — carefully, so that no sale recorded by a majority is ever forgotten. Every record is stamped with the steward’s term and a count: a viewstamp.</div>
+</section>
+
+<hr class="meander">
+
+<!-- ================= CHAPTER I ================= -->
+<section id="s1">
+  <div class="issue">
+    <span class="no">Chapter I</span>
+    <h2 id="the-granary-of-knossos"><a href="#the-granary-of-knossos" class="hlink">The Granary of Knossos</a></h2>
+  </div>
+
+  <figure class="panel tilt-l" id="fig-v6-01">
+    <div class="frame">
+      <!-- IMAGE PLACEHOLDER v6-01: replace this div with <img src="images/vol6_granary_small.webp" alt="…"> — see IMAGE_PROMPTS.md -->
+      <div class="img-placeholder" data-img-id="v6-01" data-img-file="images/vol6_granary_small.webp" role="img" aria-label="Illustration pending: The vast palace granary of Knossos: rows of tall painted storage jars (pithoi) in stone storerooms; in three separate storehouse rooms, three clerks sit at identical desks copying identical records onto clay tablets, while at the central storehouse a senior clerk (the steward) receives a merchant with a sack of grain and dictates.">
+        <span class="ph-label">Illustration pending · v6-01</span>
+        <span class="ph-desc">The vast palace granary of Knossos: rows of tall painted storage jars (pithoi) in stone storerooms; in three separate storehouse rooms, three clerks sit at identical desks copying identical records onto clay tablets, while at the central storehouse a senior clerk (the steward) receives a merchant with a sack of grain and dictates.</span>
+      </div>
+    </div>
+    <figcaption>THE PALACE KEPT ITS GRAIN RECORDS IN SEVERAL STOREHOUSES AT ONCE — SO THAT ONE FIRE, OR ONE STORM, COULD NOT STOP THE SELLING OF GRAIN.</figcaption>
+  </figure>
+
+  <h3 id="1-1-availability" class="sect"><a href="#1-1-availability" class="hlink">1.1 · Grain When It Is Needed</a></h3>
+  <div class="prose">
+    <p>A granary is useful only if it is open when the grain is needed. The clerks give the example of the
+    ship-berth office, where the failure of a single clerk could prevent the selling of passages for a
+    considerable time, “causing a loss of revenue and passenger goodwill.” The remedy is to keep more than one
+    copy of important records, so that the granary remains usable even when some copies cannot be reached —
+    because a storehouse has burned, or its clerk has collapsed, or a storm has cut off the road.</p>
+    <p>The granary was organized into <em>offices</em>, each at a single storehouse, each holding its own
+    records and the rules for changing them; no office could touch another’s records, but could only send it
+    requests by runner. The clerks replicated whole offices. A replicated office is a <em>group</em> of copies
+    called <em>cohorts</em> — usually three or five — which together behave as a single office. The set of
+    cohorts is the group’s <em>configuration</em>.</p>
+    <p>The clerks were explicit about the weather. Clerks may collapse, but they do not lie (they cite the
+    generals of Volume&nbsp;II to say what they are not assuming). Runners may lose, delay or duplicate requests
+    or deliver them out of order. Roads may wash out, splitting the storehouses into groups that cannot reach
+    one another. But collapsed clerks eventually recover, and roads are eventually repaired.</p>
+  </div>
+
+  <h3 id="1-2-primary-copy" class="sect"><a href="#1-2-primary-copy" class="hlink">1.2 · The Steward and the Copyists</a></h3>
+  <div class="prose">
+    <p>Their method was the long-established <em>primary copy</em> technique. One cohort is designated the
+    <b>primary</b> — the steward. It does all the work of selling grain and notifies the others, the
+    <b>backups</b>, of what it has done; the backups are essentially passive. When a cohort collapses or is
+    cut off, or recovers, or a road is repaired, the cohorts reorganize and choose a new steward if necessary.
+    This reorganization is a <b>view change</b>.</p>
+    <p>A <em>view</em> is a set of cohorts that can (or could) communicate, together with an indication of
+    which is the steward. Every view must contain a <em>majority</em> of the configuration. Each view has a
+    unique, totally ordered <em>viewid</em>. Grain is sold only in <em>active</em> views; if a majority does not
+    accept a proposed new view, the cohorts stay in their old views, which become inactive.</p>
+    <p>The old primary-copy method worked only if a collapsed clerk could be told apart from a washed-out road.
+    In general, the clerks pointed out, it cannot — and their method does not need to.</p>
+  </div>
+</section>
+
+<hr class="meander">
+
+<!-- ================= CHAPTER II ================= -->
+<section id="s2">
+  <div class="issue">
+    <span class="no">Chapter II</span>
+    <h2 id="viewstamps"><a href="#viewstamps" class="hlink">Viewstamps</a></h2>
+  </div>
+
+  <figure class="panel mid tilt-r" id="fig-v6-02">
+    <div class="frame">
+      <!-- IMAGE PLACEHOLDER v6-02: replace this div with <img src="images/vol6_viewstamp_small.webp" alt="…"> — see IMAGE_PROMPTS.md -->
+      <div class="img-placeholder" data-img-id="v6-02" data-img-file="images/vol6_viewstamp_small.webp" role="img" aria-label="Illustration pending: Close-up of a clerk's hands pressing a two-part cylinder seal into a wet clay tablet: the left half of the impression shows a steward's personal sigil (a bull's head) and the right half shows a row of tally marks. A tray of already-stamped tablets sits beside it in neat order.">
+        <span class="ph-label">Illustration pending · v6-02</span>
+        <span class="ph-desc">Close-up of a clerk's hands pressing a two-part cylinder seal into a wet clay tablet: the left half of the impression shows a steward's personal sigil (a bull's head) and the right half shows a row of tally marks. A tray of already-stamped tablets sits beside it in neat order.</span>
+      </div>
+    </div>
+    <figcaption>THE VIEWSTAMP: WHICH STEWARD’S TERM, AND HOW MANY RECORDS INTO IT. BY ITSELF A COUNT MEANS NOTHING ONCE THE STEWARD CHANGES.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>A view says who can talk to whom. It says nothing about which sales the storehouses know of. For that
+    the clerks used <em>timestamps</em> — simple counts, generated by the steward, unique and ordered within a
+    view. Each time the steward needs to tell the backups something — a sale finished, a sale being prepared,
+    a sale committed — that is an <em>event</em>, and it receives the next timestamp.</p>
+    <p>Because a timestamp means something only within one view, the clerks combined the two into a
+    <b>viewstamp</b>: a timestamp joined to the viewid of the view in which it was issued, written
+    <var>v</var>.id and <var>v</var>.ts. Each cohort keeps a <em>history</em>, a sequence of viewstamps each
+    from a different view, with this promise:</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">The Promise of the History</div>
+    <p class="stmt">For each viewstamp <var>v</var> in a cohort’s history, the cohort’s records reflect event <var>e</var> from view <var>v</var>.id if and only if <var>e</var>’s timestamp is less than or equal to <var>v</var>.ts.</p>
+  </div>
+  <div class="prose">
+    <p>Rather than write every event to a fireproof strongroom, the steward keeps a <em>communication
+    buffer</em>, a queue of event records sent to the backups in timestamp order. The buffer reliably
+    delivers records to every backup in the view; if it cannot, a collapse or washed-out road has occurred and
+    will cause a view change. The steward can <em>add</em> a record (to be delivered in due course) or
+    <em>force</em> the buffer up to some viewstamp — waiting until a <b>sub-majority</b> of backups know every
+    event up to it. A sub-majority is one fewer than a majority of the configuration; with the steward itself,
+    it makes a majority.</p>
+  </div>
+  <figure class="panel narrow tilt-l" id="fig-v6-03">
+    <div class="frame">
+      <!-- IMAGE PLACEHOLDER v6-03: replace this div with <img src="images/vol6_buffer_small.webp" alt="…"> — see IMAGE_PROMPTS.md -->
+      <div class="img-placeholder" data-img-id="v6-03" data-img-file="images/vol6_buffer_small.webp" role="img" aria-label="Illustration pending: The steward clerk drops numbered clay tablets, one after another in order, into a slanted wooden chute that runs out of the window down to runners waiting with baskets; beside the chute a small bell rope marked with a knot shows how far the tablets have been confirmed received.">
+        <span class="ph-label">Illustration pending · v6-03</span>
+        <span class="ph-desc">The steward clerk drops numbered clay tablets, one after another in order, into a slanted wooden chute that runs out of the window down to runners waiting with baskets; beside the chute a small bell rope marked with a knot shows how far the tablets have been confirmed received.</span>
+      </div>
+    </div>
+    <figcaption>THE COMMUNICATION BUFFER: RECORDS GO OUT IN ORDER. TO “FORCE” IT IS TO WAIT UNTIL ENOUGH COPYISTS HAVE CAUGHT UP.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>The correctness of the granary rests on two halves fitting together. Selling guarantees that a sale may
+    be committed only if all its events are known to a majority of cohorts. The view change guarantees that
+    events known to a majority survive into every later view.<sup>1</sup></p>
+  </div>
+  <aside class="fn"><b>1.</b> The reader of Volume V will recognize the geometry: any two majorities of
+  the same configuration share a member. The clerks of Knossos did not dress it in togas and did not need
+  to.</aside>
+</section>
+
+<hr class="meander">
+
+<!-- ================= CHAPTER III ================= -->
+<section id="s3">
+  <div class="issue">
+    <span class="no">Chapter III</span>
+    <h2 id="selling-grain-twice-over"><a href="#selling-grain-twice-over" class="hlink">Selling Grain Twice Over</a></h2>
+  </div>
+
+  <div class="prose">
+    <p>The first account book assumes the granary sells grain as <em>atomic transactions</em> — a merchant’s
+    purchase may involve several offices, and must either happen entirely or not at all, and concurrent
+    purchases must be equivalent to some serial order on unreplicated records. Offices lock the records they
+    read or change, keep tentative versions, and install them when the purchase commits.</p>
+    <p>Each time an office finishes a request on behalf of a purchase, its steward adds a “completed-call”
+    record to the buffer and returns the viewstamp it received, and the purchase collects these as it goes,
+    in a set of (office, viewstamp) pairs the clerks called the <em>pset</em>. When a purchase finishes, the
+    merchant’s own steward acts as coordinator of two-phase commit and sends the pset in every
+    <em>prepare</em> message.</p>
+  </div>
+  <div class="decree rules">
+    <span class="rhead">Preparing a Purchase at an Office</span>
+    <ol>
+      <li>The office’s steward checks that the pset is <em>compatible</em> with its history: for every pair (<var>g</var>, <var>vs</var>) naming its own office, some viewstamp <var>v</var> in its history has <var>v</var>.id = <var>vs</var>.id and <var>vs</var>.ts ≤ <var>v</var>.ts. That is, the office still knows every request it handled for this purchase.</li>
+      <li>If so, it forces the buffer up to the latest such viewstamp, releases read locks, and replies <em>prepared</em>.</li>
+      <li>If not — some request’s effects were lost in a view change — it refuses, and the purchase aborts.</li>
+    </ol>
+  </div>
+  <div class="prose">
+    <p>If all participants prepare, the coordinator adds a “committing” record, forces its whole buffer so the
+    decision survives a change of <em>its</em> steward, and sends commit messages. A merchant who gets no reply
+    to a request must abort, because he cannot know whether re-sending the request to a new steward would do
+    it a second time — the granary must never sell the same grain twice over. The book remarks that this can
+    waste a great deal of work, and proposes <em>nested</em> purchases, where only the failed part is abandoned
+    and retried.<sup>2</sup></p>
+    <p>Even a purchase that only <em>read</em> an office’s records must force that office’s buffer when
+    preparing. A view change may have happened without the old steward knowing, and a new steward in another
+    storehouse may already be selling. Without the force, the old steward could agree to prepare even though
+    the read locks were lost — allowing another merchant to change what this one had read.</p>
+  </div>
+  <aside class="fn"><b>2.</b> The book’s nested purchases follow the rules of the granary’s own
+  bookkeeping tradition, which it calls <em>Argus</em>, after the watchman of a hundred eyes. Much of the
+  first book is about Argus rather than about keeping copies, which may explain why so few read it for the
+  copies.</aside>
+</section>
+
+<hr class="meander">
+
+<!-- ================= CHAPTER IV ================= -->
+<section id="s4">
+  <div class="issue">
+    <span class="no">Chapter IV</span>
+    <h2 id="changing-stewards"><a href="#changing-stewards" class="hlink">Changing Stewards</a></h2>
+  </div>
+
+  <div class="prose">
+    <p>Cohorts exchange periodic “I’m alive” tablets. A cohort that notices it can no longer reach someone in
+    its view, or can now reach someone it could not, or has just recovered from collapsing, starts a view
+    change. It becomes the <em>view manager</em>; the others become <em>underlings</em>.</p>
+    <p>The manager makes a new viewid — a pair of a count larger than any it has seen and its own name, so no
+    two managers ever make the same one — and sends invitations. A cohort accepts only invitations with a
+    viewid larger than any it has seen. A cohort whose records are intact sends a <em>normal</em> acceptance,
+    with its latest viewstamp and whether it was steward. A cohort that has collapsed and lost its records
+    sends a <em>crashed</em> acceptance, with only its viewid.</p>
+  </div>
+
+  <figure class="panel tilt-r" id="fig-v6-04">
+    <div class="frame">
+      <!-- IMAGE PLACEHOLDER v6-04: replace this div with <img src="images/vol6_invitations_small.webp" alt="…"> — see IMAGE_PROMPTS.md -->
+      <div class="img-placeholder" data-img-id="v6-04" data-img-file="images/vol6_invitations_small.webp" role="img" aria-label="Illustration pending: Stormy night over the island: a clerk in one storehouse (the view manager) hands sealed invitation tablets to runners heading out along muddy roads. At the other storehouses, one clerk answers by holding up a full basket of stamped tablets; another, with a bandaged head, holds up a single tablet with only a sigil on it, looking apologetic. A washed-out bridge cuts off one more storehouse in the distance.">
+        <span class="ph-label">Illustration pending · v6-04</span>
+        <span class="ph-desc">Stormy night over the island: a clerk in one storehouse (the view manager) hands sealed invitation tablets to runners heading out along muddy roads. At the other storehouses, one clerk answers by holding up a full basket of stamped tablets; another, with a bandaged head, holds up a single tablet with only a sigil on it, looking apologetic. A washed-out bridge cuts off one more storehouse in the distance.</span>
+      </div>
+    </div>
+    <figcaption>THE VIEW MANAGER’S INVITATION. “HERE IS EVERYTHING I KNOW,” SAYS ONE CLERK. “I FELL AND FORGOT EVERYTHING,” SAYS ANOTHER.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>A new view can be formed only if a majority accept <em>and</em> some cohort among them knows every
+    event forced in earlier views. The book gives an example. Three cohorts, A, B and C, are in a view with
+    A as steward. A commits a sale, forcing its records to B but not yet to C. Then A collapses and recovers,
+    forgetting its records, and a washed-out road cuts off B. A and C are a majority — but A has forgotten the
+    sale and C never knew it. No view may be formed until the road is repaired.</p>
+  </div>
+  <div class="slab">
+    <div class="slab-head">The Rule for Forming a View</div>
+    <p class="stmt">A majority of cohorts have accepted, and</p>
+    <ol class="stmt">
+      <li>a majority of cohorts accepted <em>normally</em>; or</li>
+      <li>crash-viewid &lt; normal-viewid; or</li>
+      <li>crash-viewid = normal-viewid, and the steward of view normal-viewid accepted normally.</li>
+    </ol>
+    <p class="stmt">Here crash-viewid is the largest viewid in a crashed acceptance, and normal-viewid the largest in a normal one.</p>
+  </div>
+  <div class="prose">
+    <p>Condition 1 ignores crashed acceptances when there are enough normal ones; condition 2 ignores them if
+    they come from older views; condition 3 ignores them if the steward of their view has answered, since a
+    steward always knows at least as much as any backup. If the view can be formed, <b>the cohort with the
+    largest viewstamp becomes steward</b> — the old steward if possible, which minimizes disruption. This
+    works because records are sent in timestamp order: a cohort with a later viewstamp for some view knows
+    everything that a cohort with an earlier one knows. The new steward starts its buffer with a “newview”
+    record carrying the view, the history and the records.</p>
+    <p>The book notes several things. Only one round of messages is needed when the manager was the steward,
+    one round and one message otherwise. Several simultaneous managers are tolerated; the highest viewid wins.
+    An old steward, cut off and unaware, may continue to answer merchants for a while, but can never prepare or
+    commit a sale, since it cannot force its buffer. And managers and underlings should wait generously before
+    giving up on one another, or view changes will chase each other for ever.<sup>3</sup></p>
+  </div>
+  <aside class="fn"><b>3.</b> The book also admits a weakness it calls a <em>catastrophe</em>: since
+  most of a cohort’s records are kept only in its head, if a majority collapse at once, the group’s records
+  may be lost. The algorithm will then never form a new view rather than form one missing information —
+  which the clerks note is at least the honest way to fail. Replication, they add, makes such catastrophes
+  rarer to begin with.</aside>
+</section>
+
+<hr class="meander">
+
+<!-- ================= CHAPTER V ================= -->
+<section id="s5">
+  <div class="issue">
+    <span class="no">Chapter V</span>
+    <h2 id="the-revised-account-book"><a href="#the-revised-account-book" class="hlink">The Revised Account Book</a></h2>
+  </div>
+
+  <div class="prose">
+    <p>The second book begins by saying what it changes. It presents the method apart from any granary
+    business, so that the method can be seen. It is simpler and faster, borrowing some improvements from the
+    later citadel of Volume&nbsp;VII. It uses no strongroom at all, relying instead on the copies themselves for
+    persistence. And it adds a way to change the membership of the group.</p>
+    <p>It also names, plainly, how the method relates to Paxos: it was developed at about the same time,
+    without knowledge of it. It is a protocol for <em>replicating an office</em> rather than for choosing a
+    value, and it uses, as a part, a procedure for agreement very similar to the Synod’s. And unlike the
+    Synod as then described, it never needed to write to a strongroom while agreeing.</p>
+  </div>
+
+  <h3 id="5-1-why-2f1" class="sect"><a href="#5-1-why-2f1" class="hlink">5.1 · Why 2<var>f</var> + 1 Storehouses</a></h3>
+  <div class="slab">
+    <div class="slab-head">The Clerks’ Arithmetic</div>
+    <p class="stmt">A group handles up to <var>f</var> collapsed cohorts with 2<var>f</var> + 1 cohorts — the fewest possible for collapses in an asynchronous sea. Each step must be carried out without waiting for <var>f</var> cohorts, who may have collapsed. But those <var>f</var> may merely be slow, and <var>f</var> of the ones who did answer may collapse next. So each step must be processed by <var>f</var> + 1 cohorts, so that at least one who knows about it survives. These <var>f</var> + 1, with the <var>f</var> who may not answer, make 2<var>f</var> + 1.</p>
+  </div>
+  <div class="prose">
+    <p>A group of <var>f</var> + 1 is a <em>quorum</em>, and everything depends on <em>quorum intersection</em>:
+    the quorum that carried out one step must share a member with the quorum available for the next. A larger
+    group gains nothing for the same <var>f</var>, because it needs larger quorums.</p>
+    <p>Each cohort keeps: the configuration (its storehouses, in a fixed order); its own number; the current
+    <em>view-number</em>; its <em>status</em> — normal, view-change, or recovering; the <em>op-number</em> of
+    the latest request it has received; a <em>log</em> of requests in their assigned order; the
+    <em>commit-number</em> of the latest committed request; and a <em>client-table</em> recording each
+    merchant’s latest request number and, if it has been carried out, the result. The steward is not recorded
+    at all: it is computed from the view-number, round-robin through the configuration.</p>
+  </div>
+
+  <h3 id="5-2-normal-operation" class="sect"><a href="#5-2-normal-operation" class="hlink">5.2 · An Ordinary Day at the Granary</a></h3>
+  <figure class="panel mid tilt-l" id="fig-v6-05">
+    <div class="frame">
+      <!-- IMAGE PLACEHOLDER v6-05: replace this div with <img src="images/vol6_normal_case_small.webp" alt="…"> — see IMAGE_PROMPTS.md -->
+      <div class="img-placeholder" data-img-id="v6-05" data-img-file="images/vol6_normal_case_small.webp" role="img" aria-label="Illustration pending: A four-beat sequence arranged left to right in one wide scene: a merchant hands a request tablet to the steward; the steward stamps it and sends copies with two runners to two copyist storehouses; the copyists add it to the end of their shelves and send runners back with small acknowledgment tokens; the steward, holding one token, weighs out grain to the merchant.">
+        <span class="ph-label">Illustration pending · v6-05</span>
+        <span class="ph-desc">A four-beat sequence arranged left to right in one wide scene: a merchant hands a request tablet to the steward; the steward stamps it and sends copies with two runners to two copyist storehouses; the copyists add it to the end of their shelves and send runners back with small acknowledgment tokens; the steward, holding one token, weighs out grain to the merchant.</span>
+      </div>
+    </div>
+    <figcaption>AN ORDINARY DAY: REQUEST, PREPARE, PREPARE-OK — AND WITH ONE COPYIST’S ACKNOWLEDGMENT, THE STEWARD OF THREE STOREHOUSES MAY WEIGH OUT THE GRAIN.</figcaption>
+  </figure>
+  <div class="decree rules">
+    <span class="rhead">Normal Operation</span>
+    <ol>
+      <li>A merchant sends ⟨REQUEST <var>op</var>, <var>c</var>, <var>s</var>⟩ to the steward: the operation, his own name <var>c</var>, and his request number <var>s</var>.</li>
+      <li>If <var>s</var> is not larger than the client-table’s entry, the steward drops it (re-sending the old result if it was this merchant’s latest).</li>
+      <li>Otherwise the steward advances the op-number, appends the request to its log, updates the client-table, and sends ⟨PREPARE <var>v</var>, <var>m</var>, <var>n</var>, <var>k</var>⟩ to the others: view-number, the merchant’s message, op-number, commit-number.</li>
+      <li>A backup accepts PREPAREs <b>in op-number order</b>: it waits until it has every earlier request (fetching them if need be), then advances its op-number, appends the request, updates its client-table, and sends ⟨PREPAREOK <var>v</var>, <var>n</var>, <var>i</var>⟩.</li>
+      <li>When the steward has <var>f</var> PREPAREOKs from different backups, the operation and all earlier ones are <em>committed</em>. After executing all earlier ones, it executes this one, advances its commit-number, and sends ⟨REPLY <var>v</var>, <var>s</var>, <var>x</var>⟩ to the merchant.</li>
+      <li>The steward tells backups of commits in its next PREPARE, or, if idle, in ⟨COMMIT <var>v</var>, <var>k</var>⟩.</li>
+      <li>A backup that learns of a commit executes the operation once it has it and all earlier ones — but does not reply to the merchant.</li>
+    </ol>
+  </div>
+  <div class="prose">
+    <p>Every message carries the sender’s view-number. A cohort processes only messages for its own view: from
+    an older view it drops them; from a newer one it first catches up. A merchant who hears nothing re-sends to
+    every storehouse, so his request reaches a new steward if there is one. Nothing is written to a
+    strongroom.</p>
+  </div>
+</section>
+
+<hr class="meander">
+
+<!-- ================= CHAPTER VI ================= -->
+<section id="s6">
+  <div class="issue">
+    <span class="no">Chapter VI</span>
+    <h2 id="when-the-steward-falls-silent"><a href="#when-the-steward-falls-silent" class="hlink">When the Steward Falls Silent</a></h2>
+  </div>
+
+  <div class="prose">
+    <p>Backups expect to hear from the steward regularly — PREPAREs, or COMMITs when idle. If a timeout passes
+    in silence, they change views. The requirement is that every operation that has been executed anywhere
+    survives into the new view <em>in the same position</em>. An operation is executed only after it commits,
+    and it commits only when it is in the logs of <var>f</var> + 1 cohorts. So a view change that consults the
+    logs of <var>f</var> + 1 cohorts cannot miss it.</p>
+  </div>
+  <div class="decree rules">
+    <span class="rhead">The View Change</span>
+    <ol>
+      <li>A cohort that notices the need — by its own timer, or on hearing of a higher view — advances its view-number, sets status to <em>view-change</em>, and sends ⟨STARTVIEWCHANGE <var>v</var>, <var>i</var>⟩ to all.</li>
+      <li>On receiving STARTVIEWCHANGE for its view-number from <var>f</var> others, it sends ⟨DOVIEWCHANGE <var>v</var>, <var>l</var>, <var>v′</var>, <var>n</var>, <var>k</var>, <var>i</var>⟩ to the new view’s steward: its log <var>l</var>, the latest view <var>v′</var> in which its status was normal, its op-number and commit-number.</li>
+      <li>When the new steward has <var>f</var> + 1 DOVIEWCHANGEs (including its own), it adopts <b>the log with the largest <var>v′</var></b>, breaking ties by the largest <var>n</var>; takes the largest commit-number; sets status to normal; and sends ⟨STARTVIEW <var>v</var>, <var>l</var>, <var>n</var>, <var>k</var>⟩.</li>
+      <li>It begins accepting requests, and executes and replies to any committed operations it had not executed.</li>
+      <li>Other cohorts, on STARTVIEW, replace their logs, set their numbers and status, send PREPAREOKs for uncommitted operations, and execute what is committed.</li>
+    </ol>
+  </div>
+  <div class="prose">
+    <p>Operations that had not committed may survive too, which is harmless. But an operation that was being
+    prepared may be missed by every cohort consulted — say operation 25 — and the new steward may give number 25
+    to something else. The later view prevails. The first book solved this with viewstamps, keeping at each
+    position the request with the higher ⟨view, op-number⟩; the second takes the log from the latest view in
+    which a cohort was normal and ignores logs from earlier views. It was the viewstamps, the second book says,
+    that gave the method its name.</p>
+  </div>
+  <figure class="panel narrow tilt-r" id="fig-v6-06">
+    <div class="frame">
+      <!-- IMAGE PLACEHOLDER v6-06: replace this div with <img src="images/vol6_stale_steward_small.webp" alt="…"> — see IMAGE_PROMPTS.md -->
+      <div class="img-placeholder" data-img-id="v6-06" data-img-file="images/vol6_stale_steward_small.webp" role="img" aria-label="Illustration pending: In a remote storehouse cut off by a flooded road, the old steward keeps stamping PREPARE tablets and holding them out of the window; on the far bank, a copyist folds his arms and turns his back, pointing to a new tablet in his own hand bearing a different, newer steward's sigil.">
+        <span class="ph-label">Illustration pending · v6-06</span>
+        <span class="ph-desc">In a remote storehouse cut off by a flooded road, the old steward keeps stamping PREPARE tablets and holding them out of the window; on the far bank, a copyist folds his arms and turns his back, pointing to a new tablet in his own hand bearing a different, newer steward's sigil.</span>
+      </div>
+    </div>
+    <figcaption>ONCE A COPYIST HAS SENT HIS LOG TO THE NEW STEWARD, HE ACCEPTS NOTHING MORE FROM THE OLD ONE.</figcaption>
+  </figure>
+  <div class="slab">
+    <div class="slab-head">Why the View Change Is Safe</div>
+    <p class="stmt">Any operation committed in view <var>v</var> is known to <var>f</var> + 1 cohorts, each also knowing every earlier operation. The new view starts from the most recent log among <var>f</var> + 1 cohorts. Since none of them accepts PREPAREs from the old steward after sending DOVIEWCHANGE, that most recent log contains the latest operation committed in <var>v</var> and all before it.</p>
+  </div>
+  <div class="prose">
+    <p>The book insists that the clause about refusing the old steward is crucial. Without it the granary
+    could have two active stewards — the old one, merely slow or cut off, and the new. A cohort that sent its
+    log to the new steward and then a PREPAREOK to the old could let the old steward commit an operation the
+    new one never hears about. The method is <em>live</em> whenever <var>f</var> + 1 uncollapsed cohorts,
+    including the steward, can communicate — and more generally, the book says, liveness depends on setting the
+    timeouts well.</p>
+  </div>
+</section>
+
+<hr class="meander">
+
+<!-- ================= CHAPTER VII ================= -->
+<section id="s7">
+  <div class="issue">
+    <span class="no">Chapter VII</span>
+    <h2 id="the-clerk-who-forgot"><a href="#the-clerk-who-forgot" class="hlink">The Clerk Who Forgot</a></h2>
+  </div>
+
+  <div class="prose">
+    <p>A cohort that recovers from collapsing must not take part until it knows a state at least as recent as
+    when it collapsed. If it rejoined sooner — say, forgetting that it had prepared some operation — that
+    operation might be known to fewer than a quorum even though it committed, and a view change could lose it.
+    Writing everything to a strongroom before every message would solve this, but slowly, and unnecessarily:
+    the state is also held by the other cohorts. With storehouses that fail independently — different buildings,
+    their own lamps, different towns — the second book needs no strongroom at all.</p>
+  </div>
+  <figure class="panel mid tilt-l" id="fig-v6-07">
+    <div class="frame">
+      <!-- IMAGE PLACEHOLDER v6-07: replace this div with <img src="images/vol6_recovery_nonce_small.webp" alt="…"> — see IMAGE_PROMPTS.md -->
+      <div class="img-placeholder" data-img-id="v6-07" data-img-file="images/vol6_recovery_nonce_small.webp" role="img" aria-label="Illustration pending: A clerk with a bandaged head returns to his empty storehouse desk and presses his thumb into a fresh lump of clay to make a unique token; runners carry copies of the token to the other storehouses, and one returning runner brings back a heavy basket of tablets from the steward, with the same thumbprint token tied to its handle.">
+        <span class="ph-label">Illustration pending · v6-07</span>
+        <span class="ph-desc">A clerk with a bandaged head returns to his empty storehouse desk and presses his thumb into a fresh lump of clay to make a unique token; runners carry copies of the token to the other storehouses, and one returning runner brings back a heavy basket of tablets from the steward, with the same thumbprint token tied to its handle.</span>
+      </div>
+    </div>
+    <figcaption>THE CLERK WHO FORGOT: ASK A QUORUM, MARK THE QUESTION WITH A FRESH THUMBPRINT, AND TAKE THE RECORDS ONLY FROM THE STEWARD.</figcaption>
+  </figure>
+  <div class="decree rules">
+    <span class="rhead">Recovery</span>
+    <ol>
+      <li>The recovering cohort <var>i</var> sets status to <em>recovering</em> and sends ⟨RECOVERY <var>i</var>, <var>x</var>⟩ to all, where <var>x</var> is a fresh <em>nonce</em>.</li>
+      <li>A cohort <var>j</var> replies only if its status is normal, with ⟨RECOVERYRESPONSE <var>v</var>, <var>x</var>, <var>l</var>, <var>n</var>, <var>k</var>, <var>j</var>⟩ — including its log and numbers only if it is the steward.</li>
+      <li>The recovering cohort waits for <var>f</var> + 1 responses bearing its nonce, <em>including one from the steward of the latest view it learns of</em>, takes that steward’s state, and returns to normal.</li>
+    </ol>
+  </div>
+  <div class="prose">
+    <p>The nonce prevents a recovering cohort from mixing replies to an earlier recovery with replies to this
+    one. Curiously, recovery needs <var>f</var> + 2 cohorts to communicate — but it is still live, since a
+    cohort counts as failed until it has recovered, so at least <var>f</var> + 1 others must be up. In effect,
+    <b>the volatile state of <var>f</var> + 1 cohorts serves as a strongroom</b>.</p>
+    <p>This is also why the view change needs its preliminary round of STARTVIEWCHANGE. The book gives the
+    scenario. Three cohorts, view <var>v</var>, steward <var>r</var><sub>1</sub>. Before collapsing,
+    <var>r</var><sub>3</sub> sent a DOVIEWCHANGE to <var>r</var><sub>2</sub>, which is delayed on the road.
+    <var>r</var><sub>3</sub> recovers in view <var>v</var> from <var>r</var><sub>1</sub> and <var>r</var><sub>2</sub>,
+    and starts sending PREPAREOKs to <var>r</var><sub>1</sub> for operations <var>r</var><sub>2</sub> never sees.
+    Then the old DOVIEWCHANGE arrives and <var>r</var><sub>2</sub> starts view <var>v</var> + 1 — without the
+    operations committed after <var>r</var><sub>3</sub> recovered. The STARTVIEWCHANGE round ensures that when a
+    view change happens, <var>f</var> + 1 cohorts already know it is in progress, so a recovering cohort always
+    recovers into that view or a later one.<sup>4</sup></p>
+  </div>
+  <aside class="fn"><b>4.</b> The first book avoided the extra round by writing the new view-number to the
+  strongroom before sending DOVIEWCHANGE. The second book prefers messages to masonry.</aside>
+</section>
+
+<hr class="meander">
+
+<!-- ================= CHAPTER VIII ================= -->
+<section id="s8">
+  <div class="issue">
+    <span class="no">Chapter VIII</span>
+    <h2 id="practical-matters"><a href="#practical-matters" class="hlink">Practical Matters of the Granary</a></h2>
+  </div>
+
+  <div class="prose">
+    <p>The second book spends many columns on the practicalities that the first never reached.</p>
+    <p><b>Uncertain operations.</b> Copies agree only if operations are deterministic, but a record of “when
+    this grain was last weighed” read from each storehouse’s own water-clock would diverge. The steward
+    <em>predicts</em> such values — from its own clock, or as a fixed function of values gathered from
+    <var>f</var> backups — and stores the prediction in the log with the request.</p>
+    <p><b>Merchants who forget.</b> A merchant who collapses must restart with a larger request number; he
+    fetches his latest from the storehouses and adds <em>two</em>, in case a request he sent just before
+    collapsing is still on the road.</p>
+    <p><b>Long ledgers.</b> Every so many operations — a hundred or a thousand — each storehouse takes a
+    <em>checkpoint</em> of its records, noting the op-number it reflects, and may then discard the older log
+    (keeping some extra, in case a recovering clerk needs it). A recovering clerk fetches the records from
+    another storehouse by comparing a tree of fingerprints over the tablets — the book names the method after
+    <span class="paxon" data-real="Ralph Merkle" data-note="Merkle trees, used to find which pages of a checkpoint differ.">Μέρκλε</span>
+    — so it copies only tablets that differ, and then fetches the log from that checkpoint on. A slow but
+    uncollapsed clerk catches up by <em>state transfer</em>: GETSTATE, answered by NEWSTATE with the log it is
+    missing. If it has learned of a newer view, it first discards any uncommitted suffix, which may have been
+    reordered.</p>
+    <p><b>Small view-change messages.</b> Rather than whole logs, DOVIEWCHANGE carries only the last entry or
+    two; the new steward asks for more in the rare case it needs it.</p>
+  </div>
+
+  <h3 id="8-1-optimizations" class="sect"><a href="#8-1-optimizations" class="hlink">8.1 · Economies</a></h3>
+  <div class="decree rules">
+    <span class="rhead">Economies of the Granary</span>
+    <ul>
+      <li><b>Witnesses.</b> Of 2<var>f</var> + 1 storehouses, only <var>f</var> + 1 need hold grain and records; the other <var>f</var> are witnesses, needed only for view changes and recovery.</li>
+      <li><b>Batching.</b> A busy steward runs the protocol once for a whole basket of requests.</li>
+      <li><b>Reads at the steward.</b> A steward may answer reads alone — but a cut-off old steward might answer from stale records. So it answers only while it holds <em>leases</em> from <var>f</var> backups, and a new view begins only after the leases of <var>f</var> + 1 participants have run out, assuming water-clocks run at roughly the same rate.</li>
+      <li><b>Reads at backups.</b> If staleness is acceptable, backups may answer reads, provided the merchant tells them how far his own last write got.</li>
+    </ul>
+  </div>
+
+  <h3 id="8-2-reconfiguration" class="sect"><a href="#8-2-reconfiguration" class="hlink">8.2 · Moving the Granary</a></h3>
+  <figure class="panel tilt-r" id="fig-v6-08">
+    <div class="frame">
+      <!-- IMAGE PLACEHOLDER v6-08: replace this div with <img src="images/vol6_reconfiguration_small.webp" alt="…"> — see IMAGE_PROMPTS.md -->
+      <div class="img-placeholder" data-img-id="v6-08" data-img-file="images/vol6_reconfiguration_small.webp" role="img" aria-label="Illustration pending: A procession at dawn moving the granary records from a row of old, cracked storehouses to a row of new ones on higher ground: clerks carry baskets of tablets along a road between them; lamps are being lit in the new storehouses one by one, and only when a new lamp is lit does an old clerk close and bar his storehouse door.">
+        <span class="ph-label">Illustration pending · v6-08</span>
+        <span class="ph-desc">A procession at dawn moving the granary records from a row of old, cracked storehouses to a row of new ones on higher ground: clerks carry baskets of tablets along a road between them; lamps are being lit in the new storehouses one by one, and only when a new lamp is lit does an old clerk close and bar his storehouse door.</span>
+      </div>
+    </div>
+    <figcaption>MOVING THE GRANARY: THE OLD CLERKS KEEP THEIR DOORS OPEN UNTIL ENOUGH NEW STOREHOUSES HAVE LIT THEIR LAMPS.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Finally, the second book lets the group itself change — to replace a storehouse that burned, move to
+    better buildings, or change <var>f</var>. An administrator sends a RECONFIGURATION request naming the new
+    storehouses; it runs through normal operation in the old group and is the last request of its
+    <em>epoch</em>. The steward stops accepting other requests, and on commit sends STARTEPOCH to the new
+    storehouses, which fetch the state and begin in view 0 of the new epoch. Old storehouses keep answering
+    state-transfer requests until <var>f′</var> + 1 new ones report EPOCHSTARTED, and only then close. The new
+    epoch starts at view 0, the book explains, because STARTEPOCH may come from old stewards in different views;
+    inheriting their view-numbers could produce two stewards in the new group.</p>
+  </div>
+</section>
+
+<hr class="meander">
+
+<!-- ================= CHAPTER IX ================= -->
+<section id="s9">
+  <div class="issue">
+    <span class="no">Chapter IX</span>
+    <h2 id="the-standing-consul-of-paxos"><a href="#the-standing-consul-of-paxos" class="hlink">The Standing Consul of Paxos</a></h2>
+  </div>
+  <div class="prose">
+    <p>For comparison, the translator adds what the Paxon Parliament did with the same problem (Volume&nbsp;V,
+    Chapter&nbsp;III). The Synod passes a single decree in two phases: a ballot leader first gathers promises and
+    earlier votes from a majority, then asks a majority to vote. The Parliament runs one Synod for each numbered
+    decree in the ledger — but a president who stays in office performs the first phase only once, for all
+    future decrees at once, and then passes each decree with a single round. The first phase becomes, in effect,
+    the election of a <em>standing consul</em>.</p>
+    <p>The two institutions are strikingly alike. The Paxon president is the Knossian steward; the ballot number
+    is the view-number; gathering the latest votes from a majority is gathering logs in DOVIEWCHANGE and taking
+    the one from the latest view; a single round per decree is PREPARE and PREPAREOK. The editor of the Paxon
+    manuscript remarked that the Knossian view-management protocol “seems to be equivalent” to the Paxon one.</p>
+    <p>They differ in one freedom. Each Paxon decree is an independent Synod, so decree 7 may be passed while decree
+    5 is still contested, and the ledger may have <em>gaps</em> that readers must wait to see filled. Knossian
+    backups accept PREPAREs strictly in order; the second book notes that out-of-order acceptance is possible but
+    brings no great benefit and complicates the view change. That freedom, and the gymnastics required to explain
+    it, are what the monks of Volume&nbsp;IX will abolish — and the monastery’s rule is a closer descendant of the
+    Knossos account books than of anything written on Paxos.</p>
+  </div>
+</section>
+
+<hr class="meander">
+
+<!-- ================= CHAPTER X ================= -->
+<section id="s10">
+  <div class="issue">
+    <span class="no">Chapter X</span>
+    <h2 id="relevance-to-computer-science"><a href="#relevance-to-computer-science" class="hlink">Relevance to Computer Science</a></h2>
+  </div>
+  <div class="table-wrap">
+    <table class="chron">
+      <thead><tr><th>At Knossos</th><th>In the papers</th></tr></thead>
+      <tbody>
+        <tr><td>Office, group, cohort</td><td>Module, module group, replica</td></tr>
+        <tr><td>Steward / copyists</td><td>Primary / backups</td></tr>
+        <tr><td>Steward’s term, new election</td><td>View, view change</td></tr>
+        <tr><td>Viewstamp</td><td>⟨viewid, timestamp⟩ (1988); ⟨view-number, op-number⟩ (2012)</td></tr>
+        <tr><td>Communication buffer; forcing it</td><td>Ordered event stream to backups; waiting for a sub-majority</td></tr>
+        <tr><td>Purchase, pset, Argus</td><td>Atomic transaction, participant set, the Argus system</td></tr>
+        <tr><td>Crashed acceptance</td><td>Replica that lost volatile state</td></tr>
+        <tr><td>Strongroom</td><td>Stable storage / disk</td></tr>
+        <tr><td>Thumbprint token</td><td>Nonce in the RECOVERY message</td></tr>
+        <tr><td>Witnesses, leases, epochs</td><td>Harp witnesses, leases (Gray &amp; Cheriton), reconfiguration epochs</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>Viewstamped Replication is a leader-based state machine replication protocol for crash faults with
+    2<var>f</var> + 1 replicas, invented independently of and at about the same time as Paxos. The 2012 version
+    is often recommended as one of the clearest complete descriptions of a practical replication protocol,
+    including recovery without disk and reconfiguration. Its structure — normal operation, view change, recovery —
+    carried over into PBFT (Volume&nbsp;VII), which Liskov co-designed, and its log discipline (backups accept
+    operations only in order, and the new leader adopts the most up-to-date log) is close to Raft’s
+    (Volume&nbsp;IX).</p>
+  </div>
+</section>
+
+<hr class="meander">
+
+<!-- ================= REFERENCES ================= -->
+<section id="refs">
+  <div class="issue">
+    <span class="no">The Library</span>
+    <h2 id="references"><a href="#references" class="hlink">References</a></h2>
+  </div>
+  <ol class="refs prose">
+    <li>Castro, M. and Liskov, B. 2002. Practical Byzantine fault tolerance and proactive recovery. <em>ACM Transactions on Computer Systems 20</em>, 4 (Nov.), 398–461.</li>
+    <li>El Abbadi, A., Skeen, D., and Cristian, F. 1985. An efficient, fault-tolerant protocol for replicated data management. In <em>Proceedings of the 4th ACM Symposium on Principles of Database Systems</em>.</li>
+    <li>Gifford, D. K. 1979. Weighted voting for replicated data. In <em>Proceedings of the 7th ACM Symposium on Operating Systems Principles</em>, 150–162.</li>
+    <li>Gray, C. and Cheriton, D. 1989. Leases: An efficient fault-tolerant mechanism for distributed file cache consistency. In <em>Proceedings of the 12th ACM Symposium on Operating Systems Principles</em>, 202–210.</li>
+    <li>Lamport, L. 1998. The part-time parliament. <em>ACM Transactions on Computer Systems 16</em>, 2 (May), 133–169.</li>
+    <li>Liskov, B. 1988. Distributed programming in Argus. <em>Communications of the ACM 31</em>, 3 (March), 300–312.</li>
+    <li>Liskov, B. and Cowling, J. 2012. Viewstamped replication revisited. Technical report, MIT Computer Science and Artificial Intelligence Laboratory.</li>
+    <li>Liskov, B., Ghemawat, S., Gruber, R., Johnson, P., Shrira, L., and Williams, M. 1991. Replication in the Harp file system. In <em>Proceedings of the 13th ACM Symposium on Operating Systems Principles</em>, 226–238.</li>
+    <li>Oki, B. M. and Liskov, B. H. 1988. Viewstamped replication: A new primary copy method to support highly-available distributed systems. In <em>Proceedings of the 7th ACM Symposium on Principles of Distributed Computing</em>, 8–17.</li>
+  </ol>
+</section>
+
+<footer class="colophon">
+  <hr class="meander">
+  <p>An allegorical retelling of Oki &amp; Liskov (1988) and Liskov &amp; Cowling (2012), with a comparison to the
+  multi-decree Parliament of Lamport (1998). Message names from the 2012 paper are kept as written. For the
+  original protocols, always consult the original papers.</p>
+</footer>
+
+  <hr class="meander">
+
+  <div class="paper-card">
+      <h4>🏛️ Foundational Research Papers</h4>
+      <p style="font-size:.9rem; margin-top:0; color:#5c4e3b">The modern mathematical proofs that inspired this volume are preserved in the archive:</p>
+      <div class="paper-item">
+          <div style="font-weight:700">Viewstamped Replication: A New Primary Copy Method to Support Highly-Available Distributed Systems</div>
+          <div style="font-size:.88rem; color:#5c4e3b; margin:2px 0">Brian M. Oki, Barbara H. Liskov (1988) · <em>Proceedings of the 7th ACM PODC, pp. 8–17</em></div>
+          <a href="sources/vol-6_oki-liskov-1988_viewstamped-replication.pdf" class="paper-btn" target="_blank">📄 Read Paper PDF (1,350 KB)</a>
+        </div>
+        <div class="paper-item">
+          <div style="font-weight:700">Viewstamped Replication Revisited</div>
+          <div style="font-size:.88rem; color:#5c4e3b; margin:2px 0">Barbara Liskov, James Cowling (2012) · <em>MIT-CSAIL-TR-2012-047</em></div>
+          <a href="sources/vol-6_liskov-cowling-2012_viewstamped-replication-revisited.pdf" class="paper-btn" target="_blank">📄 Read Paper PDF (170 KB)</a>
+        </div>
+    </div>
+
+  <nav class="bottom-nav">
+    <a href="volume-5.html" class="bottom-btn">‹ Previous: Vol V</a>
+    <a href="index.html" class="bottom-btn all">🏛️ All Nine Volumes</a>
+    <a href="volume-7.html" class="bottom-btn">Next: Vol VII ›</a>
+  </nav>
+</div>
+<script>
+"use strict";
+/* ================= hidden-name tooltips ================= */
+(function(){
+  const tip = document.getElementById('tip');
+  function show(el){
+    tip.innerHTML = '<span class="who">' + el.dataset.real + '</span>' + (el.dataset.note || '');
+    tip.style.display = 'block';
+    const r = el.getBoundingClientRect();
+    const tw = tip.offsetWidth;
+    let x = window.scrollX + r.left + r.width/2 - tw/2;
+    x = Math.max(8, Math.min(x, window.scrollX + document.documentElement.clientWidth - tw - 8));
+    tip.style.left = x + 'px';
+    tip.style.top = (window.scrollY + r.bottom + 8) + 'px';
+  }
+  document.querySelectorAll('.paxon').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>show(el));
+    el.addEventListener('mouseleave', ()=>{ tip.style.display='none'; });
+    el.addEventListener('click', (e)=>{ e.stopPropagation(); show(el); });
+  });
+  document.addEventListener('click', ()=>{ tip.style.display='none'; });
+})();
+</script>
+</body>
+</html>
