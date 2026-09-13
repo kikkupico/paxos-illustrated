@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start Here: The Quick Read — Distributed Algorithms of Ancient Greece</title>
+<link rel="stylesheet" href="assets/paxos-comics.css">
+<style>
+.page { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 0 20px 100px; }
+
+.prose { max-width: 70ch; margin-left: auto; margin-right: auto; }
+
+a { color: var(--aegean-d); text-decoration: underline; text-underline-offset: 3px; }
+
+.series-nav-inner {
+  max-width: 880px; margin: 0 auto; display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 10px;
+}
+
+.meander {
+  height: 18px; margin: 34px auto; max-width: 480px; border: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 36 18'><path d='M0 2h32v14h-8V8h-8v8h-4V6h12M0 16h8' fill='none' stroke='%231c1512' stroke-width='2.6'/></svg>");
+  background-repeat: repeat-x; background-size: 36px 18px; opacity: .75;
+}
+
+header.hero { padding: 44px 0 6px; text-align: center; }
+
+.kicker {
+  font-family: Optima, 'Gill Sans', sans-serif; font-size: .78rem; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--terra); margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-family: Optima, 'Gill Sans', 'Trebuchet MS', sans-serif; font-weight: 700;
+  letter-spacing: .01em; font-size: clamp(1.9rem, 5vw, 2.7rem); line-height: 1.15; margin: 0 0 10px;
+  text-shadow: 2px 2px 0 rgba(255,255,255,.6);
+}
+
+.hero .sub { font-size: 1.08rem; font-style: italic; color: #4a3c28; margin: 0 auto 18px; max-width: 60ch; }
+
+.hero .desc { max-width: 66ch; margin: 0 auto; color: #3b3021; }
+
+.quick-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 26px 0 6px; }
+
+.quick-btn {
+  display: inline-block; background: var(--marble); border: 3px solid var(--ink);
+  padding: 9px 16px; font-family: Optima, 'Gill Sans', sans-serif; font-size: .84rem;
+  font-weight: 600; letter-spacing: .02em; text-decoration: none; color: var(--ink);
+  box-shadow: 4px 4px 0 var(--shadow); transition: transform .12s;
+}
+
+.quick-btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--shadow); color: var(--terra); }
+
+.read-time {
+  display: inline-flex; align-items: center; gap: 8px; margin: 18px auto 0;
+  background: var(--caption); border: 3px solid var(--ink); padding: 6px 16px;
+  font-family: Optima, sans-serif; font-size: .82rem; font-weight: 700; letter-spacing: .04em;
+  box-shadow: 4px 4px 0 var(--shadow); transform: rotate(-.6deg);
+}
+
+.map-wrap { margin: 40px 0; }
+
+.map-title {
+  text-align: center; font-family: Optima, 'Gill Sans', sans-serif; font-size: .82rem;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--aegean-d); margin-bottom: 18px;
+}
+
+.map {
+  display: flex; flex-direction: column; gap: 0; max-width: 640px; margin: 0 auto;
+}
+
+.map-node {
+  display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: start;
+  background: var(--marble); border: 3px solid var(--ink); padding: 12px 16px;
+  box-shadow: 4px 4px 0 var(--shadow); position: relative;
+}
+
+.map-node .num {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--aegean); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-family: Optima, sans-serif;
+  font-weight: 700; font-size: .95rem; border: 2px solid var(--ink);
+}
+
+.map-node.branch .num { background: var(--olive); }
+
+.map-node strong { font-family: Optima, 'Gill Sans', sans-serif; font-size: .95rem; }
+
+.map-node .map-desc { font-size: .86rem; color: #4a3c28; margin-top: 2px; }
+
+.map-arrow {
+  text-align: center; color: var(--gold); font-size: 1.3rem; line-height: 1; margin: 2px 0;
+  font-family: Optima, sans-serif;
+}
+
+.map-node.branch { margin-left: 26px; max-width: calc(100% - 26px); }
+
+.vcard {
+  display: grid; grid-template-columns: 150px 1fr; gap: 20px; align-items: start;
+  margin: 30px 0; padding-bottom: 26px; border-bottom: 2px dashed rgba(28,21,18,.2);
+}
+
+.vcard:last-of-type { border-bottom: none; }
+
+.vcard .vimg {
+  border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--shadow); overflow: hidden;
+  aspect-ratio: 3/4; background: #fff;
+}
+
+.vcard .vimg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.vtag {
+  display: inline-block; font-family: Optima, sans-serif; font-size: .7rem; letter-spacing: .14em;
+  text-transform: uppercase; color: #fff; background: var(--terra); padding: 2px 10px;
+  border: 2px solid var(--ink); margin-bottom: 6px;
+}
+
+.vcard h2 { font-family: Optima, 'Gill Sans', sans-serif; font-size: 1.18rem; margin: 0 0 3px; }
+
+.vcite { font-size: .82rem; font-style: italic; color: #6d5c42; margin: 0 0 10px; }
+
+.vbody p { margin: 0 0 10px; font-size: .96rem; }
+
+.vbody .whyitmatters {
+  font-size: .88rem; background: rgba(19,111,158,.08); border-left: 3px solid var(--aegean);
+  padding: 6px 12px; margin: 10px 0;
+}
+
+.vbody .whyitmatters b { color: var(--aegean-d); }
+
+.vlink { font-family: Optima, sans-serif; font-size: .82rem; font-weight: 700; }
+
+@media (max-width: 560px) {
+  .vcard { grid-template-columns: 90px 1fr; gap: 14px; }
+}
+
+.quorum-fig { text-align: center; margin: 20px auto; }
+
+.quorum-fig svg { max-width: 100%; height: auto; }
+
+.quorum-cap { font-size: .84rem; color: #5a4a33; font-style: italic; max-width: 44ch; margin: 8px auto 0; }
+
+.wrapup {
+  margin: 44px auto; max-width: 680px; background: linear-gradient(180deg,var(--marble),#eae4d4);
+  border: 3px solid var(--ink); border-radius: 4px; padding: 22px 26px;
+  box-shadow: 6px 6px 0 var(--shadow), inset 0 0 0 4px rgba(193,145,43,.28);
+}
+
+.wrapup h2 { font-family: Optima, 'Gill Sans', sans-serif; font-size: 1.1rem; margin-top: 0; }
+
+.next-steps { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 30px 0; }
+
+.next-card {
+  flex: 1 1 220px; max-width: 260px; background: var(--marble); border: 3px solid var(--ink);
+  padding: 16px 18px; box-shadow: 4px 4px 0 var(--shadow); text-decoration: none; color: var(--ink);
+}
+
+.next-card:hover { color: var(--terra); }
+
+.next-card .nc-kicker { font-family: Optima, sans-serif; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--terra); }
+
+.next-card h3 { font-family: Optima, sans-serif; font-size: 1rem; margin: 6px 0 4px; }
+
+.next-card p { font-size: .84rem; margin: 0; color: #4a3c28; }
+
+footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; color: #62533e; }
+</style>
+</head>
+<body>
+<div class="site-bar">
+  <span>Paxos Comics</span> &nbsp;·&nbsp; Distributed Algorithms of Ancient Greece &nbsp;·&nbsp; Complete 9-Volume Recension
+</div>
+<nav class="series-nav">
+  <div class="series-nav-inner">
+    <a href="index.html" class="nav-back">← All Nine Volumes</a>
+    <span class="nav-current">Start Here · Quick Read</span>
+    <a href="protocols.html">Protocol Simulator →</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <header class="hero">
+    <div class="kicker">A Primer, Not a Prerequisite</div>
+    <h1>Start Here: The Whole Collection in One Sitting</h1>
+    <p class="sub">Nine papers that built modern distributed computing, in the order they were written and the order they need to be understood.</p>
+    <p class="desc">
+      Each volume of this series retells one foundational paper as a Greek chronicle. This page skips
+      the allegory and gives you the bare idea behind each one — what problem it solved, why the
+      previous idea wasn't enough, and where to read the full illustrated version if it hooks you.
+      New to distributed systems? Read top to bottom. Already know some of this? Jump straight to
+      the volume you need.
+    </p>
+    <div class="read-time">🕒 About 8 minutes</div>
+    <nav class="quick-nav">
+      <a href="#the-map" class="quick-btn">🗺️ See the Map</a>
+      <a href="#vol-1" class="quick-btn">📖 Jump to Volume I</a>
+      <a href="index.html" class="quick-btn">🏛️ Browse Full Volumes</a>
+    </nav>
+  </header>
+
+  <hr class="meander">
+
+  <!-- ================= THE MAP ================= -->
+  <section id="the-map" class="map-wrap">
+    <div class="map-title">The Shape of the Argument</div>
+    <div class="map">
+
+      <div class="map-node">
+        <div class="num">1</div>
+        <div><strong>Can we even agree on "when"?</strong>
+          <div class="map-desc">Clocks disagree across machines — so define order by cause, not time.</div>
+        </div>
+      </div>
+      <div class="map-arrow">↓</div>
+
+      <div class="map-node">
+        <div class="num">2</div>
+        <div><strong>What if a machine actively lies?</strong>
+          <div class="map-desc">Not crashes — sabotage. Proves how much honest majority you need.</div>
+        </div>
+      </div>
+      <div class="map-arrow">↓</div>
+
+      <div class="map-node">
+        <div class="num">3</div>
+        <div><strong>Can agreement always be guaranteed?</strong>
+          <div class="map-desc">Proof: no — not if the network can be arbitrarily slow. A hard wall.</div>
+        </div>
+      </div>
+      <div class="map-arrow">↓</div>
+
+      <div class="map-node">
+        <div class="num">4</div>
+        <div><strong>So how does anything work at all?</strong>
+          <div class="map-desc">Real networks calm down eventually. That assumption is enough.</div>
+        </div>
+      </div>
+      <div class="map-arrow">↓</div>
+
+      <div class="map-node">
+        <div class="num">5</div>
+        <div><strong>Paxos: agreeing on <em>one</em> value</strong>
+          <div class="map-desc">The two-phase protocol every later system is a variation of.</div>
+        </div>
+      </div>
+      <div class="map-arrow">↓</div>
+
+      <div class="map-node branch">
+        <div class="num">6</div>
+        <div><strong>...into an ordered log of many values</strong>
+          <div class="map-desc">One stable leader, repeated cheaply. This is "Multi-Paxos."</div>
+        </div>
+      </div>
+      <div class="map-arrow">↓</div>
+
+      <div class="map-node branch">
+        <div class="num">7</div>
+        <div><strong>...that tolerates liars, affordably</strong>
+          <div class="map-desc">Volume 2's guarantee, made cheap enough for production.</div>
+        </div>
+      </div>
+      <div class="map-arrow">↓</div>
+
+      <div class="map-node branch">
+        <div class="num">8</div>
+        <div><strong>...and survives contact with reality</strong>
+          <div class="map-desc">Disks corrupt, processes hang. The math is 10% of the system.</div>
+        </div>
+      </div>
+      <div class="map-arrow">↓</div>
+
+      <div class="map-node branch">
+        <div class="num">9</div>
+        <div><strong>...explained so humans can build it correctly</strong>
+          <div class="map-desc">Same guarantees as Paxos, designed from the ground up to be understood.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="meander">
+
+  <!-- ================= VOLUME I ================= -->
+  <div class="vcard" id="vol-1">
+    <div class="vimg"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol1_archipelago_small.webp" alt="A foggy archipelago of islands, each keeping its own time" loading="lazy"></div>
+    <div class="vbody">
+      <span class="vtag">Vol. I</span>
+      <h2>Why Can't Everyone Just Agree on "When"?</h2>
+      <p class="vcite">Lamport, "Time, Clocks, and the Ordering of Events" (1978)</p>
+      <p>Put a clock on every machine in a network and they'll disagree — clocks drift, and there's no
+        way to make them perfectly synchronized. So how do you know if event A happened before event B?</p>
+      <p><strong>The idea:</strong> stop asking about physical time. Instead, track cause: if a message
+        from A influenced B, then A happened first. Give every machine a counter (a "logical clock")
+        that increases with each event and advances past any timestamp it receives. This gives a
+        reliable partial order — some events are provably ordered, but many are simply <em>concurrent</em>,
+        and no clock can or should invent an order between them.</p>
+      <div class="whyitmatters"><b>Why it matters later:</b> nearly every distributed system uses some
+        descendant of this idea (vector clocks, version vectors) to reason about "what did this node know, and when."</div>
+      <p class="vlink"><a href="volume-1.html">📖 Read the full illustrated Volume I →</a></p>
+    </div>
+  </div>
+
+  <!-- ================= VOLUME II ================= -->
+  <div class="vcard" id="vol-2">
+    <div class="vimg"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol2_three_generals_small.webp" alt="Three generals conferring by messenger outside city walls" loading="lazy"></div>
+    <div class="vbody">
+      <span class="vtag">Vol. II</span>
+      <h2>What If a Machine Doesn't Just Fail — It Lies?</h2>
+      <p class="vcite">Pease, Shostak &amp; Lamport (1980); Lamport, Shostak &amp; Pease, "The Byzantine Generals Problem" (1982)</p>
+      <p>So far we've assumed machines are honest, even if slow or crashed. What if one is compromised
+        and sends different, contradictory messages to different peers on purpose?</p>
+      <p><strong>The idea:</strong> with only spoken (unsigned) messages, you need more than three times
+        as many honest participants as traitors — <code>3f+1</code> total to tolerate <code>f</code> liars.
+        Below that ratio, agreement is provably impossible. Add cryptographic signatures that can't be
+        forged, and the bar drops to <code>f+2</code> — because now a lie can be proven and passed along as evidence.</p>
+      <div class="whyitmatters"><b>Why it matters later:</b> this bound is the foundation every
+        Byzantine-fault-tolerant system (Volume VII, and modern blockchains) is built on top of.</div>
+      <p class="vlink"><a href="volume-2.html">📖 Read the full illustrated Volume II →</a></p>
+    </div>
+  </div>
+
+  <!-- ================= VOLUME III ================= -->
+  <div class="vcard" id="vol-3">
+    <div class="vimg"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol3_delphi_small.webp" alt="Priestesses at Delphi delivering an oracular curse" loading="lazy"></div>
+    <div class="vbody">
+      <span class="vtag">Vol. III</span>
+      <h2>Can We Guarantee Agreement, Always?</h2>
+      <p class="vcite">Fischer, Lynch &amp; Paterson, "Impossibility of Distributed Consensus with One Faulty Process" (1985)</p>
+      <p>Given everything so far, can we build a consensus algorithm that always works — never gets stuck,
+        never contradicts itself — as long as messages eventually arrive?</p>
+      <p><strong>The idea (the famous "FLP" result):</strong> no. If message delays can be arbitrarily
+        long (fully asynchronous) and even one process might fail, no deterministic algorithm can
+        guarantee both correctness (safety) <em>and</em> that it will finish (liveness). An adversary can
+        always delay exactly the one message that would tip the vote — forever, without ever technically
+        losing a message.</p>
+      <div class="whyitmatters"><b>Why it matters later:</b> this is a hard mathematical wall, not an
+        engineering gap. Every practical system (Volumes IV onward) works by quietly sidestepping it,
+        not defeating it.</div>
+      <p class="vlink"><a href="volume-3.html">📖 Read the full illustrated Volume III →</a></p>
+    </div>
+  </div>
+
+  <!-- ================= VOLUME IV ================= -->
+  <div class="vcard" id="vol-4">
+    <div class="vimg"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol4_navigators_small.webp" alt="Navigators pointing out that the storms eventually pass" loading="lazy"></div>
+    <div class="vbody">
+      <span class="vtag">Vol. IV</span>
+      <h2>So How Does Anything Real Work At All?</h2>
+      <p class="vcite">Dwork, Lynch &amp; Stockmeyer, "Consensus in the Presence of Partial Synchrony" (1988)</p>
+      <p>If pure asynchrony makes consensus impossible, and real networks obviously do reach consensus
+        (your bank works), something about the FLP assumption must not hold in practice.</p>
+      <p><strong>The idea:</strong> assume "partial synchrony" — the network might misbehave for an
+        unknown period, but it eventually settles into predictable, bounded delays. That's a weak
+        enough assumption to be realistic, and just strong enough to build a system that is
+        <em>always</em> safe and <em>eventually</em> makes progress once things calm down.</p>
+      <div class="whyitmatters"><b>Why it matters later:</b> every algorithm from here on (Paxos, Raft,
+        PBFT) silently relies on this escape hatch. They don't disprove Volume III — they wait it out.</div>
+      <p class="vlink"><a href="volume-4.html">📖 Read Volume IV →</a></p>
+    </div>
+  </div>
+
+  <!-- ================= VOLUME V ================= -->
+  <div class="vcard" id="vol-5">
+    <div class="vimg"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/cover_small.webp" alt="Cover: The Part-Time Parliament" loading="lazy"></div>
+    <div class="vbody">
+      <span class="vtag">Vol. V · The Big One</span>
+      <h2>Paxos: Agreeing on One Value, Safely</h2>
+      <p class="vcite">Lamport, "The Part-Time Parliament" (1998); "Paxos Made Simple" (2001)</p>
+      <p>Given partial synchrony, here's an actual protocol: a group of machines, any of which can
+        crash and restart at any time, need to agree on a single value and never disagree later —
+        even if some of them are down for the vote.</p>
+      <p><strong>The idea:</strong> two phases. <b>Phase 1 (Prepare):</b> a proposer picks a ballot
+        number and asks a majority to promise to ignore anything numbered lower, and to report any
+        value they've already accepted. <b>Phase 2 (Accept):</b> if any value comes back, the proposer
+        <em>must</em> propose the one with the highest ballot number it saw — not a new one of its own
+        choosing. Once a majority accepts it, it's permanent.</p>
+      <div class="quorum-fig">
+        <svg viewBox="0 0 320 170" role="img" aria-labelledby="qtitle qdesc">
+          <title id="qtitle">Overlapping majorities diagram</title>
+          <desc id="qdesc">Two overlapping circles labeled Majority A and Majority B, sharing one member in the overlap.</desc>
+          <circle cx="130" cy="85" r="72" fill="rgba(19,111,158,.18)" stroke="#1c1512" stroke-width="3"/>
+          <circle cx="200" cy="85" r="72" fill="rgba(191,74,38,.16)" stroke="#1c1512" stroke-width="3"/>
+          <text x="78" y="55" font-family="Optima, sans-serif" font-size="12" font-weight="700" fill="#0b4a6b">MAJORITY A</text>
+          <text x="212" y="55" font-family="Optima, sans-serif" font-size="12" font-weight="700" fill="#bf4a26">MAJORITY B</text>
+          <text x="165" y="90" font-family="Georgia, serif" font-size="11" font-style="italic" text-anchor="middle" fill="#1c1512">at least one</text>
+          <text x="165" y="104" font-family="Georgia, serif" font-size="11" font-style="italic" text-anchor="middle" fill="#1c1512">shared member</text>
+        </svg>
+        <p class="quorum-cap">Any two majorities of the same group must overlap by at least one member.
+          That shared member remembers the earlier promise — which is the entire reason Paxos is safe.</p>
+      </div>
+      <div class="whyitmatters"><b>Why it matters later:</b> this quorum-overlap trick is the load-bearing
+        idea of the rest of the collection — Multi-Paxos, PBFT, and Raft are all variations on making
+        this safe with less overhead.</div>
+      <p class="vlink"><a href="volume-5.html">📖 Read the full illustrated Volume V →</a></p>
+    </div>
+  </div>
+
+  <!-- ================= VOLUME VI ================= -->
+  <div class="vcard" id="vol-6">
+    <div class="vimg"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/cover_volume_6_small.webp" alt="Cover: The Ledger of Many Decrees" loading="lazy"></div>
+    <div class="vbody">
+      <span class="vtag">Vol. VI</span>
+      <h2>From One Decision to a Whole Log</h2>
+      <p class="vcite">Oki &amp; Liskov, "Viewstamped Replication" (1988); "Multi-Paxos"</p>
+      <p>Paxos agrees on a single value. A real database needs to agree on an entire ordered sequence
+        of operations — running full Paxos for every single one would be painfully slow.</p>
+      <p><strong>The idea:</strong> elect a stable leader who runs Phase 1 (Prepare) once, on taking
+        office, for the whole future log. After that, every entry only needs the lightweight Phase 2
+        (Accept) — one round trip instead of two, for as long as that leader holds office.</p>
+      <div class="whyitmatters"><b>Why it matters later:</b> this is the design almost every production
+        "replicated log" system actually runs — including the one in Volume IX, which reinvents it
+        from scratch with different tradeoffs.</div>
+      <p class="vlink"><a href="volume-6.html">📖 Read Volume VI →</a></p>
+    </div>
+  </div>
+
+  <!-- ================= VOLUME VII ================= -->
+  <div class="vcard" id="vol-7">
+    <div class="vimg"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/cover_volume_7_small.webp" alt="Cover: The Citadel of Iron Quorums" loading="lazy"></div>
+    <div class="vbody">
+      <span class="vtag">Vol. VII</span>
+      <h2>Byzantine Fault Tolerance, Made Affordable</h2>
+      <p class="vcite">Castro &amp; Liskov, "Practical Byzantine Fault Tolerance" (1999)</p>
+      <p>Volume II proved the <code>3f+1</code> bound in 1982, but the textbook solution needed
+        expensive digital signatures on every message. For 17 years, no one had made it cheap enough
+        to actually run.</p>
+      <p><strong>The idea:</strong> replace signatures with cheap shared-secret authentication for the
+        common case (signatures return only for the rare leader-removal procedure), and use a three-phase
+        protocol — Pre-Prepare, Prepare, Commit — so that even a lying leader can't slip through a bad value.</p>
+      <div class="whyitmatters"><b>Why it matters later:</b> this paper is why "BFT" went from a
+        theoretical curiosity to something real systems (and later, blockchains) actually run.</div>
+      <p class="vlink"><a href="volume-7.html">📖 Read Volume VII →</a></p>
+    </div>
+  </div>
+
+  <!-- ================= VOLUME VIII ================= -->
+  <div class="vcard" id="vol-8">
+    <div class="vimg"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/cover_volume_8_small.webp" alt="Cover: The Quarries of the Roman Guilds" loading="lazy"></div>
+    <div class="vbody">
+      <span class="vtag">Vol. VIII</span>
+      <h2>The Math Was the Easy 10%</h2>
+      <p class="vcite">Chandra, Griesemer &amp; Redstone, "Paxos Made Live" (2007)</p>
+      <p>Google built Chubby, a real production lock service, on Paxos. The algorithm on paper is a
+        few pages. The engineering report is not.</p>
+      <p><strong>The idea:</strong> production systems need things no algorithm paper mentions —
+        <b>snapshots</b> (so the log doesn't grow forever), <b>checksums</b> (disks corrupt data
+        silently), <b>leases</b> (so a recovering node doesn't act like it's still in charge), and
+        deterministic, replayable testing (because the bugs only appear under exact, rare timing).</p>
+      <div class="whyitmatters"><b>Why it matters later:</b> this is the reality check for the whole
+        series — a candid admission from the team that shipped one of these systems that the protocol
+        was the small part of the job.</div>
+      <p class="vlink"><a href="volume-8.html">📖 Read Volume VIII →</a></p>
+    </div>
+  </div>
+
+  <!-- ================= VOLUME IX ================= -->
+  <div class="vcard" id="vol-9">
+    <div class="vimg"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/cover_volume_9_small.webp" alt="Cover: The Reformation of the Raft Monks" loading="lazy"></div>
+    <div class="vbody">
+      <span class="vtag">Vol. IX</span>
+      <h2>Same Guarantees, Designed to Be Understood</h2>
+      <p class="vcite">Ongaro &amp; Ousterhout, "In Search of an Understandable Consensus Algorithm" (2014)</p>
+      <p>Multi-Paxos (Volume VI) works, but even its authors admit it's notoriously hard to teach,
+        implement correctly, and reason about — the "gaps" it allows in the log make it flexible but slippery.</p>
+      <p><strong>The idea (Raft):</strong> pick one leader per numbered "term." Forbid gaps — the log
+        is written strictly in order. Make followers <em>refuse</em> any entry that doesn't match what
+        came immediately before it in their own log, forcing the leader to walk backward until they
+        agree — this refusal, not blind obedience, is what keeps every copy of the log identical.</p>
+      <div class="whyitmatters"><b>Why it matters later:</b> nothing — this is the end of the line (so
+        far). Raft is the algorithm most engineers meet first today, precisely because it was designed
+        to be teachable.</div>
+      <p class="vlink"><a href="volume-9.html">📖 Read Volume IX →</a></p>
+    </div>
+  </div>
+
+  <hr class="meander">
+
+  <!-- ================= WRAP UP ================= -->
+  <div class="wrapup prose">
+    <h2>The One-Paragraph Version</h2>
+    <p>You can't trust clocks (I), so you order events by cause. Some machines might actively lie, not
+      just fail (II), which sets a hard bound on how much honesty a group needs. If the network can be
+      arbitrarily slow, perfect consensus is provably impossible (III) — unless you assume it eventually
+      calms down (IV), which real networks do. Given that assumption, Paxos (V) shows how to agree on
+      one value safely, by way of overlapping majorities. Multi-Paxos (VI) turns that into a full log.
+      PBFT (VII) brings back Byzantine tolerance from Volume II, affordably. Paxos Made Live (VIII) is
+      the reminder that shipping this is mostly not the algorithm. And Raft (IX) re-derives the same
+      guarantees as VI, designed from day one so a human can actually hold the whole thing in their head.</p>
+  </div>
+
+  <div class="next-steps">
+    <a href="index.html" class="next-card">
+      <div class="nc-kicker">Browse</div>
+      <h3>All Nine Volumes</h3>
+      <p>The full illustrated chronicles, covers and all.</p>
+    </a>
+    <a href="volume-5.html" class="next-card">
+      <div class="nc-kicker">Most Illustrated</div>
+      <h3>Volume V, in Full</h3>
+      <p>The Synod of the Part-Time Parliament — completely illustrated.</p>
+    </a>
+    <a href="protocols.html" class="next-card">
+      <div class="nc-kicker">Interactive</div>
+      <h3>Protocol Simulator</h3>
+      <p>Watch the protocols run, side by side, in real time.</p>
+    </a>
+  </div>
+
+  <footer class="colophon">
+    <hr class="meander">
+    <p><strong>Paxos Comics</strong> · Preserving the ancient geometry of distributed systems.</p>
+  </footer>
+</div>
+</body>
+</html>

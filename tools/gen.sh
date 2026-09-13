@@ -3,8 +3,8 @@
 # usage: gen.sh <outname> <aspect_ratio> <prompt>
 set -u
 OUT="$1"; AR="$2"; PROMPT="$3"
-DIR="/Users/kikkupico/Projects/paxos-illustrated/i1/images"
-SCRATCH="/private/tmp/claude-501/-Users-kikkupico-Projects-paxos-illustrated-i1/bc454237-da32-4780-8170-9cdfa2229a55/scratchpad"
+DIR="$(cd "$(dirname "$0")/../images" && pwd)"
+SCRATCH="${TMPDIR:-/tmp}/paxos-gen"
 mkdir -p "$SCRATCH"
 
 STYLE="Vintage 1970s comic book illustration style: bold black ink outlines, visible halftone dot shading, slightly aged newsprint paper texture, flat vibrant Mediterranean palette (aegean blue, terracotta red, olive green, marble white, sand, gold accents). Setting: the ancient Greek island of Paxos, classical era. Characters wear chitons, himations, sandals; laurel wreaths. Dramatic comic-panel composition, clean and readable. No modern objects unless specified."

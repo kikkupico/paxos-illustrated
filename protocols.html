@@ -4,71 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Four Rulebooks — An All-in-One Paxon Simulator</title>
+<link rel="stylesheet" href="assets/paxos-comics.css">
 <style>
-/* ============ PAXOS COMICS design system (shared with the chronicle) ============ */
-:root{
-  --ink:#1c1512;
-  --paper:#f2e7cd;
-  --paper-hi:#faf3e0;
-  --paper-lo:#e6d5ae;
-  --aegean:#136f9e;
-  --aegean-d:#0b4a6b;
-  --terra:#bf4a26;
-  --olive:#66722c;
-  --olive-d:#4c561e;
-  --gold:#c1912b;
-  --marble:#f8f5ee;
-  --caption:#ffe36e;
-  --blood:#8e2323;
-  --shadow:rgba(28,21,18,.28);
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  color:var(--ink);
-  font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
-  font-size:17px; line-height:1.62;
-  background:
-    radial-gradient(1200px 500px at 50% -100px, rgba(255,255,255,.5), transparent 70%),
-    radial-gradient(900px 900px at 110% 15%, rgba(193,145,43,.10), transparent 60%),
-    radial-gradient(900px 900px at -10% 60%, rgba(19,111,158,.07), transparent 60%),
-    var(--paper);
-}
-body::before{
-  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background-image:radial-gradient(rgba(28,21,18,.05) 1px, transparent 1.6px);
-  background-size:7px 7px; opacity:.5;
-}
 .page{position:relative; z-index:1; max-width:980px; margin:0 auto; padding:0 20px 90px}
-.prose{max-width:72ch; margin-left:auto; margin-right:auto}
-p{margin:.9em 0}
+
 a{color:var(--aegean-d)}
-var,.m{font-family:Georgia,serif; font-style:italic}
-sub,sup{font-size:.72em}
-.display{font-family:Optima,'Gill Sans','Trebuchet MS',sans-serif; letter-spacing:.04em}
 
-.meander{height:18px; margin:34px auto; max-width:520px; border:0;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 36 18'><path d='M0 2h32v14h-8V8h-8v8h-4V6h12M0 16h8' fill='none' stroke='%231c1512' stroke-width='2.6'/></svg>");
-  background-repeat:repeat-x; background-size:36px 18px; opacity:.75}
-
-/* ---------- header ---------- */
-header.cover{padding:44px 0 8px; text-align:center}
-.kicker{
-  display:inline-block; margin:0 auto 18px; padding:6px 18px;
-  background:var(--ink); color:var(--paper-hi);
-  font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.34em; font-size:.78rem;
-  text-transform:uppercase;
-}
 header.cover h1{
   margin:6px 0 0; font-family:Optima,'Gill Sans',sans-serif; font-weight:700;
   font-size:clamp(1.8rem,5.4vw,3rem); letter-spacing:.05em; text-transform:uppercase;
   text-shadow:3px 3px 0 rgba(193,145,43,.35);
 }
+
 header.cover .sub{
   margin:20px auto 4px; max-width:660px; font-family:Optima,'Gill Sans',sans-serif;
   font-size:1rem; color:#4a3d2c;
 }
+
 .backlink{text-align:center; font-size:.85rem; font-style:italic; margin:4px 0 0}
 
 .narr{
@@ -76,26 +28,18 @@ header.cover .sub{
   padding:10px 18px; font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif;
   font-size:.9rem; box-shadow:5px 5px 0 var(--shadow); transform:rotate(-.35deg);
 }
+
 .slab{
   margin:28px auto; max-width:720px; background:linear-gradient(180deg,#fbf9f4,#ece7da);
   border:3px solid var(--ink); box-shadow:6px 6px 0 var(--shadow); padding:4px 24px 12px;
 }
-.slab .slab-head{
-  font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.22em; text-transform:uppercase;
-  font-size:.8rem; color:var(--terra); margin:12px 0 4px;
-}
-h3.sect{
-  margin:52px 0 12px; font-family:Optima,'Gill Sans',sans-serif; font-size:1.32rem;
-  letter-spacing:.05em; color:var(--aegean-d);
-  border-bottom:3px double rgba(28,21,18,.5); padding-bottom:6px;
-}
 
-/* ---------- widgets ---------- */
 .widget{
   margin:34px auto; max-width:940px; border:4px solid var(--ink);
   background:linear-gradient(180deg,#efe6cf,#e4d5b0);
   box-shadow:9px 10px 0 var(--shadow);
 }
+
 .widget>.whead{
   display:flex; align-items:center; gap:12px; padding:10px 18px;
   background:
@@ -103,40 +47,56 @@ h3.sect{
     linear-gradient(180deg,#7a4a26,#5d3313);
   color:#f7ecd7; border-bottom:4px solid var(--ink);
 }
+
 .widget>.whead h5{
   margin:0; font-family:Optima,'Gill Sans',sans-serif; font-size:1.02rem;
   letter-spacing:.14em; text-transform:uppercase; font-weight:700;
 }
+
 .widget>.whead .badge{
   margin-left:auto; background:var(--caption); color:var(--ink); border:2px solid var(--ink);
   font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif; font-size:.68rem;
   padding:2px 10px; transform:rotate(1.5deg); white-space:nowrap;
 }
+
 .widget .wbody{padding:18px 20px 22px}
+
 .widget .hint{font-size:.85rem; color:#5a4a33; font-style:italic; margin:6px 0 14px}
+
 button.gk{
   font-family:Optima,'Gill Sans',sans-serif; font-size:.85rem; letter-spacing:.05em;
   border:3px solid var(--ink); background:linear-gradient(180deg,#fdf6e4,#ecd9a8);
   padding:7px 14px; cursor:pointer; box-shadow:3px 3px 0 var(--shadow); color:var(--ink);
   transition:transform .06s ease;
 }
+
 button.gk:hover{transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--shadow)}
+
 button.gk:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--shadow)}
+
 button.gk.primary{background:linear-gradient(180deg,#2e88b5,#136f9e); color:#fff}
+
 button.gk.danger{background:linear-gradient(180deg,#d1633f,#bf4a26); color:#fff}
+
 button.gk.time{background:linear-gradient(180deg,#d9b45a,#c1912b); color:#241c14}
+
 button.gk:disabled{opacity:.45; cursor:not-allowed; transform:none}
+
 select.gk,option{font-family:Optima,sans-serif; font-size:.85rem}
+
 select.gk{border:3px solid var(--ink); background:#fdf6e4; padding:6px 8px; box-shadow:3px 3px 0 var(--shadow); max-width:min(340px,70vw)}
 
-/* ---------- the cast ---------- */
 #cast .grid{display:flex; gap:12px; flex-wrap:wrap; justify-content:center}
+
 #cast .who{
   width:168px; border:3px solid var(--ink); background:linear-gradient(180deg,#fdfaf1,#efe6cf);
   box-shadow:4px 4px 0 var(--shadow); padding:9px 10px 11px; font-size:.76rem; line-height:1.45;
 }
+
 #cast .who .top{display:flex; align-items:center; gap:8px; margin-bottom:6px}
+
 #cast .who .role{font-family:Optima,sans-serif; font-size:.72rem; color:var(--terra); letter-spacing:.06em; text-transform:uppercase}
+
 .avatar{
   width:34px; height:34px; border-radius:50%; border:2.5px solid var(--ink);
   display:flex; align-items:center; justify-content:center;
@@ -144,154 +104,223 @@ select.gk{border:3px solid var(--ink); background:#fdf6e4; padding:6px 8px; box-
   text-shadow:1px 1px 0 rgba(0,0,0,.4); flex:none;
 }
 
-/* ---------- protocol picker ---------- */
 .picker{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:26px auto 6px; max-width:940px}
+
 .picker button{
   flex:1 1 200px; max-width:230px; text-align:left; cursor:pointer;
   border:3px solid var(--ink); background:linear-gradient(180deg,#fdf6e4,#e9d6a6);
   box-shadow:5px 5px 0 var(--shadow); padding:9px 13px 11px; color:var(--ink);
   font-family:Optima,'Gill Sans',sans-serif; transition:transform .07s ease;
 }
+
 .picker button:hover{transform:translate(-1px,-1px)}
+
 .picker button .pno{font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--terra)}
+
 .picker button .pnm{display:block; font-size:.98rem; font-weight:700; letter-spacing:.03em; margin:2px 0 3px}
+
 .picker button .pdesc{display:block; font-family:Georgia,serif; font-size:.74rem; font-style:italic; line-height:1.4; color:#5a4a33}
+
 .picker button.on{
   background:linear-gradient(180deg,#2e88b5,#0f5c85); color:#fff;
   transform:translate(-2px,-2px); box-shadow:7px 7px 0 var(--shadow);
 }
+
 .picker button.on .pno{color:var(--caption)}
+
 .picker button.on .pdesc{color:#dbeaf3}
 
-/* ---------- dossier table ---------- */
 #dossier table{border-collapse:collapse; width:100%; background:#f6eed6; font-size:.78rem}
+
 #dossier th{
   font-family:Optima,sans-serif; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
   padding:7px 8px; border-bottom:3px solid var(--ink); color:#5a4a33; vertical-align:bottom;
 }
+
 #dossier th.q{width:20%; text-align:left}
+
 #dossier td{padding:7px 9px; border-bottom:1px solid rgba(28,21,18,.22); vertical-align:top; line-height:1.45}
+
 #dossier td.q{font-family:Optima,sans-serif; font-size:.74rem; color:#4d4030; background:rgba(255,255,255,.35)}
+
 #dossier col.sel, #dossier th.sel{background:rgba(19,111,158,.14)}
+
 #dossier td.sel{background:rgba(19,111,158,.14); font-weight:700}
+
 #dossier td.chg{box-shadow:inset 3px 0 0 var(--terra)}
+
 #dossier .newbit{background:var(--caption); padding:0 3px}
+
 #dossier .dosnote{font-size:.76rem; font-style:italic; color:#5a4a33; margin:10px 2px 0}
 
-/* ---------- the chamber ---------- */
 #sim .stage{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:12px}
+
 .priest{
   width:164px; border:3px solid var(--ink); background:linear-gradient(180deg,#fdfaf1,#efe6cf);
   box-shadow:4px 4px 0 var(--shadow); font-size:.75rem; position:relative;
 }
+
 .priest .phead{
   display:flex; align-items:center; gap:8px; padding:5px 8px; border-bottom:2px solid var(--ink);
   background:linear-gradient(180deg,#e8ddc0,#dbcba2); cursor:pointer;
 }
+
 .priest .pname{font-family:Optima,sans-serif; font-weight:700; font-size:.9rem}
+
 .priest .loc{margin-left:auto; font-size:1.05rem}
+
 .priest .pbody{padding:7px 9px 9px}
+
 .priest .outcome{
   min-height:34px; border:2px solid rgba(28,21,18,.6); background:#fffdf4; border-radius:2px;
   padding:3px 6px; font-style:italic; font-size:.72rem; line-height:1.32;
 }
+
 .priest .outcome.written{background:#e6efd3; border-color:var(--olive-d)}
+
 .priest .vars{margin-top:6px; color:#4d4030; line-height:1.5; font-size:.71rem}
+
 .priest .vars b{font-family:Optima,sans-serif}
+
 .priest .notes{
   margin-top:6px; border-top:1px dotted rgba(28,21,18,.4); padding-top:4px;
   max-height:104px; overflow-y:auto; font-size:.67rem; line-height:1.45; color:#4d4030;
 }
+
 .priest .notes .n{display:block}
+
 .priest .notes .n.new{background:var(--caption); outline:1.5px solid var(--ink)}
+
 .priest .slip{
   margin-top:6px; background:#fffbe8; border:2px dashed var(--terra); padding:3px 6px;
   font-size:.67rem; color:#7a3f22; transform:rotate(-.8deg);
 }
+
 .priest .stat{
   position:absolute; top:-13px; right:-9px; border:2.5px solid var(--ink); background:var(--caption);
   font-family:'Chalkboard SE',Chalkboard,'Comic Sans MS',sans-serif; font-size:.6rem; padding:1px 7px;
   transform:rotate(3deg);
 }
+
 .priest .crown{position:absolute; top:-15px; left:-8px; font-size:1.15rem; transform:rotate(-14deg)}
+
 .priest.away{filter:grayscale(.75) opacity(.62)}
+
 .priest.away .phead{background:#cbbf9f}
+
 .priest.pres{border-color:var(--gold); box-shadow:4px 4px 0 var(--shadow), 0 0 0 3px rgba(193,145,43,.45)}
+
 .lawbook{font-size:.68rem; line-height:1.4}
+
 .lawbook .le{display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+
 .lawbook .le b{font-family:Optima,sans-serif}
 
 #sim .controls{display:flex; gap:9px; flex-wrap:wrap; align-items:center; justify-content:center; margin:10px 0 4px}
+
 #sim .tray{
   margin:12px 0 10px; min-height:50px; border:3px dashed rgba(28,21,18,.5); background:rgba(255,255,255,.35);
   padding:8px 10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;
 }
+
 #sim .tray .tray-label{font-family:Optima,sans-serif; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:#5a4a33; margin-right:6px}
+
 .scroll-chip{
   border:2.5px solid var(--ink); background:linear-gradient(180deg,#fff8e0,#f3e2b3);
   font-size:.71rem; font-family:Optima,sans-serif; padding:4px 8px; cursor:pointer;
   box-shadow:2px 2px 0 var(--shadow); display:inline-flex; gap:6px; align-items:center;
   animation:pop .18s ease;
 }
+
 .scroll-chip:hover{background:#fff}
+
 .scroll-chip .lose{color:var(--blood); font-weight:700; cursor:pointer; padding:0 2px}
+
 @keyframes pop{from{transform:scale(.7); opacity:0}to{transform:scale(1); opacity:1}}
+
 #sim .banner{
   margin:8px 0 10px; text-align:center; font-family:Optima,sans-serif; letter-spacing:.06em;
   font-size:.86rem; padding:7px 10px; border:3px solid var(--ink);
 }
+
 #sim .banner.ok{background:#dfe8d0; color:var(--olive-d)}
+
 #sim .banner.warn{background:#f6ecc8; color:#7a5b12}
+
 #sim .banner.bad{background:#f0cfc4; color:var(--blood)}
+
 .twocol{display:flex; gap:14px; flex-wrap:wrap; align-items:stretch}
+
 .twocol>.c1{flex:1 1 420px; min-width:280px}
+
 .twocol>.c2{flex:1 1 280px; min-width:250px}
+
 #sim .log{
   height:280px; overflow-y:auto; background:#241c14; color:#efe2c2; padding:10px 14px;
   font-family:Menlo,Consolas,monospace; font-size:.71rem; line-height:1.65;
   border:3px solid var(--ink); box-shadow:inset 0 0 18px rgba(0,0,0,.6);
 }
+
 #sim .log .t-sys{color:#9fb4c7}
+
 #sim .log .t-msg{color:#e8c96a}
+
 #sim .log .t-act{color:#a8c77f}
+
 #sim .log .t-bad{color:#e08d6d}
+
 #sim .log .t-big{color:#ffd76e; font-weight:700}
+
 #sim .log .t-time{color:#c9a3e0}
+
 .gods{
   border:3px solid var(--ink); background:#241c14; color:#efe2c2;
   padding:8px 12px; font-family:Menlo,Consolas,monospace; font-size:.68rem; line-height:1.6;
   box-shadow:inset 0 0 18px rgba(0,0,0,.6); height:132px; overflow-y:auto;
 }
+
 .gods .glabel{
   color:#9fb4c7; font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.14em;
   font-size:.64rem; text-transform:uppercase; display:block; margin-bottom:3px;
 }
+
 .gods .win{color:#ffd76e}
+
 .gods .gdim{color:#8a7a5e; font-style:italic}
+
 .margin{
   margin-top:10px; background:#fff9e6; border:3px solid var(--ink); padding:10px 14px;
   font-size:.82rem; min-height:96px; box-shadow:4px 4px 0 var(--shadow);
 }
+
 .margin .mlabel{
   font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.1em; text-transform:uppercase;
   font-size:.7rem; color:var(--terra); display:block; margin-bottom:4px;
 }
 
-/* ---------- legends & verdicts ---------- */
 .legends{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:6px}
+
 .legends button{font-size:.78rem; padding:6px 11px}
+
 #verdict table{border-collapse:collapse; width:100%; background:#f6eed6; font-size:.76rem}
+
 #verdict th{font-family:Optima,sans-serif; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase;
   padding:6px 8px; border-bottom:3px solid var(--ink); color:#5a4a33}
+
 #verdict th.q{text-align:left; width:20%}
+
 #verdict td{padding:7px 9px; border-bottom:1px solid rgba(28,21,18,.22); vertical-align:top; line-height:1.45}
+
 #verdict td.q{font-family:Optima,sans-serif; font-size:.72rem; color:#4d4030; background:rgba(255,255,255,.35)}
+
 #verdict td.sel{background:rgba(19,111,158,.14)}
+
 #verdict .good{color:var(--olive-d); font-weight:700}
+
 #verdict .ill{color:var(--blood); font-weight:700}
+
 #verdict .storyline{font-size:.82rem; margin:0 0 12px; font-style:italic; color:#5a4a33}
 
-footer.colophon{margin-top:70px; text-align:center; font-size:.8rem; color:#6d5c42; font-style:italic}
 @media (max-width:700px){
   #dossier table, #verdict table{font-size:.72rem}
   .picker button{flex:1 1 100%; max-width:none}
@@ -301,10 +330,6 @@ footer.colophon{margin-top:70px; text-align:center; font-size:.8rem; color:#6d5c
   #dossier th.q, #verdict th.q{width:auto}
   #dossier table, #verdict table{min-width:640px}
 }
-
-/* Heading links */
-.hlink { color: inherit; text-decoration: none; }
-.hlink:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -316,7 +341,7 @@ footer.colophon{margin-top:70px; text-align:center; font-size:.8rem; color:#6d5c
   <p class="sub display">One Chamber. Five priests. Four protocols. Change nothing but the rulebook,
   and watch what the Paxons gained — and paid for — at every step from the <em>preliminary protocol</em>
   to the full Parliament of Paxos.</p>
-  <p class="backlink"><a href="index.html">← back to the illustrated chronicle</a></p>
+  <p class="backlink"><a href="volume-5.html">← back to Volume V: The Part-Time Parliament</a> &nbsp;·&nbsp; <a href="index.html">all nine volumes</a></p>
 </header>
 
 <div class="narr">The mathematicians of Paxos did not invent their protocol in one stroke. They built it
@@ -417,7 +442,7 @@ forgetful messengers — only the rulebook changes.</div>
 
 <footer class="colophon">
   After Leslie Lamport, “The Part-Time Parliament,” <em>ACM TOCS 16</em>, 2 (May 1998), 133–169.<br>
-  A companion to <a href="index.html">the illustrated chronicle</a>. All five priests performed their own stunts.
+  A companion to <a href="volume-5.html">Volume V: The Part-Time Parliament</a> and the <a href="index.html">nine-volume series</a>. All five priests performed their own stunts.
 </footer>
 
 </div>
