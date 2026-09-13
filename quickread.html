@@ -4,68 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Start Here: The Quick Read — Distributed Algorithms of Ancient Greece</title>
+<link rel="stylesheet" href="assets/paxos-comics.css">
 <style>
-:root {
-  --ink: #1c1512;
-  --paper: #f2e7cd;
-  --paper-hi: #faf3e0;
-  --paper-lo: #e6d5ae;
-  --aegean: #136f9e;
-  --aegean-d: #0b4a6b;
-  --terra: #bf4a26;
-  --olive: #66722c;
-  --olive-d: #4c561e;
-  --gold: #c1912b;
-  --marble: #f8f5ee;
-  --caption: #ffe36e;
-  --blood: #8e2323;
-  --shadow: rgba(28,21,18,.28);
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0; color: var(--ink);
-  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-  font-size: 17px; line-height: 1.62;
-  background:
-    radial-gradient(1200px 500px at 50% -100px, rgba(255,255,255,.5), transparent 70%),
-    radial-gradient(900px 900px at 110% 15%, rgba(193,145,43,.10), transparent 60%),
-    radial-gradient(900px 900px at -10% 60%, rgba(19,111,158,.07), transparent 60%),
-    var(--paper);
-}
-body::before {
-  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  background-image: radial-gradient(rgba(28,21,18,.05) 1px, transparent 1.6px);
-  background-size: 7px 7px; opacity: .5;
-}
 .page { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 0 20px 100px; }
+
 .prose { max-width: 70ch; margin-left: auto; margin-right: auto; }
-p { margin: .9em 0; }
+
 a { color: var(--aegean-d); text-decoration: underline; text-underline-offset: 3px; }
-a:hover { color: var(--terra); }
-.display { font-family: Optima, 'Gill Sans', 'Trebuchet MS', sans-serif; letter-spacing: .04em; }
 
-.site-bar {
-  background: var(--ink); color: var(--paper-hi);
-  padding: 10px 20px; font-family: Optima, 'Gill Sans', sans-serif;
-  font-size: .85rem; letter-spacing: .08em; text-transform: uppercase;
-  border-bottom: 3px solid var(--gold); text-align: center;
-}
-.site-bar span { color: var(--caption); }
-
-.series-nav {
-  background: var(--ink); color: var(--paper-hi);
-  padding: 12px 20px; font-family: Optima, 'Gill Sans', sans-serif;
-  font-size: .85rem; letter-spacing: .04em; border-bottom: 3px solid var(--gold);
-}
 .series-nav-inner {
   max-width: 880px; margin: 0 auto; display: flex; justify-content: space-between;
   align-items: center; flex-wrap: wrap; gap: 10px;
 }
-.series-nav a { color: var(--paper-hi); text-decoration: none; }
-.series-nav a:hover { color: var(--caption); }
-.series-nav .nav-back { font-weight: 700; letter-spacing: .06em; }
-.series-nav .nav-current { color: var(--caption); font-size: .82rem; text-transform: uppercase; letter-spacing: .12em; }
 
 .meander {
   height: 18px; margin: 34px auto; max-width: 480px; border: 0;
@@ -73,30 +23,34 @@ a:hover { color: var(--terra); }
   background-repeat: repeat-x; background-size: 36px 18px; opacity: .75;
 }
 
-/* ---------- hero ---------- */
 header.hero { padding: 44px 0 6px; text-align: center; }
+
 .kicker {
   font-family: Optima, 'Gill Sans', sans-serif; font-size: .78rem; letter-spacing: .22em;
   text-transform: uppercase; color: var(--terra); margin-bottom: 14px;
 }
+
 .hero h1 {
   font-family: Optima, 'Gill Sans', 'Trebuchet MS', sans-serif; font-weight: 700;
   letter-spacing: .01em; font-size: clamp(1.9rem, 5vw, 2.7rem); line-height: 1.15; margin: 0 0 10px;
   text-shadow: 2px 2px 0 rgba(255,255,255,.6);
 }
+
 .hero .sub { font-size: 1.08rem; font-style: italic; color: #4a3c28; margin: 0 auto 18px; max-width: 60ch; }
+
 .hero .desc { max-width: 66ch; margin: 0 auto; color: #3b3021; }
 
 .quick-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 26px 0 6px; }
+
 .quick-btn {
   display: inline-block; background: var(--marble); border: 3px solid var(--ink);
   padding: 9px 16px; font-family: Optima, 'Gill Sans', sans-serif; font-size: .84rem;
   font-weight: 600; letter-spacing: .02em; text-decoration: none; color: var(--ink);
   box-shadow: 4px 4px 0 var(--shadow); transition: transform .12s;
 }
+
 .quick-btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--shadow); color: var(--terra); }
 
-/* ---------- read-time badge ---------- */
 .read-time {
   display: inline-flex; align-items: center; gap: 8px; margin: 18px auto 0;
   background: var(--caption); border: 3px solid var(--ink); padding: 6px 16px;
@@ -104,86 +58,108 @@ header.hero { padding: 44px 0 6px; text-align: center; }
   box-shadow: 4px 4px 0 var(--shadow); transform: rotate(-.6deg);
 }
 
-/* ---------- the map diagram ---------- */
 .map-wrap { margin: 40px 0; }
+
 .map-title {
   text-align: center; font-family: Optima, 'Gill Sans', sans-serif; font-size: .82rem;
   letter-spacing: .18em; text-transform: uppercase; color: var(--aegean-d); margin-bottom: 18px;
 }
+
 .map {
   display: flex; flex-direction: column; gap: 0; max-width: 640px; margin: 0 auto;
 }
+
 .map-node {
   display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: start;
   background: var(--marble); border: 3px solid var(--ink); padding: 12px 16px;
   box-shadow: 4px 4px 0 var(--shadow); position: relative;
 }
+
 .map-node .num {
   width: 34px; height: 34px; border-radius: 50%; background: var(--aegean); color: #fff;
   display: flex; align-items: center; justify-content: center; font-family: Optima, sans-serif;
   font-weight: 700; font-size: .95rem; border: 2px solid var(--ink);
 }
+
 .map-node.branch .num { background: var(--olive); }
+
 .map-node strong { font-family: Optima, 'Gill Sans', sans-serif; font-size: .95rem; }
+
 .map-node .map-desc { font-size: .86rem; color: #4a3c28; margin-top: 2px; }
+
 .map-arrow {
   text-align: center; color: var(--gold); font-size: 1.3rem; line-height: 1; margin: 2px 0;
   font-family: Optima, sans-serif;
 }
+
 .map-node.branch { margin-left: 26px; max-width: calc(100% - 26px); }
 
-/* ---------- volume cards ---------- */
 .vcard {
   display: grid; grid-template-columns: 150px 1fr; gap: 20px; align-items: start;
   margin: 30px 0; padding-bottom: 26px; border-bottom: 2px dashed rgba(28,21,18,.2);
 }
+
 .vcard:last-of-type { border-bottom: none; }
+
 .vcard .vimg {
   border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--shadow); overflow: hidden;
   aspect-ratio: 3/4; background: #fff;
 }
+
 .vcard .vimg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
 .vtag {
   display: inline-block; font-family: Optima, sans-serif; font-size: .7rem; letter-spacing: .14em;
   text-transform: uppercase; color: #fff; background: var(--terra); padding: 2px 10px;
   border: 2px solid var(--ink); margin-bottom: 6px;
 }
+
 .vcard h2 { font-family: Optima, 'Gill Sans', sans-serif; font-size: 1.18rem; margin: 0 0 3px; }
+
 .vcite { font-size: .82rem; font-style: italic; color: #6d5c42; margin: 0 0 10px; }
+
 .vbody p { margin: 0 0 10px; font-size: .96rem; }
+
 .vbody .whyitmatters {
   font-size: .88rem; background: rgba(19,111,158,.08); border-left: 3px solid var(--aegean);
   padding: 6px 12px; margin: 10px 0;
 }
+
 .vbody .whyitmatters b { color: var(--aegean-d); }
+
 .vlink { font-family: Optima, sans-serif; font-size: .82rem; font-weight: 700; }
 
 @media (max-width: 560px) {
   .vcard { grid-template-columns: 90px 1fr; gap: 14px; }
 }
 
-/* ---------- quorum diagram ---------- */
 .quorum-fig { text-align: center; margin: 20px auto; }
+
 .quorum-fig svg { max-width: 100%; height: auto; }
+
 .quorum-cap { font-size: .84rem; color: #5a4a33; font-style: italic; max-width: 44ch; margin: 8px auto 0; }
 
-/* ---------- wrap up box ---------- */
 .wrapup {
   margin: 44px auto; max-width: 680px; background: linear-gradient(180deg,var(--marble),#eae4d4);
   border: 3px solid var(--ink); border-radius: 4px; padding: 22px 26px;
   box-shadow: 6px 6px 0 var(--shadow), inset 0 0 0 4px rgba(193,145,43,.28);
 }
+
 .wrapup h2 { font-family: Optima, 'Gill Sans', sans-serif; font-size: 1.1rem; margin-top: 0; }
 
-/* ---------- next steps ---------- */
 .next-steps { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 30px 0; }
+
 .next-card {
   flex: 1 1 220px; max-width: 260px; background: var(--marble); border: 3px solid var(--ink);
   padding: 16px 18px; box-shadow: 4px 4px 0 var(--shadow); text-decoration: none; color: var(--ink);
 }
+
 .next-card:hover { color: var(--terra); }
+
 .next-card .nc-kicker { font-family: Optima, sans-serif; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--terra); }
+
 .next-card h3 { font-family: Optima, sans-serif; font-size: 1rem; margin: 6px 0 4px; }
+
 .next-card p { font-size: .84rem; margin: 0; color: #4a3c28; }
 
 footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; color: #62533e; }
