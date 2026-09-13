@@ -33,8 +33,8 @@ Volume V's panels are already done and are not part of any batch; only its cover
 | 5 — Volume IV | ✅ Done | `f93dac6` |
 | 6 — Volume VI | ✅ Done | `bb9add1` |
 | 7 — Volume VII | ✅ Done | `574f081` |
-| 8 — Volume VIII | ✅ Done, not committed | — |
-| 9 — Volume IX | Not started | — |
+| 8 — Volume VIII | ✅ Done | `2d81324` |
+| 9 — Volume IX | ✅ Done — **all 9 batches complete** | — |
 
 **How batch 7 finished.** The Gemini API project was still hitting its monthly spending cap (same 429 as
 batch 5) when this batch started, so the whole batch was made human-in-the-loop via the Gemini web app, one
@@ -106,7 +106,52 @@ prompts lean heavily on tablets, nameplates and inscriptions, so writing was the
 All 8 Volume VIII panels are accepted, compressed and placed in `volume-8.html`; the status banner is removed
 and the Volume VIII card on `index.html` matches Volumes I–VII's "★ Available" pattern. §7 checks pass (all
 `v8-*` ids gone from the pending grep, no volume-8 images missing) and the full page was checked panel-by-panel
-in a browser. Not yet committed.
+in a browser. Committed as `2d81324`.
+
+**How batch 9 finished — the last batch.** Still human-in-the-loop (API still capped throughout). Lower retry
+rate than batch 8: only two of the nine panels needed a second attempt, and for reasons already catalogued
+rather than new ones.
+
+- `v9-01` (the volume's first panel, sets the recurring cast) needed 3 attempts: attempt 1 added an unwanted
+  third figure to a "two apprentices" scene (same "reference image's characters bleed into a scene that didn't
+  ask for them" pattern as batch 7's `v7-02`, but this time an extra generic crew figure rather than a named
+  character); attempt 2 fixed the headcount but the boat came back larger than the two-storey harbour buildings
+  beside it — a straightforward wrong-scale failure the person running it caught by eye. Attempt 3, adding
+  "correctly scaled to be smaller than the two-storey harbour buildings," fixed it outright.
+- `v9-06` is this batch's version of batch 7's `v8-07` hard case: the source prompt calls for "a five-part
+  horizontal strip" with moments literally labeled (a) to (e) — a comic-strip-of-panels layout with letter
+  labels, both of which are against standing rules (no inset panels, no legible writing). Rather than risk the
+  literal split-panel-with-letters failure, the handed-off prompt was pre-emptively rewritten before attempt 1:
+  one continuous scene (no borders/gutters), the five scrolls shown as a left-to-right row on one table, and
+  the lettered moments replaced with positional description ("near the right end," "at the far right") — the
+  same translation technique used for `v7-04`'s three-stage scene and `v8-07`'s misspelled-nameplate gag.
+  Accepted on attempt 1 despite not hitting every literal beat (the "new line appears on three scrolls
+  together" detail came out as one gold stripe on one scroll) — the general concept read clearly enough.
+- The other seven panels (`v9-02` through `v9-05`, `v9-07` through `v9-09`) were each accepted on attempt 1 using
+  the by-now-standard preemptive corrective (blank tablets/scrolls with abstract line-marks, tally strokes or
+  plain wax-seal/emblem shapes instead of numerals or letters), including two panels whose base prompts
+  required two visually *different* seals/tokens side by side (`v9-04`, `v9-05`, `v9-09`) — solved by asking for
+  different plain emblem *shapes* rather than different text, which the model handled correctly every time.
+- One deliberate deviation was judged acceptable rather than regenerated: `v9-02`'s monks continue writing
+  without glancing up at the bell, whereas the source prompt asked for them to glance up first. Checked against
+  the page's actual caption ("no brother stirs from his desk") the deviation was judged a *better* match to the
+  intended meaning than the literal prompt text, so it was kept rather than spending an attempt to correct it
+  toward literal-but-weaker fidelity.
+
+All 9 Volume IX panels are accepted, compressed and placed in `volume-9.html`; the status banner is removed and
+the Volume IX card on `index.html` matches Volumes I–VIII's "★ Available" pattern. §7 checks pass (the pending
+grep is now empty — every volume's placeholders are gone — and no images are missing) and the full page was
+checked in a browser (a JS check confirmed all 9 `<img>` tags loaded with nonzero width). This was the last
+batch: **all 73 panels across all 9 volumes are now illustrated and placed.**
+
+**Post-completion: R2 migration.** Per the pattern established in commit `eae402d` (covers and Volumes I–IV
+panels already migrated), the 33 panel images for Volumes VI–IX were uploaded to the `paxos-illustrated-images`
+R2 bucket with `npx wrangler r2 object put` (flat keys matching filename, e.g. `vol7_inquisitors_arrive_small.webp`,
+content-type `image/webp`), verified live with `curl -I`, and `volume-6.html` through `volume-9.html` had their
+panel `<img src="images/...">` attributes rewritten to the `https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/...`
+URL — matching exactly how volumes 1–4's panels were migrated (a single `<img>` tag pointed straight at R2, no
+`<picture>`/local-fallback wrapper, unlike the covers). Local PNG and webp files are kept in the repo (not
+deleted) for local `python3 -m http.server` testing, consistent with prior practice.
 
 **How batch 5 finished.** The Gemini API project hit its monthly spending cap (HTTP 429, "exceeded its
 monthly spending cap") with 6 of 8 panels placed. `v4-01`…`v4-04`, `v4-06`, `v4-07` were made earlier with
