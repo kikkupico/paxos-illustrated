@@ -30,9 +30,47 @@ Volume V's panels are already done and are not part of any batch; only its cover
 | 2 — Volume I | ✅ Done | `ce9d73e` |
 | 3 — Volume II | ✅ Done | `3a4a38d` |
 | 4 — Volume III | ✅ Done | `8cba675` |
-| 5 — Volume IV | ✅ Done, not committed | — |
-| 6 — Volume VI | ✅ Done, not committed | — |
-| 7–9 — Volumes VII–IX | Not started | — |
+| 5 — Volume IV | ✅ Done | `f93dac6` |
+| 6 — Volume VI | ✅ Done | `bb9add1` |
+| 7 — Volume VII | ✅ Done, not committed | — |
+| 8–9 — Volumes VIII–IX | Not started | — |
+
+**How batch 7 finished.** The Gemini API project was still hitting its monthly spending cap (same 429 as
+batch 5) when this batch started, so the whole batch was made human-in-the-loop via the Gemini web app, one
+fresh chat per attempt, exactly as batch 6 established. Acceptance rate was lower than batch 6's tally-mark
+fix suggested it would be — five of the eight panels needed at least one retry, for two distinct new failure
+patterns beyond the known writing/panel-border ones:
+
+- **Unwanted extra characters at odd scale.** `v7-02` attempt 1 added legible signposts and a roster covered
+  in sentence-like glyphs (the base prompt's own "crossing a name off a roster" line invited it, same failure
+  class as always). Attempt 2's corrective fixed the writing but the model then split the image into a
+  two-panel comic strip with a hard gutter — an inset-panel failure appearing where it hadn't been provoked
+  before (no "beat" language in the prompt this time). Attempt 3 fixed the gutter but produced disproportionate
+  floating figures: the model had inserted the volume's two named inquisitors into a scene whose text never
+  called for them, seemingly triggered by their presence in the reference image, and getting their scale right
+  in a night street scene broke the composition. Attempt 4 (past the normal 3-try cap, continued with explicit
+  sign-off since it was a proportions fix, not a new creative attempt) simply told the model the inquisitors
+  were absent from this scene — problem gone. **Lesson: if a reference image's characters aren't named in the
+  scene text, consider excluding them explicitly up front** rather than waiting for a proportions failure.
+- **"Two things side by side" reads as an instruction to split the panel.** Both `v7-02`'s day/night indoor-
+  outdoor beat and `v7-08`'s "race between two libraries side by side" pushed the model toward a literal
+  split-screen composition even when the corrective explicitly said "one single continuous scene, no dividing
+  line" — `v7-08` attempt 1 avoided a hard gutter but still drew two disconnected library rooms and dropped the
+  mirrored second scribe the caption's comparison depends on. Attempt 2, which explicitly asked for "one single
+  continuous OPEN scene ... both libraries visible together in one unbroken space" and named the mirrored
+  scribe's five actions twice (once per side), got a genuinely unified scene, though even then the right-hand
+  side ended up as keepers-checking-scrolls rather than a literal action-for-action mirror — accepted anyway
+  since the caption's point (guarded is only slightly slower) still reads clearly.
+- Preemptive correctives carried over from batch 6 (blank tablets/scrolls, single tally mark or plain wax-seal
+  impression instead of numbers or letters) worked on the first attempt every time they were used — `v7-01`,
+  `v7-03`, `v7-04`, `v7-05`, `v7-06`, `v7-07` all cost only 1 attempt. The two panels above were the only ones
+  needing rework, and both were compositional (extra characters, false split), not the writing failure the
+  correctives target.
+
+All 8 Volume VII panels are accepted, compressed and placed in `volume-7.html`; the status banner is removed
+and the Volume VII card on `index.html` matches Volumes I–VI's "★ Available" pattern. §7 checks pass (all
+`v7-*` ids gone from the pending grep, no volume-7 images missing) and the full page was checked panel-by-panel
+in a browser. Not yet committed.
 
 **How batch 5 finished.** The Gemini API project hit its monthly spending cap (HTTP 429, "exceeded its
 monthly spending cap") with 6 of 8 panels placed. `v4-01`…`v4-04`, `v4-06`, `v4-07` were made earlier with
