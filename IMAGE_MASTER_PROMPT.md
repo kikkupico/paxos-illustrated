@@ -30,33 +30,33 @@ Volume V's panels are already done and are not part of any batch; only its cover
 | 2 — Volume I | ✅ Done | `ce9d73e` |
 | 3 — Volume II | ✅ Done | `3a4a38d` |
 | 4 — Volume III | ✅ Done | `8cba675` |
-| 5 — Volume IV | ⏸ **In progress — 6 of 8 placed, not committed** | — |
+| 5 — Volume IV | ✅ Done, not committed | — |
 | 6–9 — Volumes VI–IX | Not started | — |
 
-**Where batch 5 stopped.** The Gemini API project hit its monthly spending cap (HTTP 429, "exceeded its
-monthly spending cap"). Raise it at https://ai.studio/spend or wait for the monthly reset, then resume.
+**How batch 5 finished.** The Gemini API project hit its monthly spending cap (HTTP 429, "exceeded its
+monthly spending cap") with 6 of 8 panels placed. `v4-01`…`v4-04`, `v4-06`, `v4-07` were made earlier with
+`tools/gen_panel.py`; the last two (`v4-05`, `v4-08`) were finished manually through the Gemini web app
+instead of waiting for the cap to reset. All 8 are now accepted, compressed and placed in `volume-4.html`,
+the status banner is removed, and the Volume IV card on `index.html` matches Volume III/V's "★ Available"
+pattern. Still to do: run §7 and the full browser check one more time, then commit.
 
-- Accepted, compressed and placed in `volume-4.html` (uncommitted): `v4-01` navigators, `v4-02` two_seas,
-  `v4-03` rotating_lantern, `v4-04` mooring, `v4-06` split_assembly, `v4-07` drummers.
-- Still pending (placeholders remain; banner and index card not yet updated):
-  - `v4-05` vol4_growing_hourglass — **2 of 3 attempts used.** Attempt 1: a disembodied hand turned the
-    hourglass. Attempt 2: a modern fountain pen and gridded map on the desk. Last attempt, with reference
-    `vol4_navigators.png`, corrective sentence: *"The seated delegate himself turns over the tallest
-    hourglass, and the bare wooden desk holds nothing but the hourglasses: no pens, maps or books."*
-  - `v4-08` vol4_passable_season — **1 of 3 attempts used.** Attempt 1 contained an inset sub-panel. Next,
-    with reference `vol4_two_seas.png` (4:3 — see below), corrective sentence: *"Draw it as one single
-    continuous scene with no inset panels, and the navigator himself stands beside the sundial."*
-- Once both are placed: remove the banner, update the Volume IV card, run §7 and the browser check, commit.
+- `v4-05` vol4_growing_hourglass — **all 3 attempts used.** Attempt 1: a disembodied hand turned the
+  hourglass. Attempt 2: a modern fountain pen and gridded map on the desk. Attempt 3 (reference
+  `vol4_navigators.png`, corrective sentence: *"The seated delegate himself turns over the tallest
+  hourglass, and the bare wooden desk holds nothing but the hourglasses: no pens, maps or books."*) fixed
+  both earlier problems but came back 16:9 instead of the requested 4:3 (the web app ignores aspect-ratio
+  instructions in the prompt) and was centre-cropped to 4:3. The crop left a small carved-inscription-style
+  frieze (illegible glyphs, but clearly meant as lettering) on the background wall — a flagged failure mode.
+  Accepted anyway per explicit user sign-off rather than spending a 4th attempt.
+- `v4-08` vol4_passable_season — **2 of 3 attempts used.** Attempt 1 contained an inset sub-panel. Attempt 2
+  (reference `vol4_two_seas.png`, corrective sentence: *"Draw it as one single continuous scene with no
+  inset panels, and the navigator himself stands beside the sundial."*) fixed the inset-panel problem but
+  introduced a disembodied hand dropping the token into the urn. A same-thread follow-up ("one of the
+  standing council members himself reaches forward with his own visible arm and sleeve...") fixed it; that
+  regenerated image (still counted as attempt 2, since it's a same-thread correction of the same attempt)
+  was accepted. Came back natively at ~16:9, no cropping needed.
 
-**Resume commands** (from the repo root; needs `pip install google-genai pillow` and `GEMINI_API_KEY`):
-
-```bash
-REFS=vol4_navigators.png python3 tools/gen_panel.py v4-05 3 "The seated delegate himself turns over the tallest hourglass, and the bare wooden desk holds nothing but the hourglasses: no pens, maps or books."
-REFS=vol4_two_seas.png  python3 tools/gen_panel.py v4-08 2 "Draw it as one single continuous scene with no inset panels, and the navigator himself stands beside the sundial."
-# review out/<stem>_aN.png, then: cp out/<stem>_aN.png images/<stem>.png && python3 tools/compress.py <stem>
-```
-
-**What has worked (batches 2–5).** Since batch 2 the panels were made with `tools/gen_panel.py`
+**What has worked (batches 2–5).** Since batch 2 most panels were made with `tools/gen_panel.py`
 (Gemini `gemini-3-pro-image`, 2K) rather than a built-in tool:
 
 - It parses the prompt and aspect ratio straight from `IMAGE_PROMPTS.md`, attaches the reference image(s),
@@ -67,6 +67,17 @@ REFS=vol4_two_seas.png  python3 tools/gen_panel.py v4-08 2 "Draw it as one singl
 - The API only returns JPEG; the script converts to PNG.
 - Generating a volume's remaining panels in parallel is fine (one process per panel).
 - Review at 800px, then zoom into tablets, scrolls, maps and signs at full resolution for tiny lettering.
+
+**Fallback: generating manually through the Gemini web app** (used for `v4-05`/`v4-08` when the API hit its
+spending cap). Via browser automation on gemini.google.com/app: attach the reference image(s) through the
+"+" → Upload files menu, then type the prompt text as ONE paragraph with no literal newlines — a `\n\n`
+inside a typed message submits it early, cutting the prompt off wherever the newline lands. Append, in the
+same paragraph, a sentence noting the attachment is a style/character reference only (not to be redrawn)
+and the desired aspect ratio; the web app often ignores the requested ratio anyway and returns its default
+(~16:9, 2752×1536), so plan to centre-crop narrower panels down to spec. Download via the image's own
+download button (saves to `~/Downloads/Gemini_Generated_Image_*.{jpeg,png}`), then move/convert into
+`images/<stem>.png` and run `tools/compress.py <stem>` as usual. A same-thread follow-up message (no need
+to reattach references) works for a corrective regeneration.
 
 **Recurring failure modes to check for.** Prompts that mention writing, numbers or speech tend to produce
 it: "stamped with a number", "numbered tag", "carved inscription", "labeled", "lists of names", quoted
