@@ -32,8 +32,9 @@ Volume V's panels are already done and are not part of any batch; only its cover
 | 4 — Volume III | ✅ Done | `8cba675` |
 | 5 — Volume IV | ✅ Done | `f93dac6` |
 | 6 — Volume VI | ✅ Done | `bb9add1` |
-| 7 — Volume VII | ✅ Done, not committed | — |
-| 8–9 — Volumes VIII–IX | Not started | — |
+| 7 — Volume VII | ✅ Done | `574f081` |
+| 8 — Volume VIII | ✅ Done, not committed | — |
+| 9 — Volume IX | Not started | — |
 
 **How batch 7 finished.** The Gemini API project was still hitting its monthly spending cap (same 429 as
 batch 5) when this batch started, so the whole batch was made human-in-the-loop via the Gemini web app, one
@@ -70,6 +71,41 @@ patterns beyond the known writing/panel-border ones:
 All 8 Volume VII panels are accepted, compressed and placed in `volume-7.html`; the status banner is removed
 and the Volume VII card on `index.html` matches Volumes I–VI's "★ Available" pattern. §7 checks pass (all
 `v7-*` ids gone from the pending grep, no volume-7 images missing) and the full page was checked panel-by-panel
+in a browser. Committed as `574f081`.
+
+**How batch 8 finished.** Still human-in-the-loop (API still capped). Higher retry rate than batch 7: three of
+the eight panels needed a second attempt, all for reasons distinct from panel-borders/splits — this volume's
+prompts lean heavily on tablets, nameplates and inscriptions, so writing was the dominant failure mode.
+
+- `v8-02` attempt 1 put a small propped tablet in the vault with rows of alphabet-like glyphs reading as script
+  (worse than the "single pictogram" precedent from batch 6/7 — this was multiple different glyphs in rows).
+  A corrective attempt 2 was drafted but **the person running it judged attempt 1 acceptable anyway** and it
+  was kept — a reminder that the reviewer standard here is "would a careful reader notice and mind", not
+  "zero pixels resembling a glyph anywhere," and the human in the loop can overrule a by-the-book reject.
+- `v8-07` (`vol8_misspelled`) is the batch's hard case: the prompt's own text calls for "one plate visibly
+  misspelled, its letters scrambled" — a gag that only works with letters, in direct tension with the
+  no-legible-writing rule. Attempt 1, run with no corrective (to see what the base prompt produces), rendered
+  bold fully-legible words on *all five* plates ("SCRAMBLE MATRBA" etc.) — a clear violation, and the person
+  running it initially found it acceptable but agreed to redo it once the inconsistency with every other panel
+  in the series was pointed out. Attempt 2 solved it by translating the joke into pure composition: five
+  identical blank shield-emblem plates, four mounted neat and level, the fifth crooked/upside-down in the
+  senior engineer's hand — same gag, zero letters. **Lesson: when a prompt's own text implies writing is the
+  point, don't add a "no writing" corrective (that fights the prompt) — instead recast the gag as an asymmetry
+  in an otherwise-identical set of objects** (orientation, alignment, wear) rather than through letterforms.
+- `v8-08` attempt 1 self-reported its own deviation (the model's own text noted it): it drew a mechanical
+  clock face with hands for the "large water-clock," which reads as an anachronistic modern object even though
+  no rule text named it. Attempt 2 fixed it by describing the physical mechanism explicitly (a bronze vessel
+  dripping into a graduated glass cylinder marked with tick lines, "not a mechanical clock face, no clock
+  hands") rather than trusting the model to invent a period-appropriate clepsydra from the word "water-clock"
+  alone. **Lesson: for any object whose ancient and modern forms differ sharply (clocks, locks, scales), spell
+  out the ancient mechanism instead of naming the modern function.**
+- The five panels needing no rework (`v8-01`, `v8-03`, `v8-04`, `v8-05`, `v8-06`) all used the established
+  preemptive corrective pattern (blank tablets/scrolls, tally marks or plain wax-seal/emblem instead of
+  numerals or letters) and passed on attempt 1.
+
+All 8 Volume VIII panels are accepted, compressed and placed in `volume-8.html`; the status banner is removed
+and the Volume VIII card on `index.html` matches Volumes I–VII's "★ Available" pattern. §7 checks pass (all
+`v8-*` ids gone from the pending grep, no volume-8 images missing) and the full page was checked panel-by-panel
 in a browser. Not yet committed.
 
 **How batch 5 finished.** The Gemini API project hit its monthly spending cap (HTTP 429, "exceeded its
