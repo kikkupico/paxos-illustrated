@@ -1,0 +1,854 @@
+meta:
+  version: 2
+  title: "Distributed Algorithms of Ancient Greece: The Corrected Recension"
+  description: |
+    Told as a story: nine 20th-century consensus papers, retold as Greek and Minoan
+    chronicles, and the real dependencies between the ideas underneath the allegory —
+    not the order the papers were published in, but which idea genuinely needed which
+    other idea to exist first. Three threads start independently, because they attack
+    three different sources of doubt: whether clocks can be trusted (Volume I), whether
+    the other party can be trusted (Volume II), and whether the network's timing can be
+    trusted at all (Volume III). The threads cross twice: Volume VII fuses the Byzantine
+    bound from II with the view-based leadership Volume VI invented, and Volume IX closes
+    by contrasting itself against both VI (gaps) and V (opacity) at once. A closing pair
+    of nodes follows the collection's own editorial fiction — the "corrected recension"
+    conceit that Volumes II, IV and VI were inserted later to patch holes in the lineage.
+    Two judgment calls worth flagging: Paxos's ballot numbers are treated as a direct
+    instance of Volume I's logical clocks (a real but easy-to-miss echo, not a citation),
+    and III/FLP is rooted independently of II's Byzantine framing even though both are
+    "agreement" problems, because FLP's adversary is timing, not dishonesty. All nine
+    volumes now have finished, illustrated panel art synced to the image host.
+  start: [vol1_setup, vol2_setup, vol3_setup]
+  tours:
+    - title: "The Corrected Recension, Cover to Cover"
+      nodes:
+        [vol1_group, vol1_setup, vol1_mechanism, vol1_twist,
+         vol2_group, vol2_setup, vol2_mechanism, vol2_twist,
+         vol3_group, vol3_setup, vol3_mechanism, vol3_twist,
+         vol4_group, vol4_setup, vol4_mechanism, vol4_twist,
+         vol5_group, vol5_setup, vol5_mechanism, vol5_insight, vol5_consequence,
+         vol6_group, vol6_setup, vol6_mechanism, vol6_viewchange,
+         vol7_group, vol7_setup, vol7_mechanism, vol7_twist,
+         vol8_group, vol8_setup, vol8_mechanism, vol8_twist,
+         vol9_group, vol9_setup, vol9_mechanism, vol9_twist, vol9_trial,
+         recension_repairs, what_remains_unwritten]
+    - title: "The Load-Bearing Spine: No Clocks to One Leader"
+      nodes:
+        [vol1_setup, vol1_mechanism,
+         vol3_setup, vol3_twist,
+         vol4_setup, vol4_twist,
+         vol5_setup, vol5_mechanism, vol5_insight, vol5_consequence,
+         vol6_setup, vol6_viewchange,
+         vol9_setup, vol9_trial]
+    - title: "The Quarrel with Traitors"
+      nodes:
+        [vol2_setup, vol2_mechanism, vol2_twist,
+         vol6_viewchange,
+         vol7_group, vol7_setup, vol7_mechanism, vol7_twist]
+
+nodes:
+
+  # ============================= VOLUME I =============================
+  vol1_group:
+    title: "Volume I — The Disordered Sundials of the Aegean"
+    short_title: "Disordered Sundials"
+    emoji: "🌅"
+    kind: group
+    content: |
+      A foggy archipelago where no two sundials agree, and a wandering scholar
+      is asked to settle a quarrel about which of two deeds happened first. He
+      refuses to fix the clocks and instead teaches the islands to track cause
+      instead of time — a counter that only ever climbs, and only ever climbs
+      further than whatever number a messenger's slate carries in. *Lamport,
+      "Time, Clocks, and the Ordering of Events" (1978).*
+    parents: []
+
+  vol1_setup:
+    title: "The Feud of Aristides and Leonidas"
+    short_title: "The Feud"
+    emoji: "🐐"
+    group: vol1_group
+    content: |
+      ![A foggy archipelago of islands, each keeping its own time](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol1_feud_small.webp)
+
+      Two shepherds, Aristides and Leonidas, stand nose to nose over a stolen
+      goat. "I sheared my goat first!" "You lie — I branded my sheep before the
+      shadow moved!" Each is certain of the order of events, and each is arguing
+      from his own island's sundial — and no two sundials in the archipelago
+      have ever agreed, because there is no way to make them agree: light takes
+      time to cross water, hands drift, and nobody owns the true hour. The
+      wandering scholar Leslie, arriving with his abacus, does not try to fix
+      the clocks. He asks a stranger question instead: **if physical time can
+      never be trusted across islands, can you still prove that one deed
+      happened before another — not by the hour, but by cause?**
+    parents: []
+
+  vol1_mechanism:
+    title: "The Monotonic Bead"
+    short_title: "The Bead"
+    emoji: "📿"
+    group: vol1_group
+    content: |
+      ![The law of the monotonic bead](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol1_bead_small.webp)
+
+      Leslie's answer, following from **the feud**, is to give every island a
+      string of beads: flick one bead for every deed done there, and whenever a
+      slate arrives from another island bearing a higher count, push your own
+      count past it before continuing. **A bead only ever moves forward, and
+      it moves forward past anything it has heard from** — that single rule
+      is enough to prove that if a message from island A influenced an event on
+      island K, then A's bead-count is provably lower. The one-village olive
+      press, where whoever holds the lowest ticket goes first, turns this into
+      working mutual exclusion; a beacon fire that crosses the strait faster
+      than any skiff shows the rule's edge case, since the beads know nothing
+      of a signal they were never told about. What this proves, and what it
+      leaves silent, becomes the next question.
+    parents: [vol1_setup]
+
+  vol1_twist:
+    title: "One Row of Beads per Island"
+    short_title: "Vector Beads"
+    emoji: "🧮"
+    group: vol1_group
+    content: |
+      ![A later hand adds a row of beads for each island](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol1_vector_abacus_small.webp)
+
+      A single climbing bead-count, from **the monotonic bead**, can prove that
+      A happened before K when a message actually passed between them — but it
+      cannot tell you when two deeds are simply unrelated, happening on
+      different islands with no message ever crossing the water. A later
+      scribe's hand fixes this by keeping not one count but **one row of beads
+      per island**, so a slate now carries a whole vector, not a single number;
+      comparing two vectors reveals not just "before" and "after" but a third,
+      honest answer — **concurrent, and no clock should invent an order
+      between them.** The northern scribe's census puts this to use: white
+      seals before, red after, and the first red slate any islander sees is
+      the one he trusts for his own flock count. The idea that follows an
+      entire distributed system this faithfully — a counter that never lies
+      about causation, only refuses to guess where none exists — will resurface
+      quietly, decades later, disguised as a ballot number.
+    parents: [vol1_mechanism]
+
+  # ============================= VOLUME II =============================
+  vol2_group:
+    title: "Volume II — The Generals Before the Walls"
+    short_title: "Generals Before Walls"
+    emoji: "⚔️"
+    kind: group
+    content: |
+      Hoplite divisions camp on the hills around a besieged city, able to speak
+      to one another only by messenger — and one of the generals may be a
+      traitor, not merely slow. The chronicle proves exactly how much honesty a
+      camp needs to survive that, with spoken orders and then with sealed ones.
+      *Pease, Shostak & Lamport (1980); Lamport, Shostak & Pease, "The
+      Byzantine Generals Problem" (1982).*
+    parents: []
+
+  vol2_setup:
+    title: "The Bribed General"
+    short_title: "The Bribed General"
+    emoji: "🎭"
+    group: vol2_group
+    content: |
+      ![Three generals conferring by messenger outside city walls](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol2_traitor_small.webp)
+
+      Every earlier promise in this collection assumed a failed messenger is at
+      worst silent — late, lost, or simply absent. This chronicle removes that
+      comfort. **A bribed general need not refuse to fight at all; he need only
+      tell the left flank one thing and the right flank another**, and both
+      flanks will believe him, because from where either lieutenant stands, a
+      lie and an honest but different order look exactly alike. The two
+      different betrayals shown side by side make the trap visible: this is no
+      longer a question of speed or delay, but of a participant that is
+      actively working against you. The question becomes precise and painful —
+      how many honest generals does it take to outvote a fixed number of liars?
+    parents: []
+
+  vol2_mechanism:
+    title: "Three Generals, One Traitor"
+    short_title: "3f+1"
+    emoji: "🧭"
+    group: vol2_group
+    content: |
+      ![Each of three generals plays the part of a third of an army](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol2_illyrian_small.webp)
+
+      The chronicle answers **the bribed general** by building the smallest
+      case up from nothing: three generals, one of them a traitor, agreeing
+      only by spoken (unsigned) word. With four generals playing the parts of
+      three armies at once — the Illyrian generals recursion — the pattern
+      generalizes cleanly, and a hard number falls out: **you need more than
+      three times as many honest generals as traitors, or agreement is
+      provably impossible — n ≥ 3f + 1.** Not every camp can even reach every
+      other camp directly; some orders must pass hand to hand through other
+      generals, which is exactly the channel a liar can quietly poison along
+      the way. Four generals with one traitor, hearing "attack," "attack," and
+      one lie, and taking the majority, shows the bound working — barely.
+    parents: [vol2_setup]
+
+  vol2_twist:
+    title: "The Same Seal on Two Orders"
+    short_title: "Signed Orders"
+    emoji: "🔏"
+    group: vol2_group
+    content: |
+      ![The same seal pressed on two contradictory orders](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol2_two_seals_small.webp)
+
+      The 3f+1 bound from **three generals, one traitor** assumes a liar's
+      words vanish once spoken — nothing survives to be checked. Give every
+      order an unforgeable seal instead, and something changes: a general
+      holding two contradictory orders can now lay them side by side and prove
+      that only one commander could have pressed both seals. **A lie that can
+      be signed can be proven and passed along as evidence — and that alone
+      drops the bound from 3f+1 honest generals to only f+2.** This is not a
+      cleverer vote; it is a different kind of message, one that carries its
+      own witness. The bound this chronicle proves — with or without seals —
+      becomes the fixed cost that every later attempt to tolerate liars has to
+      pay, one way or another.
+    parents: [vol2_mechanism]
+
+  # ============================= VOLUME III =============================
+  vol3_group:
+    title: "Volume III — The Curse of the Sleeping Shepherd"
+    short_title: "Sleeping Shepherd"
+    emoji: "🏛️"
+    kind: group
+    content: |
+      The priestesses of Delphi hand the assembled islands a burnt parchment
+      instead of an oracle: a proof that no ritual for reaching agreement can
+      ever be guaranteed to finish, if even one delegate might simply be
+      asleep and the sea might delay a letter forever. *Fischer, Lynch &
+      Paterson, "Impossibility of Distributed Consensus with One Faulty
+      Process" (1985).*
+    parents: []
+
+  vol3_setup:
+    title: "The Sleeping Shepherd"
+    short_title: "Asleep or Dead?"
+    emoji: "😴"
+    group: vol3_group
+    content: |
+      ![The sleeping shepherd: asleep for an hour, or for ever?](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol3_sleeper_small.webp)
+
+      A delegate slumps over his desk mid-council. Asleep for an hour, or dead
+      and gone forever? **No one in the chamber can tell the difference from
+      the outside** — and if the rite requires waiting for him, waiting is
+      either briefly patient or eternally foolish, and there is no way to know
+      which while it's happening. This is a harder problem than either
+      Volume I's mistrust of clocks or Volume II's mistrust of liars: here,
+      everyone in the room may be perfectly honest, and the network merely
+      slow, and that alone is enough to threaten the whole rite.
+    parents: []
+
+  vol3_mechanism:
+    title: "The Bivalent Council"
+    short_title: "Bivalency"
+    emoji: "⚖️"
+    group: vol3_group
+    content: |
+      ![A bivalent council: both verdicts still spin on the loom](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol3_pebble_chain_small.webp)
+
+      Faced with **the sleeping shepherd**'s ambiguity, the priestesses build
+      their proof from a chain of white pebbles slowly turning to black, one at
+      a time, across a row of councils. Somewhere in that chain, one single
+      pebble's flip must tip the verdict from undecided to decided — and the
+      one delegate whose pebble flips it might, at that exact moment, simply
+      be the one who falls asleep. **As long as a council's fate could still go
+      either way, some single voice always remains capable of deciding it
+      alone — and that voice is exactly the one an unlucky delay can silence.**
+      A second case sharpens the trap: if the verdict truly hangs on which of
+      two letters one man reads first, the others can simply decide without
+      him — and then, maddeningly, the verdict hangs on nothing at all.
+    parents: [vol3_setup]
+
+  vol3_twist:
+    title: "The Council That Never Finishes"
+    short_title: "No Guarantee"
+    emoji: "🌀"
+    group: vol3_group
+    content: |
+      ![No boat is lost, no delegate sleeps, and the council never finishes](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol3_endless_small.webp)
+
+      Put **the bivalent council**'s pebble-chain argument together and the
+      priestesses' burnt parchment states the full curse: no boat is lost, no
+      delegate ever truly sleeps, every single letter eventually arrives — and
+      still, the council can be made to never finish. An adversary who can
+      merely choose *which* letter to delay, and for how long, can always find
+      the one message that would have tipped an undecided vote, and hold it
+      back one more round, forever, without ever losing it outright. **If
+      message delays can be made arbitrarily long, no rite — however clever —
+      can promise both that it will never contradict itself and that it will
+      always eventually finish.** This is not a gap waiting to be engineered
+      around with more care; it is a wall. Every chronicle after this one
+      works by refusing one of the curse's own conditions, not by defeating it.
+    parents: [vol3_mechanism]
+
+  # ============================= VOLUME IV =============================
+  vol4_group:
+    title: "Volume IV — The Passable Season"
+    short_title: "The Passable Season"
+    emoji: "⛵"
+    kind: group
+    content: |
+      Three years after Delphi's curse, navigators arrive at the grieving
+      assembly with sea charts instead of oracles: real storms do end, even if
+      no one can say exactly when, and that weaker, honest promise is enough
+      to build a rite that works. *Dwork, Lynch & Stockmeyer, "Consensus in
+      the Presence of Partial Synchrony" (1988).*
+    parents: []
+
+  vol4_setup:
+    title: "Two Kinds of In-Between Sea"
+    short_title: "Partial Synchrony"
+    emoji: "🌊"
+    group: vol4_group
+    content: |
+      ![Two kinds of in-between sea](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol4_two_seas_small.webp)
+
+      The assembly has wept for three years under **the council that never
+      finishes** — if agreement is truly impossible whenever delay can be
+      unbounded, and real crossings obviously do complete (ships arrive, trade
+      resumes), then the curse's own premise must not describe the sea as it
+      actually is. The navigators offer two weaker, more honest promises
+      instead of one perfect one: a bound on crossing time that exists but is
+      unknown, or a known bound that only starts holding from some unknown day
+      onward. **Neither promise is a return to the impossible ideal of an
+      instantly reliable sea — both simply assume that the sea eventually
+      calms down, which is a claim about reality, not a wish about it.**
+    parents: [{id: vol3_twist, rel: answers, note: "answers the curse with a weaker, honest assumption instead of denying it"}]
+
+  vol4_mechanism:
+    title: "The Rotating Lantern"
+    short_title: "Rotating Phases"
+    emoji: "🏮"
+    group: vol4_group
+    content: |
+      ![Each phase belongs to one captain in turn; the lantern goes round for ever](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol4_rotating_lantern_small.webp)
+
+      Given **the two kinds of in-between sea**, the navigators build a rite
+      around a lantern passed from captain to captain, one phase at a time, in
+      a fixed round: whoever holds the lantern proposes, and a mooring is cast
+      only as a promise carrying a phase number, cast off only for a strictly
+      higher one. **A promise that can be numbered and overridden only by a
+      higher number is a promise that never has to be kept forever, only kept
+      until something more current arrives** — which is exactly the discipline
+      that lets a rite survive an unreliable captain without ever contradicting
+      an earlier decision. Three separate rites handle three separate threats —
+      sleepers and the forgetful, liars with seals, liars without — each
+      needing a different minimum number of honest hands.
+    parents: [vol4_setup]
+
+  vol4_twist:
+    title: "The Passable Season"
+    short_title: "Eventual Progress"
+    emoji: "🌤️"
+    group: vol4_group
+    content: |
+      ![Drummers on the headlands mark the hours across the islands](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol4_drummers_small.webp)
+
+      When no one knows how long a crossing can take, **the rotating lantern**
+      still has an answer: wait a little longer with every round, and sooner or
+      later the wait will be long enough. Drummers on the headlands keep this
+      honest across distance — a "tick" says an hour has come; a "claim" says
+      that hour has been drummed to everyone — while, elsewhere, two halves of
+      an assembly might each believe the other has drowned and act accordingly,
+      with the truth arriving only in the letters that follow. **The storm ends
+      on no one's particular schedule, but it does end — and once it does, the
+      council, at last, decides.** What was missing from Delphi's curse was
+      never courage or cleverness; it was simply the honest admission that
+      the sea, eventually, calms.
+    parents: [vol4_mechanism]
+
+  # ============================= VOLUME V =============================
+  vol5_group:
+    title: "Volume V — The Synod of the Part-Time Parliament"
+    short_title: "Part-Time Parliament"
+    emoji: "🏺"
+    kind: group
+    content: |
+      On the merchant island of Paxos, where legislators wander in and out of
+      the chamber at will, a two-phase protocol lets any quorum-sized ballot
+      settle a single decree forever — and a bribed clerk's translation later
+      reveals the whole thing was a blueprint for ordinary computers all
+      along. *Lamport, "The Part-Time Parliament" (1998); "Paxos Made Simple"
+      (2001).*
+    parents: []
+
+  vol5_setup:
+    title: "The Island of Paxos"
+    short_title: "Island of Paxos"
+    emoji: "🏝️"
+    group: vol5_group
+    parents: [vol4_twist]
+    content: |
+      ![The island of Paxos, a thriving mercantile centre](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/island_small.webp)
+
+      Given **the passable season**'s promise that storms eventually end,
+      the merchants of Paxos need an actual working parliament, not just a
+      promise that one is possible — and their parliament is part-time by
+      nature: no legislator will devote his life to it, so legislators wander
+      in and out of the chamber continually, mid-ballot, without warning.
+      Every entry, once inked, is indelible; and the one disaster the whole
+      apparatus exists to prevent is stated plainly — two groups of legislators,
+      voting under the same decree number, ratifying two contradictory laws.
+      **A protocol built for legislators who might vanish at any instant has
+      to make disagreement impossible without ever making a legislator's
+      presence a requirement.**
+
+  vol5_mechanism:
+    title: "NextBallot and LastVote"
+    short_title: "Two-Phase Ballot"
+    emoji: "📜"
+    group: vol5_group
+    content: |
+      ![Step one: a priest chooses a ballot number and messengers fan out with NextBallot scrolls](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/nextballot_small.webp)
+
+      A priest answers **the island of Paxos**'s riddle in two phases. First,
+      he chooses a ballot number and sends NextBallot(b) scrolls asking a
+      quorum simply to promise they will cast no vote numbered lower than b,
+      and to report anything they have already voted for. Only once that
+      promise comes back does he dare send BeginBallot — and if any earlier
+      vote was reported, **he must propose that exact value back, never a new
+      one of his own choosing**, because someone in his quorum may already have
+      committed to it. The ballot number itself is the whole trick: a count
+      that only ever climbs, and that every priest must climb past whatever he
+      has heard — which is the same discipline the archipelago's scribes
+      called a bead, generations and an ocean earlier, now applied not to
+      events but to proposals.
+    parents: [vol5_setup, {id: vol1_mechanism, rel: example, note: "ballot numbers are logical clocks applied to proposals, not events"}]
+
+  vol5_insight:
+    title: "Why the Quorums Overlap"
+    short_title: "Quorum Overlap"
+    emoji: "🔗"
+    group: vol5_group
+    content: |
+      ![Voted scrolls race back to be tallied](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/voting_small.webp)
+
+      **NextBallot and LastVote**'s promise only prevents disaster because of
+      one quiet geometric fact never stated aloud in the chronicle itself:
+      any two quorums drawn from the same body of legislators must share at
+      least one member. **That single shared legislator is the whole reason a
+      later ballot cannot silently overwrite an earlier decree — he remembers
+      the promise, and his memory alone forces every subsequent ballot back
+      onto the same value.** Bar the doors with a majority inside, and the
+      hourglass promises a decree within ninety-nine minutes; the promise
+      holds not because legislators are honest about arithmetic, but because
+      no two majorities of the same island can ever fail to meet.
+    parents: [vol5_mechanism]
+
+  vol5_consequence:
+    title: "The Wandering President"
+    short_title: "Wandering Leader"
+    emoji: "🌀"
+    group: vol5_group
+    content: |
+      ![Legislator returns from six months abroad and is instantly made president, alphabetically](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/president_small.webp)
+
+      **Quorum overlap** guarantees Paxos never contradicts itself, but the
+      chronicle's own comic disasters show what it doesn't guarantee: a
+      legislator returns from six months abroad and is made president purely
+      alphabetically, then halts the whole parliament copying six months of
+      decrees; two cheese inspectors rule "unfit" and "fit" on the same wheel
+      at once; one scribe's error makes drowned sailors the only legislators,
+      and not even the fix can pass. **A protocol proven never to disagree can
+      still be made nearly useless by nothing worse than an unlucky choice of
+      who proposes next.** The editorial gloss that follows makes the deeper
+      point explicit: legislator is server, citizen is client, the law itself
+      is nothing more than a **replicated state machine** — and a state
+      machine run by a parliament that keeps losing its president is exactly
+      the problem the next chronicle exists to solve.
+    parents: [vol5_insight]
+
+  # ============================= VOLUME VI =============================
+  vol6_group:
+    title: "Volume VI — The Ledger of Many Decrees"
+    short_title: "Ledger of Decrees"
+    emoji: "📦"
+    kind: group
+    content: |
+      ![Cover: The Ledger of Many Decrees](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/cover_volume_6_small.webp)
+
+      The Minoan granary of Knossos keeps its grain records in several
+      storehouses at once, run by a single steward who is elected once and
+      then trusted with the whole ledger — turning one decree into an entire,
+      cheaply-extended log. *Oki & Liskov, "Viewstamped Replication" (1988);
+      "Multi-Paxos."*
+    parents: []
+
+  vol6_setup:
+    title: "The Viewstamp"
+    short_title: "The Viewstamp"
+    emoji: "🐂"
+    group: vol6_group
+    content: |
+      ![The viewstamp: which steward's term, and how many records into it — by itself a count means nothing once the steward changes](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol6_viewstamp_small.webp)
+
+      **The wandering president** cost Paxos a whole ballot's overhead for
+      every single decree — a full round of NextBallot and LastVote just to
+      settle one law is fine for a rare emergency, but ruinous for a palace
+      that needs to record grain sales all day. The granary's answer is to
+      stop asking on every record and simply elect a steward: he runs the
+      expensive promise-gathering phase exactly once, on taking office, for the
+      entire log of records still to come. Every record afterward is stamped
+      with a **viewstamp** — which steward's term, and how many records into
+      it — and that count means nothing by itself, only relative to the
+      steward who wrote it. **One priest's ballot number, kept once and then
+      reused for an entire log instead of re-proven for each entry, is the
+      whole idea.**
+    parents: [vol5_consequence]
+
+  vol6_mechanism:
+    title: "An Ordinary Day at the Granary"
+    short_title: "Ordinary Day"
+    emoji: "⚖️"
+    group: vol6_group
+    content: |
+      ![An ordinary day: request, prepare, prepare-ok — and with one copyist's acknowledgment, the steward of three storehouses may weigh out the grain](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol6_normal_case_small.webp)
+
+      With **the viewstamp** already settled, most days need no election at
+      all: a merchant hands the steward a request tablet, the steward stamps
+      it and sends copies to the other storehouses, and as soon as even one
+      copyist's acknowledgment races back, the steward may weigh out the grain
+      with total confidence the record is safe. The communication buffer keeps
+      this honest across the whole palace — records leave in strict order, and
+      to "force" the buffer is simply to wait until enough copyists have
+      caught up. **A single acknowledgment, from a quorum too small to be a
+      majority on its own, is enough — because the steward himself always
+      counts as the tie-breaking member of that quorum.** The number stamped on
+      each tablet, silently doing the work of Volume I's climbing bead, is
+      easy to miss precisely because it works.
+    parents: [vol6_setup]
+
+  vol6_viewchange:
+    title: "The View Manager's Invitation"
+    short_title: "View Change"
+    emoji: "✉️"
+    group: vol6_group
+    content: |
+      ![The view manager's invitation. "Here is everything I know," says one clerk. "I fell and forgot everything," says another](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol6_invitations_small.webp)
+
+      **An ordinary day** cannot last forever — stewards fall silent, storehouses
+      flood off — so the granary allows gaps: a new view manager gathers an
+      invitation from every reachable clerk, and each answers honestly about
+      how much of the ledger he actually holds. "Here is everything I know,"
+      says one clerk, holding up a full basket of stamped tablets; "I fell and
+      forgot everything," admits another, holding up a single sigil-only
+      tablet, apologetic but truthful. **A view change does not require every
+      clerk to agree on the state of the world — it only requires enough of
+      them to honestly report what they hold, so the new steward can be trusted
+      to have lost nothing a majority already knew.** Once a copyist has sent
+      his log to the new steward, he accepts nothing more from the old one —
+      a rule this granary is comfortable leaving loose, and permitting real
+      gaps in the ledger between one steward's term and the next, which a much
+      later, stricter chronicle will refuse to allow.
+    parents: [vol6_mechanism]
+
+  # ============================= VOLUME VII =============================
+  vol7_group:
+    title: "Volume VII — The Citadel of Iron Quorums"
+    short_title: "Citadel of Quorums"
+    emoji: "🏰"
+    kind: group
+    content: |
+      Two inquisitors — one of them the granary's own former mistress —
+      arrive at a newly built citadel not with a new theorem but with a
+      budget: they show how to survive lying keepers using the granary's
+      view-based leadership, at a price the treasury can actually afford.
+      *Castro & Liskov, "Practical Byzantine Fault Tolerance" (1999).*
+    parents: []
+
+  vol7_setup:
+    title: "The Siege by Delay"
+    short_title: "Budget, Not Theorem"
+    emoji: "🧾"
+    group: vol7_group
+    content: |
+      ![Four keepers, one warden — and any one of them might be in the pirates' pay](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol7_keepers_small.webp)
+
+      Seventeen years after the bound was proven, the inquisitors arrive not
+      with a new theorem but with a budget: **the same seal on two orders**
+      already showed exactly how many honest keepers a citadel needs against
+      liars, but the textbook solution demanded an unforgeable signature on
+      every single message, and no one had made that cheap enough to actually
+      run. Their second inheritance is quieter — **the view manager's
+      invitation**'s trick of electing one warden and inviting the keepers to
+      report honestly at each change of guard, borrowed wholesale from a
+      granary that never once worried about lying clerks. **This chronicle's
+      whole idea is a convergence: take the granary's affordable, view-based
+      leadership, and harden it against the one threat the granary never had
+      to face — a keeper, or even the warden himself, actively lying.** The
+      siege by delay names the older danger precisely: if a fortress simply
+      expels whoever answers slowly, an enemy need not bribe the honest — only
+      slow them down until they look like traitors.
+    parents: [vol6_viewchange, vol2_twist]
+
+  vol7_mechanism:
+    title: "The Three-Phase Gauntlet"
+    short_title: "Three-Phase Gauntlet"
+    emoji: "🛡️"
+    group: vol7_group
+    content: |
+      ![Pre-prepare, prepare, commit](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol7_gauntlet_small.webp)
+
+      Where **the siege by delay** leaves an opening — a single lying warden
+      who could propose two different orders to two different keepers — the
+      gauntlet closes it with three phases instead of one steward's word.
+      Pre-Prepare: the warden proposes. Prepare: every keeper confirms, to
+      every other keeper, that they heard the identical proposal. Commit:
+      each keeper confirms that enough others have also confirmed. **Only once
+      2f+1 keepers have sealed the same proposal at the Commit phase can
+      anything below that mark be safely thrown into the sea** — a rule that
+      survives even a warden who lies, because no single keeper's word, not
+      even the warden's, is ever trusted alone. A new warden, taking office,
+      may not forget what his predecessor's keepers had already prepared;
+      where nothing was prepared, he simply writes a blank.
+    parents: [vol7_setup]
+
+  vol7_twist:
+    title: "Split Tallies Instead of Signets"
+    short_title: "Cheap Authentication"
+    emoji: "💰"
+    group: vol7_group
+    content: |
+      ![A split tally proves your word to one partner, a thousand times faster](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol7_tally_sticks_small.webp)
+
+      **The three-phase gauntlet** would still be unaffordable if every
+      Prepare and Commit needed a full signet seal — slow to press, slow to
+      verify, and needed on every message between every pair of keepers. The
+      inquisitors' actual contribution is almost entirely this: replace the
+      signet, for the common case, with a split tally — a shared secret between
+      just two parties that proves authenticity to that one partner, a
+      thousand times faster than a seal that must convince anyone. **A signet
+      seal proves your word to the whole world, slowly; a split tally proves it
+      to one partner, a thousand times faster — and the gauntlet only needs
+      partner-to-partner proof, never proof to the world.** Signatures return
+      only for the rare case of removing a warden outright. In the trial of
+      the five labours, with four keepers and one possible traitor, the
+      guarded library finished only three percent behind the city's ordinary,
+      untrusted one.
+    parents: [vol7_mechanism]
+
+  # ============================= VOLUME VIII =============================
+  vol8_group:
+    title: "Volume VIII — The Quarries of the Roman Guilds"
+    short_title: "Roman Quarries"
+    emoji: "🏗️"
+    kind: group
+    content: |
+      Roman engineers try to build the granary's ledger for real, at scale,
+      and discover that the Greek protocol fit on one page while the Roman
+      construction plans did not — because disks lie, kings go mad, and no
+      algorithm paper mentions either. *Chandra, Griesemer & Redstone,
+      "Paxos Made Live" (2007).*
+    parents: []
+
+  vol8_setup:
+    title: "One Page, Many Plans"
+    short_title: "One Page, Many Plans"
+    emoji: "📐"
+    group: vol8_group
+    content: |
+      ![A ledger for a foundation, a vault of records above it, and the lock-house counter on top](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol8_cutaway_small.webp)
+
+      Handed **an ordinary day**'s ledger-per-storehouse design and told to
+      build a real, working lock-house from it, the Roman engineers discover
+      the uncomfortable truth of every algorithm chronicle: the granary's
+      protocol fit on one page, but the plans for an actual building did not.
+      A ledger for the foundation, a vault of records stacked above it, and a
+      lock-house counter balanced on top of both look simple stacked in a
+      diagram — until the diagram has to survive real disks, real crashes, and
+      real operators. **The chronicle's entire premise is that the algorithm
+      was never the hard part; keeping the algorithm's promises true against
+      a physical world that doesn't read the paper is.**
+    parents: [vol6_mechanism]
+
+  vol8_mechanism:
+    title: "Chipped Chisels and Mad Kings"
+    short_title: "Chisels and Kings"
+    emoji: "🔨"
+    group: vol8_group
+    content: |
+      ![Master leases: while the sand runs, no rival may be heard](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol8_master_lease_small.webp)
+
+      Two failures **one page, many plans** never anticipated get their own
+      names. A copy whose own strongroom has silently corrupted — a chipped
+      chisel — cannot vouch for anything it holds, and must listen without
+      voting until it has watched one whole round begin and end cleanly. A
+      recovering steward who still believes he is in office — a mad king — is
+      handled with a master lease: **while the sand still runs in his
+      hourglass, no rival may be heard from at all; the instant it runs out,
+      his ring of authority turns to lead**, whether or not he has noticed yet.
+      Epoch numbers tag every batch of orders so a garrison change never
+      confuses old commands for new ones, in exactly the spirit of the
+      viewstamp that came before it — the same numbering trick, reapplied to a
+      world where even honest hardware can silently rot, an idea born in
+      [Volume IV's admission](node:vol4_setup) that the world, honestly
+      described, is never as clean as the protocol on paper.
+    parents: [vol8_setup]
+
+  vol8_twist:
+    title: "The Misspelled Name"
+    short_title: "War Stories"
+    emoji: "🩹"
+    group: vol8_group
+    content: |
+      ![Deliberate sabotage: roll the dice, break what they say, and write down every roll](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol8_sabotage_workshop_small.webp)
+
+      **Chipped chisels and mad kings** were failures the engineers anticipated
+      and named in advance; the ones that actually happened were smaller and
+      stranger. A single misspelled name in a configuration file quietly let
+      four copies keep working while a fifth endlessly tried and failed to
+      catch up — and no one noticed the house could now survive only one
+      failure instead of two, for months. An undocumented rollback procedure,
+      run by an operator who had never used it, with no engineer present, from
+      an old snapshot, cost fifteen hours of records outright. **The
+      engineering discipline this chronicle actually contributes is not a new
+      proof but a habit: roll dice deliberately to break things on purpose, and
+      write down every roll, so the same disaster can be replayed and
+      understood rather than merely survived once and forgotten.** The math,
+      in the end, really was the easy ten percent.
+    parents: [vol8_mechanism]
+
+  # ============================= VOLUME IX =============================
+  vol9_group:
+    title: "Volume IX — The Reformation of the Raft Monks"
+    short_title: "Raft Monks"
+    emoji: "⛪"
+    kind: group
+    content: |
+      A band of apprentices, disillusioned by the granary's ceremonies, sail
+      north to found a monastery built on one rule — a scroll no monk may
+      accept unless it names the exact line that came before it — and later
+      prove, on forty-three students, that the rule was worth the trip.
+      *Ongaro & Ousterhout, "In Search of an Understandable Consensus
+      Algorithm" (2014).*
+    parents: []
+
+  vol9_setup:
+    title: "The Heartbeat Bell"
+    short_title: "Heartbeat Bell"
+    emoji: "🔔"
+    group: vol9_group
+    content: |
+      ![As long as the abbot rings, no brother stirs from his desk](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol9_heartbeat_bell_small.webp)
+
+      The apprentices leave the granary behind precisely because of what
+      **the view manager's invitation** permitted: a steward's ledger with
+      real gaps in it, patched over at each change of guard rather than
+      forbidden outright. Their monastery runs on one bell instead: as long as
+      the abbot keeps ringing it, no brother stirs from his own desk to call an
+      election; every brother's own sand-glass is a different, random size, so
+      when the bell does stop, one almost always runs out first and calls the
+      vote alone, without a tie. **The founding refusal is stated as a
+      contrast, not an improvement in degree: where the granary tolerated
+      gaps between one steward's term and the next, this monastery forbids
+      them outright, by rule, from the very first line.**
+    parents: [{id: vol6_viewchange, rel: contrasts, note: "forbids the gaps the granary's view-change allows"}]
+
+  vol9_mechanism:
+    title: "The Suspicious Scribe's Refusal"
+    short_title: "The Refusal"
+    emoji: "✍️"
+    group: vol9_group
+    content: |
+      ![Each number is the reign in which a line was written; the brother refuses every dispatch until the abbot names a preceding line they both hold](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol9_refusal_small.webp)
+
+      Every line in a monk's scroll is stamped with the reign in which it was
+      written — a number climbing the same way [Volume I's bead](node:vol1_mechanism)
+      once climbed, and the viewstamp after it. But **the heartbeat bell**'s
+      no-gaps rule needs enforcement, and this monastery's answer is
+      deliberately, structurally rude: a brother refuses every dispatch from
+      his abbot until the abbot can name a preceding line the brother already
+      holds. "Your page says it follows a line I do not have" is not
+      disobedience — **the refusal itself, not blind transcription, is the
+      entire mechanism that keeps every copy of the scroll identical**, because
+      it forces a new abbot to walk backward through his own log, dispatch by
+      dispatch, until the two scrolls agree on where they last matched.
+    parents: [vol9_setup]
+
+  vol9_twist:
+    title: "The Election Restriction"
+    short_title: "Election Restriction"
+    emoji: "🗳️"
+    group: vol9_group
+    content: |
+      ![No brother votes for a candidate whose scroll is less up-to-date than his own](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol9_election_restriction_small.webp)
+
+      **The suspicious scribe's refusal** keeps two scrolls from diverging once
+      they've matched, but it says nothing about who is allowed to become abbot
+      in the first place — so the monastery adds one more rule: no brother
+      votes for a candidate whose scroll is less up-to-date than his own. Only
+      when a line written in the new abbot's own reign reaches a majority is
+      everything written before it finally, permanently safe — an old reign's
+      line reaching a majority proves nothing, since a future abbot could still
+      overwrite it. When the chapter itself must change — new brothers joining,
+      old ones retiring — a joint consensus rule requires a majority of the old
+      chapter and a majority of the new at once, for as long as both exist
+      together. **A monastery that refuses to elect a stale abbot never needs
+      the granary's after-the-fact invitation at all — it prevents the wrong
+      leader from taking office, rather than repairing the ledger once he has.**
+    parents: [vol9_mechanism]
+
+  vol9_trial:
+    title: "The Trial of the Novices"
+    short_title: "The Trial"
+    emoji: "🎓"
+    group: vol9_group
+    content: |
+      ![43 students, two lessons, two quizzes](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol9_novices_trial_small.webp)
+
+      Every earlier reformation in this chronicle — **the election
+      restriction**'s rule against stale abbots — was justified on paper. This
+      one alone was tested on people: forty-three students, given two lessons
+      and two quizzes, one lesson on this monastery's rule and one on
+      **NextBallot and LastVote**'s two-phase ballot from the parliament of
+      Paxos. Thirty-three scored higher on the monastery's version. **The
+      contrast this chronicle draws against the parliament was never really
+      about gaps in a ledger — it was about which one a working mind could
+      actually hold, teach, and implement correctly, and the trial is the
+      only chapter in the whole recension that measured that claim instead of
+      merely asserting it.**
+    parents: [vol9_twist, {id: vol5_mechanism, rel: contrasts, note: "designed for teachability where Paxos's ballot protocol famously wasn't"}]
+
+  # ============================= CLOSING =============================
+  recension_repairs:
+    title: "Repairing the Recension"
+    short_title: "Repairing the Recension"
+    emoji: "📚"
+    content: |
+      ![The submission was discovered behind a filing cabinet in the TOCS editorial office](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/manuscript_small.webp)
+
+      This collection admits, in its own editorial notes, that it was not
+      assembled in the order its ideas actually depend on each other — and
+      three volumes had to be inserted afterward to repair that. **The same
+      seal on two orders** gives the 3f+1 bound its true, much older authors,
+      without whom the citadel's inquisitors would appear to have invented
+      Byzantine tolerance from nothing. **Two kinds of in-between sea** supplies
+      the escape from Delphi's curse that the parliament of Paxos silently
+      relies on, without which Paxos would look like it had defeated an
+      impossibility proof outright rather than quietly stepped around it. And
+      **the view manager's invitation** restores the granary's steward to his
+      rightful place in the lineage — a decade older than the parliament of
+      Paxos itself, and, awkwardly, the closer true ancestor of the monastery
+      than Paxos ever was. **A recension that gets its own dependencies wrong
+      is not a minor bibliographic error — in a collection about exactly which
+      idea needs which other idea first, it is the one mistake the editors
+      could not afford to leave standing.**
+    parents: [vol2_twist, vol4_setup, vol6_viewchange]
+
+  what_remains_unwritten:
+    title: "What Remains Unwritten"
+    short_title: "Unwritten Volumes"
+    emoji: "🕯️"
+    content: |
+      ![Wanderers: legislators drift in and out of the chamber continually](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/wanderers_small.webp)
+
+      Even after **repairing the recension**, the editors admit the shelf is
+      not full. A volume on the casting of lots, one on a catalogue of
+      unreliable seers, one on the three gifts that cannot all be held at once,
+      and one on agreement reached by counting labour rather than delegates —
+      all remain unwritten. **A corrected recension is not the same claim as a
+      finished one; every honest history of an idea has to say, plainly, where
+      it stopped.**
+    parents: [recension_repairs]
+
