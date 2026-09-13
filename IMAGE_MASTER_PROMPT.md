@@ -22,12 +22,71 @@ Volume V's panels are already done and are not part of any batch; only its cover
 
 ---
 
+## Progress (last updated 2026-09-13)
+
+| Batch | Status | Commit |
+|---|---|---|
+| 1 — Covers | ✅ Done | `ce9d73e` |
+| 2 — Volume I | ✅ Done | `ce9d73e` |
+| 3 — Volume II | ✅ Done | `3a4a38d` |
+| 4 — Volume III | ✅ Done | `8cba675` |
+| 5 — Volume IV | ⏸ **In progress — 6 of 8 placed, not committed** | — |
+| 6–9 — Volumes VI–IX | Not started | — |
+
+**Where batch 5 stopped.** The Gemini API project hit its monthly spending cap (HTTP 429, "exceeded its
+monthly spending cap"). Raise it at https://ai.studio/spend or wait for the monthly reset, then resume.
+
+- Accepted, compressed and placed in `volume-4.html` (uncommitted): `v4-01` navigators, `v4-02` two_seas,
+  `v4-03` rotating_lantern, `v4-04` mooring, `v4-06` split_assembly, `v4-07` drummers.
+- Still pending (placeholders remain; banner and index card not yet updated):
+  - `v4-05` vol4_growing_hourglass — **2 of 3 attempts used.** Attempt 1: a disembodied hand turned the
+    hourglass. Attempt 2: a modern fountain pen and gridded map on the desk. Last attempt, with reference
+    `vol4_navigators.png`, corrective sentence: *"The seated delegate himself turns over the tallest
+    hourglass, and the bare wooden desk holds nothing but the hourglasses: no pens, maps or books."*
+  - `v4-08` vol4_passable_season — **1 of 3 attempts used.** Attempt 1 contained an inset sub-panel. Next,
+    with reference `vol4_two_seas.png` (4:3 — see below), corrective sentence: *"Draw it as one single
+    continuous scene with no inset panels, and the navigator himself stands beside the sundial."*
+- Once both are placed: remove the banner, update the Volume IV card, run §7 and the browser check, commit.
+
+**Resume commands** (from the repo root; needs `pip install google-genai pillow` and `GEMINI_API_KEY`):
+
+```bash
+REFS=vol4_navigators.png python3 tools/gen_panel.py v4-05 3 "The seated delegate himself turns over the tallest hourglass, and the bare wooden desk holds nothing but the hourglasses: no pens, maps or books."
+REFS=vol4_two_seas.png  python3 tools/gen_panel.py v4-08 2 "Draw it as one single continuous scene with no inset panels, and the navigator himself stands beside the sundial."
+# review out/<stem>_aN.png, then: cp out/<stem>_aN.png images/<stem>.png && python3 tools/compress.py <stem>
+```
+
+**What has worked (batches 2–5).** Since batch 2 the panels were made with `tools/gen_panel.py`
+(Gemini `gemini-3-pro-image`, 2K) rather than a built-in tool:
+
+- It parses the prompt and aspect ratio straight from `IMAGE_PROMPTS.md`, attaches the reference image(s),
+  and adds a short note that the reference is for style and characters only. Without that note the model
+  re-draws the reference instead of the new scene.
+- **Wide (16:9) panels must not use a 16:9 reference** — the model still copies it. Use an accepted 4:3
+  panel from the same volume (ideally one showing the recurring cast) as the reference instead.
+- The API only returns JPEG; the script converts to PNG.
+- Generating a volume's remaining panels in parallel is fine (one process per panel).
+- Review at 800px, then zoom into tablets, scrolls, maps and signs at full resolution for tiny lettering.
+
+**Recurring failure modes to check for.** Prompts that mention writing, numbers or speech tend to produce
+it: "stamped with a number", "numbered tag", "carved inscription", "labeled", "lists of names", quoted
+speech (`"lit!"`), "snoring" (comic Z's). Also watch for: modern objects (glass hurricane lanterns,
+fountain pens, world maps, bound books), sub-panels or inset boxes inside a panel, characters drawn at the
+wrong scale, and details that contradict the caption (e.g. someone asleep when the caption says no one is).
+A corrective sentence that names the unwanted thing ("no speech balloons") can make it worse — describe
+the wanted alternative instead ("disagree only by gesture", "tally marks", "punched holes"). `IMAGE_PROMPTS.md`
+v2-08 was reworded (with approval) to drop quoted speech.
+
+---
+
 ## The prompt
 
 ````text
 You are generating the artwork for "Paxos Illustrated", a static site in the current repository that retells
 nine distributed-systems papers as allegorical comic chronicles. Work through the nine batches below in
-order. Read COVER_PROMPTS.md and IMAGE_PROMPTS.md in full before you start; they hold every per-image prompt,
+order. First read the "Progress" section of IMAGE_MASTER_PROMPT.md: skip batches marked done and resume
+the in-progress batch exactly where it stopped (attempt counts carry over), using tools/gen_panel.py and the
+notes there. Read COVER_PROMPTS.md and IMAGE_PROMPTS.md in full before you start; they hold every per-image prompt,
 file name, aspect ratio and placement instruction. Follow them exactly — do not rewrite the prompts, apart
 from the small regeneration tweaks allowed under "Reviewing an image".
 
