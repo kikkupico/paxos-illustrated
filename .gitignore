@@ -1,3 +1,4 @@
 *.pdf
 sources/
 out/
+.DS_Store
