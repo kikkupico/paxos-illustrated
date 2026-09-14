@@ -1,6 +1,6 @@
 meta:
   version: 2
-  title: "Distributed Algorithms of Ancient Greece: The Corrected Recension"
+  title: "Distributed Algorithms of Ancient Greece"
   description: |
     Told as a story: nine 20th-century consensus papers, retold as Greek and Minoan
     chronicles, and the real dependencies between the ideas underneath the allegory —
@@ -10,9 +10,7 @@ meta:
     the other party can be trusted (Volume II), and whether the network's timing can be
     trusted at all (Volume III). The threads cross twice: Volume VII fuses the Byzantine
     bound from II with the view-based leadership Volume VI invented, and Volume IX closes
-    by contrasting itself against both VI (gaps) and V (opacity) at once. A closing pair
-    of nodes follows the collection's own editorial fiction — the "corrected recension"
-    conceit that Volumes II, IV and VI were inserted later to patch holes in the lineage.
+    by contrasting itself against both VI (gaps) and V (opacity) at once.
     Two judgment calls worth flagging: Paxos's ballot numbers are treated as a direct
     instance of Volume I's logical clocks (a real but easy-to-miss echo, not a citation),
     and III/FLP is rooted independently of II's Byzantine framing even though both are
@@ -20,7 +18,7 @@ meta:
     volumes now have finished, illustrated panel art synced to the image host.
   start: [vol1_setup, vol2_setup, vol3_setup]
   tours:
-    - title: "The Corrected Recension, Cover to Cover"
+    - title: "The Nine Volumes, Cover to Cover"
       nodes:
         [vol1_group, vol1_setup, vol1_mechanism, vol1_twist,
          vol2_group, vol2_setup, vol2_mechanism, vol2_twist,
@@ -30,8 +28,7 @@ meta:
          vol6_group, vol6_setup, vol6_mechanism, vol6_viewchange,
          vol7_group, vol7_setup, vol7_mechanism, vol7_twist,
          vol8_group, vol8_setup, vol8_mechanism, vol8_twist,
-         vol9_group, vol9_setup, vol9_mechanism, vol9_twist, vol9_trial,
-         recension_repairs, what_remains_unwritten]
+         vol9_group, vol9_setup, vol9_mechanism, vol9_twist, vol9_trial]
     - title: "The Load-Bearing Spine: No Clocks to One Leader"
       nodes:
         [vol1_setup, vol1_mechanism,
@@ -445,7 +442,7 @@ nodes:
       ![Legislator returns from six months abroad and is instantly made president, alphabetically](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/president_small.webp)
 
       **Quorum overlap** guarantees Paxos never contradicts itself, but the
-      chronicle's own comic disasters show what it doesn't guarantee: a
+      chronicle's own farcical disasters show what it doesn't guarantee: a
       legislator returns from six months abroad and is made president purely
       alphabetically, then halts the whole parliament copying six months of
       decrees; two cheese inspectors rule "unfit" and "fit" on the same wheel
@@ -806,49 +803,6 @@ nodes:
       contrast this chronicle draws against the parliament was never really
       about gaps in a ledger — it was about which one a working mind could
       actually hold, teach, and implement correctly, and the trial is the
-      only chapter in the whole recension that measured that claim instead of
+      only chapter in the whole collection that measured that claim instead of
       merely asserting it.**
     parents: [vol9_twist, {id: vol5_mechanism, rel: contrasts, note: "designed for teachability where Paxos's ballot protocol famously wasn't"}]
-
-  # ============================= CLOSING =============================
-  recension_repairs:
-    title: "Repairing the Recension"
-    short_title: "Repairing the Recension"
-    emoji: "📚"
-    content: |
-      ![The submission was discovered behind a filing cabinet in the TOCS editorial office](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/manuscript_small.webp)
-
-      This collection admits, in its own editorial notes, that it was not
-      assembled in the order its ideas actually depend on each other — and
-      three volumes had to be inserted afterward to repair that. **The same
-      seal on two orders** gives the 3f+1 bound its true, much older authors,
-      without whom the citadel's inquisitors would appear to have invented
-      Byzantine tolerance from nothing. **Two kinds of in-between sea** supplies
-      the escape from Delphi's curse that the parliament of Paxos silently
-      relies on, without which Paxos would look like it had defeated an
-      impossibility proof outright rather than quietly stepped around it. And
-      **the view manager's invitation** restores the granary's steward to his
-      rightful place in the lineage — a decade older than the parliament of
-      Paxos itself, and, awkwardly, the closer true ancestor of the monastery
-      than Paxos ever was. **A recension that gets its own dependencies wrong
-      is not a minor bibliographic error — in a collection about exactly which
-      idea needs which other idea first, it is the one mistake the editors
-      could not afford to leave standing.**
-    parents: [vol2_twist, vol4_setup, vol6_viewchange]
-
-  what_remains_unwritten:
-    title: "What Remains Unwritten"
-    short_title: "Unwritten Volumes"
-    emoji: "🕯️"
-    content: |
-      ![Wanderers: legislators drift in and out of the chamber continually](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/wanderers_small.webp)
-
-      Even after **repairing the recension**, the editors admit the shelf is
-      not full. A volume on the casting of lots, one on a catalogue of
-      unreliable seers, one on the three gifts that cannot all be held at once,
-      and one on agreement reached by counting labour rather than delegates —
-      all remain unwritten. **A corrected recension is not the same claim as a
-      finished one; every honest history of an idea has to say, plainly, where
-      it stopped.**
-    parents: [recension_repairs]
-

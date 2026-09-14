@@ -182,7 +182,7 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
   <header class="hero">
     <div class="kicker">A Primer, Not a Prerequisite</div>
     <h1>Start Here: The Whole Collection in One Sitting</h1>
-    <p class="sub">Nine papers that built modern distributed computing, in the order they were written and the order they need to be understood.</p>
+    <p class="sub">Nine papers that built modern distributed computing, in the order they need to be understood.</p>
     <p class="desc">
       Each volume of this series retells one foundational paper as a Greek chronicle. This page skips
       the allegory and gives you the bare idea behind each one — what problem it solved, why the
@@ -248,7 +248,7 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
       <div class="map-node branch">
         <div class="num">6</div>
         <div><strong>...into an ordered log of many values</strong>
-          <div class="map-desc">One stable leader, repeated cheaply. This is "Multi-Paxos."</div>
+          <div class="map-desc">One stable leader orders every entry — the shape of "Multi-Paxos."</div>
         </div>
       </div>
       <div class="map-arrow">↓</div>
@@ -256,7 +256,7 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
       <div class="map-node branch">
         <div class="num">7</div>
         <div><strong>...that tolerates liars, affordably</strong>
-          <div class="map-desc">Volume 2's guarantee, made cheap enough for production.</div>
+          <div class="map-desc">Volume II's bound, made cheap enough for production.</div>
         </div>
       </div>
       <div class="map-arrow">↓</div>
@@ -264,7 +264,7 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
       <div class="map-node branch">
         <div class="num">8</div>
         <div><strong>...and survives contact with reality</strong>
-          <div class="map-desc">Disks corrupt, processes hang. The math is 10% of the system.</div>
+          <div class="map-desc">Disks corrupt, processes hang. The algorithm is the small part.</div>
         </div>
       </div>
       <div class="map-arrow">↓</div>
@@ -297,7 +297,7 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
         and no clock can or should invent an order between them.</p>
       <div class="whyitmatters"><b>Why it matters later:</b> nearly every distributed system uses some
         descendant of this idea (vector clocks, version vectors) to reason about "what did this node know, and when."</div>
-      <p class="vlink"><a href="volume-1.html">📖 Read the full illustrated Volume I →</a></p>
+      <p class="vlink"><a href="volume-1.html">📖 Read Volume I →</a></p>
     </div>
   </div>
 
@@ -310,13 +310,13 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
       <p class="vcite">Pease, Shostak &amp; Lamport (1980); Lamport, Shostak &amp; Pease, "The Byzantine Generals Problem" (1982)</p>
       <p>So far we've assumed machines are honest, even if slow or crashed. What if one is compromised
         and sends different, contradictory messages to different peers on purpose?</p>
-      <p><strong>The idea:</strong> with only spoken (unsigned) messages, you need more than three times
-        as many honest participants as traitors — <code>3f+1</code> total to tolerate <code>f</code> liars.
+      <p><strong>The idea:</strong> with only spoken (unsigned) messages, honest participants must
+        outnumber traitors more than two to one — <code>3f+1</code> total to tolerate <code>f</code> liars.
         Below that ratio, agreement is provably impossible. Add cryptographic signatures that can't be
         forged, and the bar drops to <code>f+2</code> — because now a lie can be proven and passed along as evidence.</p>
       <div class="whyitmatters"><b>Why it matters later:</b> this bound is the foundation every
         Byzantine-fault-tolerant system (Volume VII, and modern blockchains) is built on top of.</div>
-      <p class="vlink"><a href="volume-2.html">📖 Read the full illustrated Volume II →</a></p>
+      <p class="vlink"><a href="volume-2.html">📖 Read Volume II →</a></p>
     </div>
   </div>
 
@@ -337,7 +337,7 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
       <div class="whyitmatters"><b>Why it matters later:</b> this is a hard mathematical wall, not an
         engineering gap. Every practical system (Volumes IV onward) works by quietly sidestepping it,
         not defeating it.</div>
-      <p class="vlink"><a href="volume-3.html">📖 Read the full illustrated Volume III →</a></p>
+      <p class="vlink"><a href="volume-3.html">📖 Read Volume III →</a></p>
     </div>
   </div>
 
@@ -392,7 +392,7 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
       <div class="whyitmatters"><b>Why it matters later:</b> this quorum-overlap trick is the load-bearing
         idea of the rest of the collection — Multi-Paxos, PBFT, and Raft are all variations on making
         this safe with less overhead.</div>
-      <p class="vlink"><a href="volume-5.html">📖 Read the full illustrated Volume V →</a></p>
+      <p class="vlink"><a href="volume-5.html">📖 Read Volume V →</a></p>
     </div>
   </div>
 
@@ -402,12 +402,15 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
     <div class="vbody">
       <span class="vtag">Vol. VI</span>
       <h2>From One Decision to a Whole Log</h2>
-      <p class="vcite">Oki &amp; Liskov, "Viewstamped Replication" (1988); "Multi-Paxos"</p>
-      <p>Paxos agrees on a single value. A real database needs to agree on an entire ordered sequence
-        of operations — running full Paxos for every single one would be painfully slow.</p>
-      <p><strong>The idea:</strong> elect a stable leader who runs Phase 1 (Prepare) once, on taking
-        office, for the whole future log. After that, every entry only needs the lightweight Phase 2
-        (Accept) — one round trip instead of two, for as long as that leader holds office.</p>
+      <p class="vcite">Oki &amp; Liskov, "Viewstamped Replication" (1988); Liskov &amp; Cowling, "Viewstamped Replication Revisited" (2012)</p>
+      <p>Agreeing on a single value isn't enough. A real database needs to agree on an entire ordered
+        sequence of operations — and keep going when the machine in charge crashes.</p>
+      <p><strong>The idea:</strong> one replica, the primary, gives every operation a position in the log
+        and has the backups copy it; an operation is committed once a majority holds it. If the primary
+        goes silent, the replicas run a <em>view change</em> that picks a new primary and carries forward
+        every committed operation. Invented independently of Paxos, it has the same shape as
+        "Multi-Paxos": a stable leader that does the expensive election once, then pays one round trip
+        per entry.</p>
       <div class="whyitmatters"><b>Why it matters later:</b> this is the design almost every production
         "replicated log" system actually runs — including the one in Volume IX, which reinvents it
         from scratch with different tradeoffs.</div>
@@ -422,9 +425,9 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
       <span class="vtag">Vol. VII</span>
       <h2>Byzantine Fault Tolerance, Made Affordable</h2>
       <p class="vcite">Castro &amp; Liskov, "Practical Byzantine Fault Tolerance" (1999)</p>
-      <p>Volume II proved the <code>3f+1</code> bound in 1982, but the textbook solution needed
-        expensive digital signatures on every message. For 17 years, no one had made it cheap enough
-        to actually run.</p>
+      <p>Volume II proved the <code>3f+1</code> bound around 1980, but the known ways to meet it
+        either assumed synchronized clocks or signed every message expensively. For nearly two decades,
+        no one had made it cheap enough to actually run.</p>
       <p><strong>The idea:</strong> replace signatures with cheap shared-secret authentication for the
         common case (signatures return only for the rare leader-removal procedure), and use a three-phase
         protocol — Pre-Prepare, Prepare, Commit — so that even a lying leader can't slip through a bad value.</p>
@@ -439,13 +442,13 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
     <div class="vimg"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/cover_volume_8_small.webp" alt="Cover: The Quarries of the Roman Guilds" loading="lazy"></div>
     <div class="vbody">
       <span class="vtag">Vol. VIII</span>
-      <h2>The Math Was the Easy 10%</h2>
+      <h2>The Algorithm Was the Easy Part</h2>
       <p class="vcite">Chandra, Griesemer &amp; Redstone, "Paxos Made Live" (2007)</p>
       <p>Google built Chubby, a real production lock service, on Paxos. The algorithm on paper is a
         few pages. The engineering report is not.</p>
       <p><strong>The idea:</strong> production systems need things no algorithm paper mentions —
         <b>snapshots</b> (so the log doesn't grow forever), <b>checksums</b> (disks corrupt data
-        silently), <b>leases</b> (so a recovering node doesn't act like it's still in charge), and
+        silently), <b>leases</b> (so the leader can answer reads on its own without another round of consensus), and
         deterministic, replayable testing (because the bugs only appear under exact, rare timing).</p>
       <div class="whyitmatters"><b>Why it matters later:</b> this is the reality check for the whole
         series — a candid admission from the team that shipped one of these systems that the protocol
@@ -461,8 +464,9 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
       <span class="vtag">Vol. IX</span>
       <h2>Same Guarantees, Designed to Be Understood</h2>
       <p class="vcite">Ongaro &amp; Ousterhout, "In Search of an Understandable Consensus Algorithm" (2014)</p>
-      <p>Multi-Paxos (Volume VI) works, but even its authors admit it's notoriously hard to teach,
-        implement correctly, and reason about — the "gaps" it allows in the log make it flexible but slippery.</p>
+      <p>Paxos works, but it is notoriously hard to teach, implement correctly, and reason about — Raft's
+        authors spent almost a year understanding it, and the "gaps" Multi-Paxos allows in the log make it
+        flexible but slippery.</p>
       <p><strong>The idea (Raft):</strong> pick one leader per numbered "term." Forbid gaps — the log
         is written strictly in order. Make followers <em>refuse</em> any entry that doesn't match what
         came immediately before it in their own log, forcing the leader to walk backward until they
@@ -483,7 +487,7 @@ footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; co
       just fail (II), which sets a hard bound on how much honesty a group needs. If the network can be
       arbitrarily slow, perfect consensus is provably impossible (III) — unless you assume it eventually
       calms down (IV), which real networks do. Given that assumption, Paxos (V) shows how to agree on
-      one value safely, by way of overlapping majorities. Multi-Paxos (VI) turns that into a full log.
+      one value safely, by way of overlapping majorities. Viewstamped Replication (VI) runs a full log behind one stable leader, the shape of Multi-Paxos.
       PBFT (VII) brings back Byzantine tolerance from Volume II, affordably. Paxos Made Live (VIII) is
       the reminder that shipping this is mostly not the algorithm. And Raft (IX) re-derives the same
       guarantees as VI, designed from day one so a human can actually hold the whole thing in their head.</p>
