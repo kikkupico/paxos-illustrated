@@ -1,6 +1,6 @@
 # Distributed Algorithms of Ancient Greece
 
-*Nine volumes, in the corrected recension*
+*Nine volumes, fully illustrated*
 
 ---
 
@@ -73,7 +73,7 @@ The curse is not defeated. It is out-waited. Every parliament in the volumes tha
 
 ---
 
-## Volume V: The Synod of the Part-Time Parliament
+## Volume V: The Part-time Parliament
 **(Lamport, "The Part-Time Parliament," 1998; "Paxos Made Simple," 2001)**
 
 On the isle of Paxos, civic life was a farce. Legislators were part-time merchants who wandered out of the chamber whenever a boar invaded the vineyard. Messengers were fond of retsina and routinely mislaid dispatches.
@@ -82,7 +82,7 @@ General Phineas proposed a rite of two rounds for passing a single decree:
 
 **Phase 1 — The Promise.** A proposer shouts a ballot number across the agora: *"Promise to ignore all lesser ballots, and tell me every oath you have already sworn."* If a majority of legislators assent and report their oaths, he holds a quorum.
 
-**Phase 2 — The Carve.** Here lies the whole difficulty, and here the earlier recension erred:
+**Phase 2 — The Carve.** Here lies the whole difficulty:
 
 > If the returned slates contain **any** prior oaths, the proposer must abandon his own ambition and propose the value of the oath bearing the **highest ballot number** among them. Not the first reported. Not the oldest. Not whichever seems most reasonable. The **highest-numbered**.
 >
@@ -147,29 +147,10 @@ Disillusioned by the ceremonies of Volume VI — the standing consul, the holes 
 They kept the geometry and discarded the freedoms:
 
 - **One Abbot per Reign.** Not "one Abbot." The monastery guarantees at most one Abbot per numbered **reign**, and a deposed Abbot on the far side of a storm may go on believing he rules for some time. He is harmless, because his reign number is stale and no monk with a higher number will transcribe from him. The reign number, not the man, is what carries authority.
-- **The Obedient but Suspicious Scribe.** Monks do not blindly transcribe — and this is the load-bearing correction to the earlier recension. Every dispatch from the Abbot names the *preceding* line and the reign that carved it. If a monk's scroll does not match at that line, he **refuses the dispatch**, and the Abbot must walk backward line by line until they find common ground. That refusal is precisely the mechanism that keeps every scroll in the monastery identical. A monastery of obedient scribes would diverge by the second storm.
+- **The Obedient but Suspicious Scribe.** Monks do not blindly transcribe. Every dispatch from the Abbot names the *preceding* line and the reign that carved it. If a monk's scroll does not match at that line, he **refuses the dispatch**, and the Abbot must walk backward line by line until they find common ground. That refusal is precisely the mechanism that keeps every scroll in the monastery identical. A monastery of obedient scribes would diverge by the second storm.
 - **No Gaps.** The Abbot writes sequentially into one unbroken scroll. Where Paxos permits line 7 before line 5, Raft forbids it. The cost is throughput; the gain is that a monk's scroll length alone certifies everything in it.
 - **The Election Restriction.** No monk may be raised to Abbot unless his scroll is at least as current as a majority's. This is how the monastery avoids ever needing to un-carve a committed decree — it simply never elects a man who would have to.
 - **The Heartbeat Bell and the Lots.** The Abbot rings at fixed intervals. If the bell goes silent, sand-glasses empty, an interregnum is declared, and monks draw lots with randomized egg-timers — so that two candidates rarely split the vote twice running.
 - **Scraping the Ink.** A deposed Abbot whose scroll diverges has his erroneous lines razored away. The reigning Abbot never scrapes his own.
 
 Over the harbour, a sign: *"Paxos was devised by divine geometers to torture mortal men. Raft was written for mortals who wish to understand their own laws."*
-
----
-
-## Editor's Note on the Earlier Recension
-
-Four passages in the previous edition inverted the very thing their volume existed to teach, and are corrected above:
-
-| Volume | The error | Why it mattered |
-|---|---|---|
-| I | Claimed the abacus proves *which event truly happened first* | It proves ancestry only. Concurrent events are unordered, and the shepherds' original feud is the one case logical clocks cannot settle. |
-| V | "Propose the old decree" when several oaths return | The rule is the **highest-numbered** oath. Any other choice is a safety violation, and this single clause is most of why Paxos is hard. |
-| VII | Credited `3f+1` to the inquisitors, and had them exchanging signatures with everyone | The bound is Volume II's, five hundred years older. The inquisitors' contribution was *removing* those signatures from the common path. |
-| IX | "Followers never debate; they blindly transcribe" | Backwards. The follower's refusal on a mismatched preceding line is what enforces log agreement. |
-
-Two volumes were added where the chronology had a hole. **Volume II** gives `3f+1` its true authors, without whom Volume VII appears to invent it. **Volume IV** supplies the escape from the Delphic Curse; without it, Volume V appears to have defeated an impossibility proof rather than negotiated around it.
-
-**Volume VI** was added because the reformation of Volume IX attacks freedoms — a standing consul, gaps in the ledger — that no earlier volume had introduced. It also restores the granary clerk of 1988 to his place in the lineage, which is awkward but necessary: one of the inquisitors of Volume VII had already drafted a primary-based constitution a decade earlier, and it is the closer ancestor of the monastery than Paxos is.
-
-*Volumes on the casting of lots, on the catalogue of unreliable seers, on the three gifts that cannot all be held, and on agreement by counting labour rather than delegates remain unwritten.*

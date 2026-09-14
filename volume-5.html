@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Part-Time Parliament — An Illustrated Chronicle of Paxos</title>
-<link rel="stylesheet" href="assets/paxos-comics.css">
+<link rel="stylesheet" href="assets/paxos-illustrated.css">
 <style>
 a{color:var(--aegean-d)}
 
@@ -349,7 +349,7 @@ nav.toc li{margin:3px 0; -webkit-column-break-inside:avoid; break-inside:avoid}
 <nav class="series-nav">
   <div class="series-nav-inner">
     <a href="index.html" class="nav-back">← All Nine Volumes</a>
-    <span class="nav-current">Volume V: The Synod of the Part-Time Parliament</span>
+    <span class="nav-current">Volume V: The Part-time Parliament</span>
     <div class="nav-arrows">
       <a href="volume-4.html" class="nav-arrow">‹ Vol IV</a>
       <a href="volume-6.html" class="nav-arrow">Vol VI ›</a>
@@ -361,8 +361,8 @@ nav.toc li{margin:3px 0; -webkit-column-break-inside:avoid; break-inside:avoid}
 
 <!-- ================= COVER ================= -->
 <header class="cover">
-  <div class="kicker">Paxos Comics · Distributed Classics · No. 1</div><br>
-  <div class="frame-cover"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/cover_small.webp" alt="Comic book cover: The Part-Time Parliament by Leslie Lamport. A marble parliament chamber on a hilltop of a Greek island, legislators wandering the paths with ledgers, ships in the harbor."></div>
+  <div class="kicker">Paxos Illustrated · Distributed Algorithms of Ancient Greece · Volume V</div><br>
+  <div class="frame-cover"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/cover_small.webp" alt="Cover: The Part-Time Parliament by Leslie Lamport. A marble parliament chamber on a hilltop of a Greek island, legislators wandering the paths with ledgers, ships in the harbor."></div>
   <p class="sub display">An illustrated chronicle of the Paxon Parliament — the ancient legislative
   system whose protocol became <strong>Paxos</strong>, the foundation of modern fault-tolerant
   distributed computing.</p>
@@ -384,16 +384,8 @@ nav.toc li{margin:3px 0; -webkit-column-break-inside:avoid; break-inside:avoid}
     <li><a href="#w-names">⚱ The Hidden Names</a></li>
     <li><a href="#appendix">Appendix: Proof of Consistency</a></li>
     <li><a href="#refs">References</a></li>
-    <li><a href="protocols.html">⚱ The Four Rulebooks (all-in-one simulator)</a></li>
   </ol>
 </nav>
-
-<div class="narr" style="max-width:660px">
-  <b>New:</b> <a href="protocols.html">⚱ The Four Rulebooks</a> — an all-in-one simulator that runs the
-  <i>preliminary</i>, <i>basic</i> and <i>complete</i> Synod protocols and the full multi-decree
-  Parliament protocol in one Chamber, with the same five priests. Change nothing but the rulebook and
-  watch what each step of the derivation actually bought.
-</div>
 
 <!-- ================= PREFACE ================= -->
 <section id="preface">
@@ -475,7 +467,7 @@ nav.toc li{margin:3px 0; -webkit-column-break-inside:avoid; break-inside:avoid}
   <div class="prose"><p>and then left for a banquet, whereupon a different group of legislators entered the Chamber and, knowing nothing about what had just happened, passed the conflicting decree</p></div>
   <div class="decree bad"><b>37:</b> Freedom of artistic expression is guaranteed</div>
   <figure class="panel">
-    <div class="frame"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/conflict_small.webp" alt="Two-panel comic: one group passes decree 37 forbidding temple painting and leaves for a banquet; a second group enters and passes a conflicting decree 37 guaranteeing artistic expression."></div>
+    <div class="frame"><img src="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/conflict_small.webp" alt="Two-panel illustration: one group passes decree 37 forbidding temple painting and leaves for a banquet; a second group enters and passes a conflicting decree 37 guaranteeing artistic expression."></div>
     <figcaption>DISASTER! TWO GROUPS, ONE DECREE NUMBER, TWO CONTRADICTORY LAWS. THE PROTOCOL MUST MAKE THIS IMPOSSIBLE.</figcaption>
   </figure>
   <div class="prose">
@@ -1123,11 +1115,6 @@ people that the protocol was correct if, in their proof, they allowed any priest
   </div>
   <aside class="fn"><b>12.</b> However, many centuries were to pass before a rigorous proof of this result was given.
   [Fischer&nbsp;et&nbsp;al. 1985].</aside>
-
-  <div class="narr" style="max-width:660px">Three rulebooks now stand behind you — <i>preliminary</i>,
-  <i>basic</i>, <i>complete</i> — each a restriction of the one before it. To run all three side by side
-  in a single Chamber, with the same five priests wandering out at the same moments, see the companion
-  reel: <a href="protocols.html">⚱ The Four Rulebooks</a>.</div>
 </section>
 
 <hr class="meander">
@@ -1175,12 +1162,6 @@ people that the protocol was correct if, in their proof, they allowed any priest
   <div class="prose">
     <p>The consistency and progress properties of the parliamentary protocol follow immediately from the corresponding properties of the Synod protocol from which it was derived. To our knowledge, the Paxons never bothered writing a precise description of the parliamentary protocol because it was so easily derived from the Synod protocol.</p>
   </div>
-
-  <div class="narr" style="max-width:660px">The fourth and last rulebook. In
-  <a href="protocols.html">⚱ The Four Rulebooks</a> you can send the very same citizen’s request to a
-  Synod and to this Parliament and watch the difference: the Synod chooses one decree in its lifetime,
-  because <var>B</var>3 forces it on every later ballot; Parliament passes decree after decree, three
-  messages apiece.</div>
 
   <h3 id="3-2-properties-of-the-protocol" class="sect"><a href="#3-2-properties-of-the-protocol" class="hlink">3.2 · Properties of the Protocol</a></h3>
   <h4 id="3-2-1-the-ordering-of-decrees" class="subsect"><a href="#3-2-1-the-ordering-of-decrees" class="hlink">3.2.1 · The Ordering of Decrees</a></h4>

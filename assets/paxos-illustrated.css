@@ -1,4 +1,4 @@
-/* ============ PAXOS COMICS design system ============ */
+/* ============ PAXOS ILLUSTRATED design system ============ */
 :root{
   --ink:#1c1512;
   --paper:#f2e7cd;
@@ -78,7 +78,7 @@ code{font-family:Menlo,Consolas,monospace; font-size:.85em; background:rgba(28,2
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 36 18'><path d='M0 2h32v14h-8V8h-8v8h-4V6h12M0 16h8' fill='none' stroke='%231c1512' stroke-width='2.6'/></svg>");
   background-repeat:repeat-x; background-size:36px 18px; opacity:.75}
 
-/* ---------- comic panels ---------- */
+/* ---------- illustrated panels ---------- */
 figure.panel{margin:34px auto; padding:0; max-width:840px; position:relative}
 figure.panel .frame{
   border:4px solid var(--ink); background:#fff; overflow:hidden;

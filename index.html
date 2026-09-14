@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Distributed Algorithms of Ancient Greece — Nine Volumes in the Corrected Recension</title>
-<link rel="stylesheet" href="assets/paxos-comics.css">
+<title>Distributed Algorithms of Ancient Greece — The Nine Volumes</title>
+<link rel="stylesheet" href="assets/paxos-illustrated.css">
 <style>
 .page {
   position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 0 24px 100px;
@@ -147,7 +147,7 @@ p.series-desc {
   background: var(--terra); color: #fff;
 }
 
-.vol-badge-recension {
+.vol-status {
   font-family: Optima, 'Gill Sans', sans-serif; font-size: .72rem;
   color: #7b6a52; text-transform: uppercase; letter-spacing: .06em;
 }
@@ -185,88 +185,6 @@ p.card-cite {
 
 .action-arrow { font-size: 1.1rem; }
 
-.editor-note {
-  margin: 60px auto 40px;
-  background: var(--paper-hi);
-  border: 4px solid var(--ink);
-  box-shadow: 8px 9px 0 var(--shadow);
-  padding: 34px 38px;
-}
-
-@media (max-width: 600px) {
-  .editor-note { padding: 22px 18px; }
-}
-
-.editor-note h2 {
-  margin: 0 0 10px; font-family: Optima, 'Gill Sans', sans-serif;
-  font-size: 1.65rem; letter-spacing: .05em; text-transform: uppercase;
-  color: var(--ink);
-}
-
-.editor-note p.ed-sub {
-  margin: 0 0 24px; font-style: italic; color: #5c4d39; font-size: .98rem;
-}
-
-.table-wrap { overflow-x: auto; margin: 24px 0; }
-
-table.recension-table {
-  width: 100%; border-collapse: collapse;
-  font-size: .92rem; line-height: 1.45;
-  background: #fff; border: 3px solid var(--ink);
-  box-shadow: 4px 4px 0 var(--shadow);
-}
-
-table.recension-table th {
-  background: var(--ink); color: var(--paper-hi);
-  font-family: Optima, 'Gill Sans', sans-serif; text-transform: uppercase;
-  letter-spacing: .08em; padding: 10px 14px; text-align: left; font-size: .82rem;
-}
-
-table.recension-table td {
-  padding: 12px 14px; border-bottom: 1px solid rgba(28,21,18,.15);
-  vertical-align: top;
-}
-
-table.recension-table tr:last-child td { border-bottom: 0; }
-
-table.recension-table tr:nth-child(even) { background: rgba(242,231,205,.25); }
-
-td.col-vol { font-weight: 700; font-family: Optima, 'Gill Sans', sans-serif; width: 85px; color: var(--terra); }
-
-.commentary {
-  margin: 24px 0 16px; font-size: .96rem; line-height: 1.6; color: #362c20;
-}
-
-.unwritten-box {
-  margin: 26px 0 0; padding: 14px 18px;
-  background: rgba(193,145,43,.14); border-left: 4px solid var(--gold);
-  font-style: italic; font-size: .94rem;
-}
-
-.companion-banner {
-  margin: 50px auto 0; max-width: 880px;
-  background: linear-gradient(180deg, var(--caption), #f5d452);
-  border: 3px solid var(--ink); border-radius: 4px;
-  padding: 24px 30px; box-shadow: 6px 7px 0 var(--shadow);
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px;
-}
-
-.companion-text h3 {
-  margin: 0 0 4px; font-family: Optima, 'Gill Sans', sans-serif;
-  font-size: 1.25rem; text-transform: uppercase; letter-spacing: .04em;
-}
-
-.companion-text p { margin: 0; font-size: .93rem; color: #3b3021; }
-
-.companion-btn {
-  background: var(--ink); color: var(--paper-hi); border: 2px solid var(--ink);
-  padding: 9px 20px; font-family: Optima, 'Gill Sans', sans-serif;
-  font-size: .88rem; font-weight: 700; text-decoration: none; letter-spacing: .06em;
-  text-transform: uppercase; box-shadow: 3px 3px 0 var(--shadow); white-space: nowrap;
-}
-
-.companion-btn:hover { background: var(--terra); color: #fff; transform: translateY(-1px); }
-
 footer.colophon {
   margin: 70px auto 0; text-align: center; font-size: .88rem; color: #62533e;
 }
@@ -274,30 +192,27 @@ footer.colophon {
 </head>
 <body>
 <div class="site-bar">
-  <span>Paxos Comics</span> &nbsp;·&nbsp; Distributed Algorithms of Ancient Greece &nbsp;·&nbsp; Complete 9-Volume Recension
+  <span>Paxos Illustrated</span> &nbsp;·&nbsp; Distributed Algorithms of Ancient Greece &nbsp;·&nbsp; The Complete Nine Volumes
 </div>
 
 <div class="page">
   <header class="hero">
-    <div class="kicker">Classic Distributed Systems Series · Corrected Recension</div>
+    <div class="kicker">Classic Distributed Systems Series</div>
     <h1 class="series-title">Distributed Algorithms<br>of Ancient Greece</h1>
-    <p class="series-sub">Nine volumes, in the corrected recension</p>
+    <p class="series-sub">Nine volumes, fully illustrated</p>
     <p class="series-desc">
       From the temporal anarchy of the Aegean sundials to the unshakeable vows of the Raft monastery:
       nine foundational milestones in distributed consensus, allegorized as ancient Greek chronicles.
     </p>
     <p class="series-desc">
-      Every volume is now written out in full — retold from the original papers in the manner of Lamport’s
-      <em>Part-Time Parliament</em>, with the theorems, protocols and measurements intact. Volume V is fully
-      illustrated; the panels of the other eight are still being painted.
+      Every volume is written out in full and fully illustrated — retold from the original papers in the
+      manner of Lamport’s <em>Part-Time Parliament</em>, with the theorems, protocols and measurements intact.
     </p>
 
     <nav class="quick-nav">
       <a href="quickread.html" class="quick-btn featured">🔰 New Here? Start With the Quick Read</a>
       <a href="#volumes-grid" class="quick-btn">🏛️ The Nine Volumes</a>
-      <a href="volume-5.html" class="quick-btn">✨ Vol V: The Synod (Illustrated)</a>
-      <a href="protocols.html" class="quick-btn">⚙️ Protocol Simulator</a>
-      <a href="#recension-notes" class="quick-btn">📜 Editor’s Recension Note</a>
+      <a href="volume-5.html" class="quick-btn">✨ Vol V: The Part-time Parliament</a>
     </nav>
   </header>
 
@@ -318,12 +233,12 @@ footer.colophon {
         <div class="card-body">
           <div class="vol-header-row">
             <span class="vol-tag">Vol. I</span>
-            <span class="vol-badge-recension" style="color:var(--terra); font-weight:700">★ Available</span>
+            <span class="vol-status" style="color:var(--terra); font-weight:700">★ Available</span>
           </div>
           <h3 class="card-title">The Disordered Sundials of the Aegean</h3>
-          <p class="card-cite">Lamport (1978); Fidge &amp; Mattern (1988)</p>
+          <p class="card-cite">Based on “Time, Clocks, and the Ordering of Events in a Distributed System” by Leslie Lamport</p>
           <div class="card-action">
-            <span class="action-label active">📖 Read Full Illustrated Comic</span>
+            <span class="action-label active">📖 Read the Volume</span>
             <span class="action-arrow" style="color:var(--terra)">→</span>
           </div>
         </div>
@@ -340,12 +255,12 @@ footer.colophon {
         <div class="card-body">
           <div class="vol-header-row">
             <span class="vol-tag">Vol. II</span>
-            <span class="vol-badge-recension" style="color:var(--terra); font-weight:700">★ Available</span>
+            <span class="vol-status" style="color:var(--terra); font-weight:700">★ Available</span>
           </div>
           <h3 class="card-title">The Generals Before the Walls</h3>
-          <p class="card-cite">Pease, Shostak &amp; Lamport (1980, 1982)</p>
+          <p class="card-cite">Based on “The Byzantine Generals Problem” by Leslie Lamport, Robert Shostak &amp; Marshall Pease</p>
           <div class="card-action">
-            <span class="action-label active">📖 Read Full Illustrated Comic</span>
+            <span class="action-label active">📖 Read the Volume</span>
             <span class="action-arrow" style="color:var(--terra)">→</span>
           </div>
         </div>
@@ -362,12 +277,12 @@ footer.colophon {
         <div class="card-body">
           <div class="vol-header-row">
             <span class="vol-tag">Vol. III</span>
-            <span class="vol-badge-recension" style="color:var(--terra); font-weight:700">★ Available</span>
+            <span class="vol-status" style="color:var(--terra); font-weight:700">★ Available</span>
           </div>
           <h3 class="card-title">The Curse of the Sleeping Shepherd</h3>
-          <p class="card-cite">Fischer, Lynch &amp; Paterson (1985)</p>
+          <p class="card-cite">Based on “Impossibility of Distributed Consensus with One Faulty Process” by Michael Fischer, Nancy Lynch &amp; Michael Paterson</p>
           <div class="card-action">
-            <span class="action-label active">📖 Read Full Illustrated Comic</span>
+            <span class="action-label active">📖 Read the Volume</span>
             <span class="action-arrow" style="color:var(--terra)">→</span>
           </div>
         </div>
@@ -384,34 +299,34 @@ footer.colophon {
         <div class="card-body">
           <div class="vol-header-row">
             <span class="vol-tag">Vol. IV</span>
-            <span class="vol-badge-recension" style="color:var(--terra); font-weight:700">★ Available</span>
+            <span class="vol-status" style="color:var(--terra); font-weight:700">★ Available</span>
           </div>
           <h3 class="card-title">The Passable Season</h3>
-          <p class="card-cite">Dwork, Lynch &amp; Stockmeyer (1988)</p>
+          <p class="card-cite">Based on “Consensus in the Presence of Partial Synchrony” by Cynthia Dwork, Nancy Lynch &amp; Larry Stockmeyer</p>
           <div class="card-action">
-            <span class="action-label active">📖 Read Full Illustrated Comic</span>
+            <span class="action-label active">📖 Read the Volume</span>
             <span class="action-arrow" style="color:var(--terra)">→</span>
           </div>
         </div>
       </a>
 
-      <!-- Volume V (FEATURED COMPLETE EDITION) -->
+      <!-- Volume V (FEATURED) -->
       <a href="volume-5.html" class="cover-card vol-featured">
         <div class="card-img-wrap">
           <picture>
             <source srcset="https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/cover_small.webp" type="image/webp">
-            <img src="images/cover.png" alt="Volume V: The Part-Time Parliament" loading="lazy">
+            <img src="images/cover.png" alt="Volume V: The Part-time Parliament" loading="lazy">
           </picture>
         </div>
         <div class="card-body">
           <div class="vol-header-row">
-            <span class="vol-tag featured">Vol. V · Complete Issue</span>
-            <span class="vol-badge-recension" style="color:var(--terra); font-weight:700">★ Available</span>
+            <span class="vol-tag featured">Vol. V · Verbatim</span>
+            <span class="vol-status" style="color:var(--terra); font-weight:700">★ Available</span>
           </div>
-          <h3 class="card-title">The Synod of the Part-Time Parliament</h3>
-          <p class="card-cite">Lamport (1998, 2001)</p>
+          <h3 class="card-title">The Part-time Parliament</h3>
+          <p class="card-cite">“The Part-time Parliament” by Leslie Lamport, verbatim!</p>
           <div class="card-action">
-            <span class="action-label active">📖 Read Full Illustrated Comic</span>
+            <span class="action-label active">📖 Read the Volume</span>
             <span class="action-arrow" style="color:var(--terra)">→</span>
           </div>
         </div>
@@ -428,12 +343,12 @@ footer.colophon {
         <div class="card-body">
           <div class="vol-header-row">
             <span class="vol-tag">Vol. VI</span>
-            <span class="vol-badge-recension" style="color:var(--terra); font-weight:700">★ Available</span>
+            <span class="vol-status" style="color:var(--terra); font-weight:700">★ Available</span>
           </div>
           <h3 class="card-title">The Ledger of Many Decrees</h3>
-          <p class="card-cite">Oki &amp; Liskov (1988); Multi-Paxos</p>
+          <p class="card-cite">Based on “Viewstamped Replication” by Brian Oki &amp; Barbara Liskov</p>
           <div class="card-action">
-            <span class="action-label active">📖 Read Full Illustrated Comic</span>
+            <span class="action-label active">📖 Read the Volume</span>
             <span class="action-arrow" style="color:var(--terra)">→</span>
           </div>
         </div>
@@ -450,12 +365,12 @@ footer.colophon {
         <div class="card-body">
           <div class="vol-header-row">
             <span class="vol-tag">Vol. VII</span>
-            <span class="vol-badge-recension" style="color:var(--terra); font-weight:700">★ Available</span>
+            <span class="vol-status" style="color:var(--terra); font-weight:700">★ Available</span>
           </div>
           <h3 class="card-title">The Citadel of Iron Quorums</h3>
-          <p class="card-cite">Castro &amp; Liskov (1999)</p>
+          <p class="card-cite">Based on “Practical Byzantine Fault Tolerance” by Miguel Castro &amp; Barbara Liskov</p>
           <div class="card-action">
-            <span class="action-label active">📖 Read Full Illustrated Comic</span>
+            <span class="action-label active">📖 Read the Volume</span>
             <span class="action-arrow" style="color:var(--terra)">→</span>
           </div>
         </div>
@@ -472,12 +387,12 @@ footer.colophon {
         <div class="card-body">
           <div class="vol-header-row">
             <span class="vol-tag">Vol. VIII</span>
-            <span class="vol-badge-recension" style="color:var(--terra); font-weight:700">★ Available</span>
+            <span class="vol-status" style="color:var(--terra); font-weight:700">★ Available</span>
           </div>
           <h3 class="card-title">The Quarries of the Roman Guilds</h3>
-          <p class="card-cite">Chandra, Griesemer &amp; Redstone (2007)</p>
+          <p class="card-cite">Based on “Paxos Made Live — An Engineering Perspective” by Tushar Chandra, Robert Griesemer &amp; Joshua Redstone</p>
           <div class="card-action">
-            <span class="action-label active">📖 Read Full Illustrated Comic</span>
+            <span class="action-label active">📖 Read the Volume</span>
             <span class="action-arrow" style="color:var(--terra)">→</span>
           </div>
         </div>
@@ -494,12 +409,12 @@ footer.colophon {
         <div class="card-body">
           <div class="vol-header-row">
             <span class="vol-tag">Vol. IX</span>
-            <span class="vol-badge-recension" style="color:var(--terra); font-weight:700">★ Available</span>
+            <span class="vol-status" style="color:var(--terra); font-weight:700">★ Available</span>
           </div>
           <h3 class="card-title">The Reformation of the Raft Monks</h3>
-          <p class="card-cite">Ongaro &amp; Ousterhout (2014)</p>
+          <p class="card-cite">Based on “In Search of an Understandable Consensus Algorithm” by Diego Ongaro &amp; John Ousterhout</p>
           <div class="card-action">
-            <span class="action-label active">📖 Read Full Illustrated Comic</span>
+            <span class="action-label active">📖 Read the Volume</span>
             <span class="action-arrow" style="color:var(--terra)">→</span>
           </div>
         </div>
@@ -508,70 +423,10 @@ footer.colophon {
     </div>
   </section>
 
-  <!-- ================= COMPANION CALLOUT ================= -->
-  <aside class="companion-banner">
-    <div class="companion-text">
-      <h3>⚱ The Four Rulebooks: All-in-One Simulator</h3>
-      <p>Compare the Preliminary, Partial, Synodic, and Full Parliament protocols side-by-side in real-time execution.</p>
-    </div>
-    <a href="protocols.html" class="companion-btn">Launch Protocol Simulator →</a>
-  </aside>
-
-  <hr class="meander">
-
-  <!-- ================= EDITOR RECENSION NOTE ================= -->
-  <section id="recension-notes" class="editor-note">
-    <h2>Editor’s Note on the Earlier Recension</h2>
-    <p class="ed-sub">Four passages in the previous edition inverted the very thing their volume existed to teach, and are corrected in this recension:</p>
-
-    <div class="table-wrap">
-      <table class="recension-table">
-        <thead>
-          <tr>
-            <th>Volume</th>
-            <th>The Error in Previous Edition</th>
-            <th>Why It Mattered</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="col-vol">Vol. I</td>
-            <td>Claimed the abacus proves <em>which event truly happened first</em>.</td>
-            <td>It proves ancestry only. Concurrent events are unordered, and the shepherds’ original feud is the one case logical clocks cannot settle.</td>
-          </tr>
-          <tr>
-            <td class="col-vol">Vol. V</td>
-            <td>“Propose the old decree” when several oaths return.</td>
-            <td>The rule is the <strong>highest-numbered</strong> oath. Any other choice is a safety violation, and this single clause is most of why Paxos is hard.</td>
-          </tr>
-          <tr>
-            <td class="col-vol">Vol. VII</td>
-            <td>Credited <code>3f+1</code> to the inquisitors, and had them exchanging signatures with everyone.</td>
-            <td>The bound is Volume II’s, five hundred years older. The inquisitors’ contribution was <em>removing</em> those signatures from the common path.</td>
-          </tr>
-          <tr>
-            <td class="col-vol">Vol. IX</td>
-            <td>“Followers never debate; they blindly transcribe.”</td>
-            <td>Backwards. The follower’s refusal on a mismatched preceding line is what enforces log agreement.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="commentary">
-      <p>Two volumes were added where the chronology had a hole. <strong>Volume II</strong> gives <code>3f+1</code> its true authors, without whom Volume VII appears to invent it. <strong>Volume IV</strong> supplies the escape from the Delphic Curse; without it, Volume V appears to have defeated an impossibility proof rather than negotiated around it.</p>
-      <p><strong>Volume VI</strong> was added because the reformation of Volume IX attacks freedoms — a standing consul, gaps in the ledger — that no earlier volume had introduced. It also restores the granary clerk of 1988 to his place in the lineage, which is awkward but necessary: one of the inquisitors of Volume VII had already drafted a primary-based constitution a decade earlier, and it is the closer ancestor of the monastery than Paxos is.</p>
-    </div>
-
-    <div class="unwritten-box">
-      Volumes on the casting of lots, on the catalogue of unreliable seers, on the three gifts that cannot all be held, and on agreement by counting labour rather than delegates remain unwritten.
-    </div>
-  </section>
-
   <footer class="colophon">
     <hr class="meander">
     <p>
-      <strong>Paxos Comics</strong> · Preserving the ancient geometry of distributed systems.<br>
+      <strong>Paxos Illustrated</strong> · Preserving the ancient geometry of distributed systems.<br>
       Explore the full <a href="sources/README.md">Foundational Papers Archive</a> preserved in the local scriptorium.
     </p>
   </footer>

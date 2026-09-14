@@ -326,8 +326,8 @@ For the volume in this batch:
    a. In volume-N.html, delete the whole <div class="status-banner">…</div> block
       ("The Chronicle Is Complete — Illustrations Pending").
    b. In index.html, on that volume's card, make it match the Volume V card:
-      <span class="vol-badge-recension">Art Pending</span>
-        → <span class="vol-badge-recension" style="color:var(--terra); font-weight:700">★ Available</span>
+      <span class="vol-status">Art Pending</span>
+        → <span class="vol-status" style="color:var(--terra); font-weight:700">★ Available</span>
       <span class="action-label">Read the Chronicle</span>
         → <span class="action-label active">📖 Read Full Illustrated Comic</span>
       and give that card's <span class="action-arrow"> the attribute style="color:var(--terra)".
