@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why? — Distributed Algorithms of Ancient Greece</title>
+<link rel="stylesheet" href="assets/paxos-illustrated.css">
+<style>
+.page { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 0 20px 100px; }
+
+a { color: var(--aegean-d); text-decoration: underline; text-underline-offset: 3px; }
+
+.series-nav-inner {
+  max-width: 880px; margin: 0 auto; display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 10px;
+}
+
+.meander {
+  height: 18px; margin: 34px auto; max-width: 480px; border: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 36 18'><path d='M0 2h32v14h-8V8h-8v8h-4V6h12M0 16h8' fill='none' stroke='%231c1512' stroke-width='2.6'/></svg>");
+  background-repeat: repeat-x; background-size: 36px 18px; opacity: .75;
+}
+
+header.hero { padding: 44px 0 6px; text-align: center; }
+
+.kicker {
+  font-family: Optima, 'Gill Sans', sans-serif; font-size: .78rem; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--terra); margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-family: Optima, 'Gill Sans', 'Trebuchet MS', sans-serif; font-weight: 700;
+  letter-spacing: .01em; font-size: clamp(1.9rem, 5vw, 2.7rem); line-height: 1.15; margin: 0 0 10px;
+  text-shadow: 2px 2px 0 rgba(255,255,255,.6);
+}
+
+.note {
+  max-width: 66ch; margin: 10px auto 0; background: var(--marble);
+  border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--shadow);
+  padding: 30px 34px;
+}
+
+.note p { margin: 0 0 1.1em; font-size: 1.04rem; line-height: 1.7; color: #2e251a; }
+
+.note p:last-child { margin-bottom: 0; }
+
+.note .aside {
+  margin-top: 1.6em; padding-top: 1.1em; border-top: 2px dashed rgba(28,21,18,.2);
+  font-size: .96rem; font-style: italic; color: #4a3c28;
+}
+
+@media (max-width: 560px) {
+  .note { padding: 22px 18px; }
+}
+
+.quick-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 36px 0 6px; }
+
+.quick-btn {
+  display: inline-block; background: var(--marble); border: 3px solid var(--ink);
+  padding: 9px 16px; font-family: Optima, 'Gill Sans', sans-serif; font-size: .84rem;
+  font-weight: 600; letter-spacing: .02em; text-decoration: none; color: var(--ink);
+  box-shadow: 4px 4px 0 var(--shadow); transition: transform .12s;
+}
+
+.quick-btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--shadow); color: var(--terra); }
+
+footer.colophon { margin: 70px auto 0; text-align: center; font-size: .88rem; color: #62533e; }
+</style>
+</head>
+<body>
+<div class="site-bar">
+  <span>Paxos Illustrated</span> &nbsp;·&nbsp; Distributed Algorithms of Ancient Greece &nbsp;·&nbsp; The Complete Nine Volumes
+</div>
+<nav class="series-nav">
+  <div class="series-nav-inner">
+    <a href="index.html" class="nav-back">← All Nine Volumes</a>
+    <span class="nav-current">Why?</span>
+    <a href="quickread.html">Start Here →</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <header class="hero">
+    <div class="kicker">How This Project Began</div>
+    <h1>Why?</h1>
+  </header>
+
+  <hr class="meander">
+
+  <article class="note">
+    <p>I recently came across Turing Award winner and the father of distributed computing, Leslie Lamport’s
+    <a href="volume-5.html">original Paxos paper</a>. I was completely blown away by it! It describes one of
+    the most important and most widely used distributed computing algorithms but does so in Greek allegory.
+    Yes, the algorithm isn’t described with servers, databases and networks — it’s about synods, priests,
+    ledgers and such. Eventually, Lamport had to give in and publish his algorithm with computer terms
+    skipping the allegory. But he managed to sneak in one of the coolest puns I’ve read — he said he had to
+    explain his algorithm in simple English because the original presentation was Greek to some.</p>
+
+    <p>I enjoyed the original paper but struggled to understand it not because it was written in allegory
+    but because I wasn’t familiar with the prerequisite readings. Out of the blue, I asked myself what if all
+    the related papers were presented in Greek allegory? This project was born!</p>
+
+    <p class="aside">Note that I wrote only this page’s content by myself — the original Paxos paper is used
+    verbatim. The other papers were authored by LLMs — I think LLMs can do such literary style transfer
+    better than I can. I remained just the audience and learner for the text and a curator for the
+    images.</p>
+  </article>
+
+  <nav class="quick-nav">
+    <a href="quickread.html" class="quick-btn">🔰 Start With the Quick Read</a>
+    <a href="index.html#volumes-grid" class="quick-btn">🏛️ The Nine Volumes</a>
+  </nav>
+
+  <footer class="colophon">
+    <hr class="meander">
+    <p><strong>Paxos Illustrated</strong> · Preserving the ancient geometry of distributed systems.</p>
+  </footer>
+</div>
+</body>
+</html>
