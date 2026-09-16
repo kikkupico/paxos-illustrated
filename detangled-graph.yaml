@@ -377,7 +377,7 @@ nodes:
     group: vol5_group
     parents: [vol4_twist]
     content: |
-      ![The island of Paxos, a thriving mercantile centre](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/island_small.webp)
+      ![The island of Paxos, a thriving mercantile centre](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol5_island_small.webp)
 
       Given **the passable season**'s promise that storms eventually end,
       the merchants of Paxos need an actual working parliament, not just a
@@ -397,7 +397,7 @@ nodes:
     emoji: "📜"
     group: vol5_group
     content: |
-      ![Step one: a priest chooses a ballot number and messengers fan out with NextBallot scrolls](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/nextballot_small.webp)
+      ![Step one: a priest chooses a ballot number and messengers fan out with NextBallot scrolls](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol5_nextballot_small.webp)
 
       A priest answers **the island of Paxos**'s riddle in two phases. First,
       he chooses a ballot number and sends NextBallot(b) scrolls asking a
@@ -419,7 +419,7 @@ nodes:
     emoji: "🔗"
     group: vol5_group
     content: |
-      ![Voted scrolls race back to be tallied](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/voting_small.webp)
+      ![Voted scrolls race back to be tallied](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol5_voting_small.webp)
 
       **NextBallot and LastVote**'s promise only prevents disaster because of
       one quiet geometric fact never stated aloud in the chronicle itself:
@@ -439,7 +439,7 @@ nodes:
     emoji: "🌀"
     group: vol5_group
     content: |
-      ![Legislator returns from six months abroad and is instantly made president, alphabetically](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/president_small.webp)
+      ![Legislator returns from six months abroad and is instantly made president, alphabetically](https://pub-360f66626b3142aca8d9da5501908e1f.r2.dev/vol5_president_small.webp)
 
       **Quorum overlap** guarantees Paxos never contradicts itself, but the
       chronicle's own farcical disasters show what it doesn't guarantee: a

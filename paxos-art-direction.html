@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Volume V Art Direction — Paxos Illustrated</title>
+<link rel="stylesheet" href="assets/paxos-illustrated.css">
+<style>
+  .wrap{position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:28px 20px 120px}
+  h1,h2,h3,h4{font-family:Optima,'Gill Sans','Trebuchet MS',sans-serif; letter-spacing:.02em; line-height:1.2}
+  h1{font-size:2.5rem; margin:.2em 0 .1em}
+  h2{font-size:1.75rem; margin:2.4em 0 .4em; padding-top:.4em; border-top:3px solid var(--ink)}
+  h2 .num{display:inline-block; min-width:1.6em; color:var(--terra)}
+  h3{font-size:1.25rem; margin:1.8em 0 .4em}
+  h4{font-size:1.02rem; margin:1.2em 0 .3em; text-transform:uppercase; letter-spacing:.07em; color:var(--aegean-d)}
+  .kicker{font-family:Optima,'Gill Sans',sans-serif; text-transform:uppercase; letter-spacing:.14em; font-size:.8rem; color:var(--terra)}
+  .lede{font-size:1.14rem; max-width:78ch}
+  .muted{color:#5b4f45}
+  small, .small{font-size:.86rem}
+
+  /* sticky section nav */
+  .adnav{position:sticky; top:0; z-index:20; background:var(--ink); color:var(--paper-hi); border-bottom:3px solid var(--gold);
+       font-family:Optima,'Gill Sans',sans-serif; font-size:.8rem; letter-spacing:.05em}
+  .adnav-inner{max-width:1120px; margin:0 auto; padding:8px 20px; display:flex; gap:6px 14px; flex-wrap:wrap; align-items:center}
+  .adnav a{color:var(--paper-hi); text-decoration:none; white-space:nowrap}
+  .adnav a:hover{color:var(--caption)}
+  .adnav .progress{margin-left:auto; color:var(--caption); white-space:nowrap}
+
+  /* boxes */
+  .box{background:var(--paper-hi); border:2px solid var(--ink); border-radius:6px; padding:16px 20px; margin:16px 0; box-shadow:4px 4px 0 var(--shadow)}
+  .box.gold{border-color:var(--gold); box-shadow:4px 4px 0 rgba(193,145,43,.35)}
+  .box.terra{border-color:var(--terra); box-shadow:4px 4px 0 rgba(191,74,38,.3)}
+  .box h3:first-child,.box h4:first-child{margin-top:0}
+  .grid{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .grid.two{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+  .card{background:var(--paper-hi); border:1.5px solid var(--ink); border-radius:6px; padding:14px 16px; position:relative}
+  .card h4{margin-top:0}
+  .card.rec{border:2.5px solid var(--olive); box-shadow:0 0 0 3px rgba(102,114,44,.18)}
+  .badge{display:inline-block; font-family:Optima,'Gill Sans',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+         padding:2px 8px; border-radius:20px; border:1.5px solid currentColor; vertical-align:middle; margin-left:6px}
+  .badge.rec{color:var(--olive-d); background:rgba(102,114,44,.12)}
+  .badge.risk{color:var(--blood); background:rgba(142,35,35,.08)}
+  .badge.canon{color:var(--aegean-d); background:rgba(19,111,158,.08)}
+  .pros,.cons{margin:.4em 0; padding-left:1.1em; font-size:.93rem}
+  .pros li::marker{content:"＋ "; color:var(--olive)}
+  .cons li::marker{content:"－ "; color:var(--terra)}
+
+  /* canon quotes */
+  .canon{border-left:4px solid var(--gold); background:rgba(193,145,43,.08); padding:8px 14px; margin:10px 0; font-style:italic}
+  .canon cite{font-style:normal; font-family:Optima,'Gill Sans',sans-serif; font-size:.78rem; letter-spacing:.06em; color:var(--aegean-d); margin-left:6px; white-space:nowrap}
+  .sec{font-family:Optima,'Gill Sans',sans-serif; font-size:.76rem; letter-spacing:.05em; color:var(--aegean-d); background:rgba(19,111,158,.09);
+       padding:1px 6px; border-radius:3px; white-space:nowrap}
+
+  /* visual descriptions */
+  .core{font-family:Menlo,Consolas,monospace; font-size:.8rem; line-height:1.55; background:#fffdf6; border:1.5px dashed var(--aegean-d);
+        border-radius:4px; padding:10px 12px; margin:10px 0; white-space:pre-wrap; color:#241c17}
+  .core::before{content:"VISUAL DESCRIPTION"; display:block; font-family:Optima,'Gill Sans',sans-serif; font-size:.66rem;
+        letter-spacing:.12em; color:var(--aegean-d); margin-bottom:6px; font-weight:700}
+  .core.style::before{content:"HOUSE STYLE — as established in IMAGE_PROMPTS.md §3"}
+
+  /* tables */
+  .tbl{overflow-x:auto; margin:12px 0}
+  table{border-collapse:collapse; width:100%; font-size:.9rem; background:var(--paper-hi)}
+  th,td{border:1px solid rgba(28,21,18,.35); padding:6px 9px; text-align:left; vertical-align:top}
+  th{background:var(--ink); color:var(--paper-hi); font-family:Optima,'Gill Sans',sans-serif; font-weight:600; letter-spacing:.04em; font-size:.8rem}
+  tr:nth-child(even) td{background:rgba(242,231,205,.5)}
+
+  /* gallery */
+  .gallery{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .gallery figure{margin:0; background:var(--paper-hi); border:1.5px solid var(--ink); padding:6px; border-radius:4px}
+  .gallery img{display:block; width:100%; height:auto; border-radius:2px}
+  .gallery figcaption{font-size:.78rem; padding:6px 2px 0; font-family:Optima,'Gill Sans',sans-serif}
+
+  /* diagrams */
+  .diagram{background:#fffaf0; border:1.5px solid var(--ink); border-radius:4px; padding:8px; overflow-x:auto}
+  .diagram svg{display:block; max-width:100%; height:auto; margin:0 auto}
+  svg text{font-family:Optima,'Gill Sans','Trebuchet MS',sans-serif}
+
+  /* decisions */
+  fieldset.decision{border:2.5px solid var(--ink); border-radius:8px; background:#fff8e6; padding:12px 16px 14px; margin:18px 0}
+  fieldset.decision legend{font-family:Optima,'Gill Sans',sans-serif; font-weight:700; background:var(--ink); color:var(--caption);
+       padding:3px 12px; border-radius:4px; letter-spacing:.05em; font-size:.88rem}
+  .opts{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0}
+  .opt{display:flex; align-items:center; gap:6px; border:1.5px solid var(--ink); border-radius:20px; padding:5px 12px; background:var(--paper-hi);
+       cursor:pointer; font-size:.9rem; user-select:none}
+  .opt:hover{background:#fff}
+  .opt input{accent-color:var(--terra); margin:0}
+  .opt:has(input:checked){background:var(--ink); color:var(--caption)}
+  .opt.is-rec::after{content:"★ rec"; font-size:.66rem; letter-spacing:.08em; color:var(--olive-d); font-family:Optima,'Gill Sans',sans-serif}
+  .opt.is-rec:has(input:checked)::after{color:var(--caption)}
+  fieldset.decision textarea{width:100%; min-height:44px; font:inherit; font-size:.88rem; border:1px solid rgba(28,21,18,.4); border-radius:4px; padding:6px 8px; background:#fffdf6; resize:vertical}
+  .decided-flag{font-size:.75rem; color:var(--olive-d); font-family:Optima,'Gill Sans',sans-serif; letter-spacing:.06em}
+
+  /* workflow */
+  .flow{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; counter-reset:step; margin:14px 0}
+  .flow div{counter-increment:step; background:var(--paper-hi); border:1.5px solid var(--ink); border-radius:6px; padding:10px 12px; font-size:.88rem}
+  .flow div::before{content:counter(step); display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%; background:var(--terra); color:#fff; font-weight:700; font-size:.8rem; margin-right:6px}
+  .flow div.now{border-width:3px; border-color:var(--terra)}
+  .flow b{font-family:Optima,'Gill Sans',sans-serif}
+  .who{display:block; font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--aegean-d); margin-top:4px}
+
+  /* colour chips */
+  .swatches{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0}
+  .sw{display:flex; align-items:center; gap:6px; font-size:.8rem; font-family:Menlo,Consolas,monospace}
+  .sw i{display:inline-block; width:26px; height:26px; border:1.5px solid var(--ink); border-radius:3px}
+  .script{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px}
+  .script div{border:1.5px solid var(--ink); border-radius:4px; overflow:hidden; background:var(--paper-hi); font-size:.82rem}
+  .script .bar{height:46px}
+  .script p{margin:0; padding:6px 8px}
+
+  .priest{display:grid; grid-template-columns:54px 1fr; gap:10px; align-items:start}
+  .priest .glyph{width:54px; height:54px; border-radius:50%; border:2.5px solid var(--ink); display:grid; place-items:center; font-size:1.55rem; font-weight:700}
+  .emoji{font-size:1.15rem}
+  #export-out{width:100%; min-height:220px; font-family:Menlo,Consolas,monospace; font-size:.8rem; background:#fffdf6; border:1.5px solid var(--ink); border-radius:4px; padding:10px}
+  .btn{font-family:Optima,'Gill Sans',sans-serif; font-weight:700; letter-spacing:.05em; border:2px solid var(--ink); background:var(--caption); color:var(--ink); padding:8px 16px; border-radius:6px; cursor:pointer; box-shadow:3px 3px 0 var(--shadow)}
+  .btn:hover{background:#fff}
+  .btn.ghost{background:var(--paper-hi)}
+  .card.rejected{opacity:.5; border-style:dashed}
+  .card.rejected:hover{opacity:.85}
+  .badge.no{color:#6b5d50; background:rgba(28,21,18,.06)}
+  .locked-line{font-family:Optima,'Gill Sans',sans-serif; font-size:.85rem; margin:.3em 0 .5em; color:var(--olive-d)}
+  .locked-line b{color:var(--ink)}
+  @media (max-width:600px){ h1{font-size:1.9rem} h2{font-size:1.4rem} .wrap{padding:20px 16px 100px} }
+</style>
+</head>
+<body>
+
+<nav class="adnav" aria-label="Sections">
+  <div class="adnav-inner">
+    <a href="#brief">Brief</a><a href="#canon">Canon</a><a href="#style">Style</a><a href="#period">Period</a>
+    <a href="#chamber">Chamber</a><a href="#places">Places</a><a href="#cast">Cast</a><a href="#ledger">Ledger</a>
+    <a href="#props">Props</a><a href="#notation">Symbols</a><a href="#colour">Colour</a><a href="#cover">Cover</a>
+    <a href="#sheets">Sheets</a><a href="#panels">Panels</a><a href="#decisions">Decisions</a>
+    <span class="progress" id="progress">0 / 0 decided</span>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<header id="brief">
+  <div class="kicker">Paxos Illustrated · Volume V · Art Direction · <b>Locked v1.2</b> · 15 Sep 2026</div>
+  <h1>The Part-Time Parliament: Art Direction</h1>
+  <p class="lede">This document sets the look of everything that recurs in Volume V: the Chamber, its priests and legislators,
+  the messengers, the ledger and the small objects the protocol depends on. Every option that was considered is kept for the record and tied to the section of Lamport's paper it has to honour, but
+  <b>all 19 decisions are now locked</b>: chosen options are marked <span class="badge rec">locked</span>, and rejected ones are greyed out and marked
+  <span class="badge no">not chosen</span>. <b>Only locked options apply.</b> The document describes what the images must show and the rules they must satisfy; how to prompt for them is left to the image team.</p>
+
+  <div class="flow">
+    <div><b>Art direction ✓</b><br>options, canon, decisions locked<span class="who">Claude + you</span></div>
+    <div class="now"><b>Proof sheets</b><br>4 highest-risk reference sheets (§12, Phase A)<span class="who">Gemini</span></div>
+    <div><b>Review</b><br>check proofs against §1 and §2; amend this document<span class="who">you + Claude</span></div>
+    <div><b>Remaining sheets</b><br>the other 5 <code>vol5_ref_*</code> sheets (§12, Phase B)<span class="who">Gemini</span></div>
+    <div><b>Panels, cover, relics</b><br>19 images (§13); relic code pass (D19)<span class="who">Gemini · Claude</span></div>
+    <div><b>Swap</b><br>R2 upload, <code>volume-5.html</code> edits (D18)<span class="who">Claude + you</span></div>
+  </div>
+
+
+  <div class="box gold">
+    <h3>Locked decisions</h3>
+    <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Decision</th><th>Locked choice</th><th>§</th></tr></thead>
+    <tbody>
+    <tr><td>D01</td><td>Period stance</td><td>Lamport's pastiche: classical look plus only the objects the text names (parchment codex, iron-gall ink, glass hourglass)</td><td>3</td></tr>
+    <tr><td>D02</td><td>Chamber form</td><td>The Great Round: full circle of tiers, ring wall, four barred gates</td><td>4</td></tr>
+    <tr><td>D03</td><td>Centre across eras</td><td>Altar and brazier (Synod) → president's platform with backless stool (Parliament)</td><td>4</td></tr>
+    <tr><td>D04</td><td>Why no speeches</td><td>Sea wind and distance; wind always from the seaward side</td><td>4</td></tr>
+    <tr><td>D05</td><td>Island</td><td>Delos-type marble trading port</td><td>5</td></tr>
+    <tr><td>D06</td><td>Priest costume</td><td>White linen chiton, coloured stole, olive fillet</td><td>6</td></tr>
+    <tr><td>D07</td><td>Priest marks on objects</td><td>Coin-type emblems: Α dolphin · Β owl · Γ star · Δ tortoise · Ε horse</td><td>6</td></tr>
+    <tr><td>D08</td><td>Casting by gender</td><td>Synod priests men; Parliament mixed</td><td>6</td></tr>
+    <tr><td>D09</td><td>Messengers</td><td>Hired runner's kit (felt hat, short tunic, satchel, bronze hire-tag)</td><td>6</td></tr>
+    <tr><td>D10</td><td>Frame figure</td><td>1990 field archaeologist, frame panel only</td><td>6</td></tr>
+    <tr><td>D11</td><td>Ledger</td><td>Parchment codex between leather-covered boards</td><td>7</td></tr>
+    <tr><td>D12</td><td>Hourglass</td><td>Sea-green blown glass, black volcanic sand</td><td>8</td></tr>
+    <tr><td>D13</td><td>Message types</td><td>Told apart by container shape; colour secondary</td><td>9</td></tr>
+    <tr><td>D14</td><td>Ballot numbers</td><td>Notched bronze token stamped with owner's emblem</td><td>9</td></tr>
+    <tr><td>D15</td><td>Presidency</td><td>Self-donned black sash with gold meander</td><td>8</td></tr>
+    <tr><td>D16</td><td>Chapter IV panel</td><td>Ancient translation frieze; no modern objects</td><td>13</td></tr>
+    <tr><td>D17</td><td>Cover</td><td>The Round at work</td><td>11</td></tr>
+    <tr><td>D18</td><td>File names</td><td>New <code>vol5_*</code> stems; update <code>volume-5.html</code> + R2 at swap</td><td>12</td></tr>
+    <tr><td>D19</td><td>Interactive relics</td><td><b>Full adoption:</b> emblems replace letters in the relics' interface; message icons on chips and log lines (spec in §13)</td><td>13</td></tr>
+    </tbody></table></div>
+  </div>
+
+  <div class="box terra">
+    <h3>Open item (needed before the <code>voting</code> panel, not before the sheets)</h3>
+    <p style="margin:0">The <code>voting</code> caption reads “<i>Voted</i> SCROLLS RACE BACK”, but D13 makes <i>Voted</i> a bronze token. <b>Recommended:</b> change the caption to “<i>Voted</i> TOKENS RACE BACK” (the paper never says scrolls). The alternative is to tie each token to a slim scroll, which weakens the shape coding.</p>
+  </div>
+
+  <div class="box terra">
+    <h3>Why Volume V gets a stricter pass</h3>
+    <p style="margin-top:0">It's the paper that inspired the project and the centrepiece of the site. It's also the one volume
+    where the author wrote the allegory himself, in detail: many readers will know exactly how the Chamber, the ledgers and the
+    messengers are <em>supposed</em> to work. The quality audit (<code>image-quality-check.html</code>) marked 18 of the 19
+    current images for regeneration, for speech balloons, English banners, a pith-helmeted archaeologist, a modern server room
+    and split panels. The new images must be <b>traceable to the text</b>. If a detail contradicts the paper, it is a bug.</p>
+  </div>
+
+  <div class="box">
+    <h3>Standing orders (apply to every Volume V image)</h3>
+    <ol>
+      <li><b>Lamport's text is the acceptance bar.</b> Every recurring entity cites its section (<span class="sec">§1.3</span>). If a picture contradicts the text, it gets regenerated.</li>
+      <li><b>No legible writing in panels or covers</b> (apart from the cover masthead, title and byline). Decree numbers, ballot numbers and names live in the HTML captions. Inside the image, meaning is carried by the symbols in §9.</li>
+      <li><b>Reference sheets are the one exception:</b> they may carry circled numbers <em>①②③</em> to tie items to this document. Avoid word labels: Vol IV's sheet labels came back garbled (“set rret”), and labels on a reference image tend to leak text into panels.</li>
+      <li><b>No speech balloons, no insets, no split-screen</b>, unless a panel entry explicitly asks for one. “Two things side by side” must be phrased as <em>one continuous scene</em>.</li>
+      <li><b>Allegorical types, never likenesses.</b> The Paxon names wrap real researchers (Λ˘ινχ∂, Δφωρκ, Ωκι…). No character may resemble the real person.</li>
+      <li><b>Only characters named in a scene appear in it.</b> When a reference sheet shows characters who are not in the panel, say so explicitly (lesson from batch 7).</li>
+      <li><b>This document supersedes</b> <code>IMAGE_MASTER_PROMPT.md</code> (“Do not modify volume-5.html”) and <code>IMAGE_PROMPTS.md</code> (“excluding the already-illustrated volume-5.html”) for Volume V work.</li>
+      <li><b>Wind rule:</b> at the Chamber the sea wind always blows from the seaward side. Cloaks, stoles, smoke and the slip of paper all stream the same way. This is both continuity and the reason oratory is impossible (§4).</li>
+    </ol>
+  </div>
+</header>
+
+<!-- ===================================================== 1 CANON -->
+<h2 id="canon"><span class="num">1</span>The Lamport canon: what the text fixes</h2>
+<p>Every visual fact in the paper, and what it forces on the design. Section numbers match <code>volume-5.html</code>.
+This is the checklist for reviewing every generated image.</p>
+<div class="tbl"><table>
+<thead><tr><th>§</th><th>What the paper says</th><th>What the picture must show</th></tr></thead>
+<tbody>
+<tr><td>1.1</td><td>Aegean island, “thriving mercantile center”; <em>not</em> the Ionian Paxoi (fn. 1)</td><td>Rich trading polis with a harbour and an agora; Aegean light and landscape, not green Ionian hills.</td></tr>
+<tr><td>1.1</td><td>“replaced their ancient theocracy with a parliamentary form of government”</td><td>The same Chamber serves the priestly Synod and the later Parliament; its centre changes from altar to president's platform (§4).</td></tr>
+<tr><td>1.1</td><td>Legislators “continually wandered in and out of the parliamentary Chamber”</td><td>Visible gates; traffic in and out; half-empty tiers are normal.</td></tr>
+<tr><td>1.2</td><td>Each legislator keeps a ledger with a <b>numbered sequence of decrees</b>; indelible ink; entries never changed</td><td>Rows of entries in order, each with a margin mark; never a crossed-out decree.</td></tr>
+<tr><td>1.2</td><td>Λ˘ινχ∂ — “<b>she</b>”; later Δφωρκ — “<b>she</b>”</td><td>Parliament includes women legislators and a woman president.</td></tr>
+<tr><td>1.2</td><td>A legislator may have <b>no entry</b> for a decree yet</td><td>Ledgers can have empty numbered rows (gaps).</td></tr>
+<tr><td>1.2</td><td>Decree 37 twice: a banquet group leaves, another group enters</td><td>A banquet venue is within sight of or near the Chamber; two groups; one continuous scene.</td></tr>
+<tr><td>1.2</td><td>Legislators “and their aides” act promptly</td><td>Aides/scribes exist as background cast.</td></tr>
+<tr><td>1.3</td><td>A <b>sturdy</b> ledger, a <b>pen</b>, a <b>supply of indelible ink</b>, <b>simple hourglass timers</b></td><td>The standard kit (§8). Ink comes as a supply: a flask, not just a well.</td></tr>
+<tr><td>1.3</td><td>Notes in the <b>back</b> of the ledger; notes <b>can be crossed out</b>; ledger of the <b>finest parchment</b>; used only for the most important notes</td><td>The ledger has a distinct back section; struck-through note lines; parchment, not papyrus or wax (§7).</td></tr>
+<tr><td>1.3</td><td>Legislators carry ledgers <b>at all times</b></td><td>Worn on a strap across the body; never left on a bench.</td></tr>
+<tr><td>1.3</td><td>Other notes on a <b>slip of paper</b> that may be lost on leaving</td><td>A flimsy, separate, losable scrap. The wind can take it.</td></tr>
+<tr><td>1.3</td><td>“The acoustics of the Chamber were poor, making oratory impossible.”</td><td>No speeches or shouting across the room. The architecture must justify this (§4).</td></tr>
+<tr><td>1.3</td><td>Funds to hire <b>as many messengers as needed</b>; messages never garbled; may be delivered <b>twice</b>; messenger may take a <b>six-month voyage</b> or leave <b>forever</b></td><td>Many hired messengers, and the four recurring messenger types (§6).</td></tr>
+<tr><td>1.3 fn. 3</td><td>Τωυεγ struck by a <b>falling statue just outside the Chamber</b></td><td>Statues stand on or along the Chamber's outer wall.</td></tr>
+<tr><td>2</td><td>Synod of <b>priests</b>, convened <b>every 19 years</b>; one symbolic decree; “a ledger would have at most one decree”</td><td>A ceremonial occasion, visually distinct from Parliament; the Synod ledger holds a single decree (§7).</td></tr>
+<tr><td>2.1 Fig. 1</td><td>Five priests <b>Α Β Γ Δ Ε</b>; ballots 2, 5, 14, 27, 29</td><td>Five named, instantly distinguishable priests: the core cast of every protocol panel (§6).</td></tr>
+<tr><td>2.2</td><td>Ballot number = (integer, priest); every priest has his own unbounded set</td><td>A ballot token shows both a count and an owner's emblem (§9).</td></tr>
+<tr><td>2.2</td><td>Majority set redefined by <b>weight</b>: “fat priests were less mobile”, then symbolic weights by attendance</td><td>The priests have deliberately varied body types; at least one is stout and one lean. A weighing balance is an optional prop.</td></tr>
+<tr><td>2.2</td><td>NextBallot, LastVote, BeginBallot, Voted, Success</td><td>Five message types you can tell apart without text (§9).</td></tr>
+<tr><td>2.3</td><td>Back of the ledger keeps <b>lastTried, prevVote, nextBal</b>; the ballot in progress is kept on the slip</td><td>Three note areas in the back; the working tally is on the slip.</td></tr>
+<tr><td>2.4</td><td>Messenger ≤ 4 min, priest ≤ 7 min; “if the Chamber <b>doors were locked</b>…”</td><td>The Chamber has doors that can be barred. The hourglass is the priest's own timer.</td></tr>
+<tr><td>2.4</td><td>President = last name alphabetically; heartbeat “message containing his name”; <b>multiple presidents</b> impede progress but can't cause inconsistency</td><td>The presidency is not a single unique object: two people can both be wearing its mark (§8).</td></tr>
+<tr><td>2.4</td><td>“skilled glass blowers of Paxos”; hourglass accuracy bounded</td><td>Glass hourglasses are a Paxon craft (canon, even if historically early; §3).</td></tr>
+<tr><td>3.1</td><td>President assigns decree numbers; olive-day decree fills gaps (“ides of February is national olive day”)</td><td>Olive-day entries get their own humble symbol.</td></tr>
+<tr><td>3.2.2</td><td>Behind closed doors: president → quorum → president → all</td><td>The president sits at the hub; messengers run spoke routes.</td></tr>
+<tr><td>3.3.1</td><td>Ωκι back from a six-month vacation, made president, a slow writer copying six months of decrees; debate about the richest president “to hire more scribes”</td><td>A tanned, travel-worn Ωκι; stacks of copying; a rich president with a retinue of scribes.</td></tr>
+<tr><td>3.3.2</td><td>Ledgers become <b>law books</b> organised by area (“taxes”, “mercantile law”) plus “complete through decree N”; past week's decrees in the back</td><td>Late-era ledger has section tabs and a completeness marker (§7).</td></tr>
+<tr><td>3.3.3</td><td>Cheese inspectors Δ˘ικστρα &amp; Γωυδα; decrees carry time and date; time told <b>by sun or stars to within 15 minutes</b>; “mechanical clocks were unknown”; wine tasters</td><td>Sundial/star-sight props; no clocks; bureaucrats with badges of office.</td></tr>
+<tr><td>3.3.4</td><td>Farmer Δωλεφ, goatherd, merchant Σκεεν, legislator Στωκμ˘ιρ (ledger ends at 76); black then brown goats; specialists per area of law; golden fleece</td><td>Citizen cast; goats of the right colours; area specialists tied to the law-book tabs.</td></tr>
+<tr><td>3.3.5</td><td>Dishonest legislators “probably exiled”; redundant decrees</td><td>Optional; no panel needs it yet.</td></tr>
+<tr><td>3.3.6</td><td>Παρνας gives his ledger to his son; Στρωνγ joins; a scribe's error makes drowned sailors the only members; General Λαμπσων's coup; invasion from the east</td><td>An heirloom ledger; the scribe; the general (echoing Vol II's hoplite costume language).</td></tr>
+<tr><td>Frame</td><td>Author is an archaeologist “doing field work in the Greek isles”; manuscript found “behind a filing cabinet”</td><td>The framing narrator is <em>modern</em>. See decision D10.</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================== 2 STYLE -->
+<h2 id="style"><span class="num">2</span>Style lock: inherit Volumes I and IV</h2>
+<p>Volume V keeps the house style. The gold standard is the recent redo of Vol I and the redesign of Vol IV, both built from reference sheets. The description below is the house style every existing panel follows; every Volume V image must match it.</p>
+<div class="core style">Vintage 1970s comic book illustration style: bold black ink outlines, visible halftone dot shading, slightly aged newsprint paper texture, flat vibrant Mediterranean palette (aegean blue #136f9e, terracotta red #bf4a26, olive green #66722c, marble white, sand #f2e7cd, gold accents #c1912b, ink #1c1512). Dramatic, clean, readable comic-panel composition. Ancient/classical-era clothing and objects only. No speech balloons, captions, labels or legible writing anywhere in the image.</div>
+
+<div class="swatches">
+  <span class="sw"><i style="background:#136f9e"></i>aegean</span><span class="sw"><i style="background:#bf4a26"></i>terracotta</span>
+  <span class="sw"><i style="background:#66722c"></i>olive</span><span class="sw"><i style="background:#f8f5ee"></i>marble</span>
+  <span class="sw"><i style="background:#f2e7cd"></i>sand</span><span class="sw"><i style="background:#c1912b"></i>gold</span><span class="sw"><i style="background:#1c1512"></i>ink</span>
+</div>
+
+<div class="gallery">
+  <figure><img src="images/cover_volume_1_small.webp" alt="Volume I cover"><figcaption>Vol I cover: the target cover finish and masthead</figcaption></figure>
+  <figure><img src="images/vol1_ref_characters_small.webp" alt="Volume I character sheet"><figcaption>Vol I characters: full-body line-up on cream paper</figcaption></figure>
+  <figure><img src="images/vol1_ref_architecture_small.webp" alt="Volume I architecture sheet"><figcaption>Vol I architecture: three tall panes per sheet</figcaption></figure>
+  <figure><img src="images/vol1_ref_props_small.webp" alt="Volume I props sheet"><figcaption>Vol I props: numbered museum plate</figcaption></figure>
+  <figure><img src="images/vol4_ref_characters_small.webp" alt="Volume IV character sheet"><figcaption>Vol IV characters</figcaption></figure>
+  <figure><img src="images/vol4_ref_props_small.webp" alt="Volume IV props sheet"><figcaption>Vol IV props. Note the garbled label text: use circled numbers only.</figcaption></figure>
+  <figure><img src="images/vol4_split_assembly_small.webp" alt="Volume IV split assembly panel"><figcaption>Vol IV panel: crowds, sea and weather at the target finish</figcaption></figure>
+  <figure><img src="images/vol1_feud_small.webp" alt="Volume I feud panel"><figcaption>Vol I panel: dry comic acting, clean focal action</figcaption></figure>
+</div>
+
+<h4>What the gold standard does (keep it)</h4>
+<ul>
+  <li>Heavy, even black contour; halftone dots in the <em>shadows and skies</em>, not over faces; flat colour fields; a warm cream paper edge.</li>
+  <li>Figures with real anatomy and period costume; expressive but not cartoonish faces; dry humour in the acting.</li>
+  <li>Reference sheets on plain cream paper: characters full-length, front-facing, evenly spaced; architecture as tall panes; props as a numbered grid.</li>
+</ul>
+<h4>Known failure modes (every image must avoid them)</h4>
+<div class="tbl"><table>
+<thead><tr><th>Failure</th><th>Seen in</th><th>Condition the image must meet</th></tr></thead>
+<tbody>
+<tr><td>Speech balloons, English banners, labels</td><td>14 of 19 current Vol V images</td><td>No readable words, letters or signs anywhere. Documents show only unreadable scribble texture.</td></tr>
+<tr><td>Rows of pseudo-script on tablets and pages</td><td>batch 8 (v8-02)</td><td>Pages and tablets look like handwriting seen from too far away to read: wavy lines, no glyph shapes.</td></tr>
+<tr><td>Numbers drawn as digits</td><td>batches 6–7</td><td>No digits. Counts appear only as notches, beads or tokens (§9).</td></tr>
+<tr><td>Accidental split panel / gutter</td><td>v7-02, v7-08, current <code>conflict</code>, <code>statemachine</code></td><td>Each panel is one continuous scene: no dividing line, gutter or inset.</td></tr>
+<tr><td>Reference characters added uninvited</td><td>v7-02</td><td>Only the characters named for a scene appear, even when a reference sheet shows others.</td></tr>
+<tr><td>Scale anomalies (giant or tiny figures)</td><td>Vol IV drummers; current <code>wanderers</code></td><td>Everyone is life-size and consistent with the Chamber's real size (§4).</td></tr>
+<tr><td>Anachronisms</td><td>current <code>manuscript</code>, <code>statemachine</code></td><td>Nothing later than classical except what D01, D10 and D16 allow.</td></tr>
+</tbody></table></div>
+
+<h4>Aspect ratios</h4>
+<div class="tbl"><table>
+<thead><tr><th>Use</th><th>Ratio</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Cover</td><td><b>2:3</b></td><td>Masthead exactly as Vol I (laurel wreath with P, numeral V, PAXOS COMICS box).</td></tr>
+<tr><td><code>panel</code> (wide)</td><td><b>16:9</b></td><td>island, wanderers, conflict, synod, nextballot, voting, success, fall, statemachine</td></tr>
+<tr><td><code>panel mid</code> / <code>narrow</code></td><td><b>4:3</b></td><td>manuscript, ledger, equipment, messenger, lastvote, hourglass, president, cheese, goats</td></tr>
+<tr><td>Reference sheets</td><td><b>16:9</b></td><td>At least 2K (2752×1536), like the Vol I sheets. 1K sheets lose the detail panels need.</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================== 3 PERIOD -->
+<h2 id="period"><span class="num">3</span>Period stance</h2>
+<p>The paper is a deliberate pastiche. It says “early in <em>this</em> millennium”, which, written around 1990, literally means the
+11th century AD, the age of Byzantium (“eastern neighbours”, and the “military protocols of another Mediterranean
+state”, fn. 14). Yet its world is classical Greek priests, drachmas and a Synod. It also names objects that are
+historically late for classical Greece: <b>parchment ledgers with a “back”</b> (a codex; parchment codices spread in the
+1st–4th c. AD) and <b>glass hourglasses</b> (first securely attested in the 14th c.). We need one rule for handling this.</p>
+
+<div class="grid">
+  <div class="card rejected"><h4>A · Strict Classical (5th–4th c. BC) <span class="badge no">not chosen</span></h4>
+    <p class="small">Papyrus rolls, wax tablets, clepsydrae. Matches the series' everyday look.</p>
+    <ul class="cons"><li>Contradicts canon: no parchment ledger with a back, no hourglass.</li><li>Readers who know the paper will spot the substitutions.</li></ul></div>
+  <div class="card rec"><h4>B · Lamport's Pastiche <span class="badge rec">locked</span></h4>
+    <p class="small">Classical Greek <em>look</em> (costume, architecture, landscape), plus exactly the objects the text names, treated as
+    advanced Paxon crafts: a parchment codex ledger, iron-gall ink, a blown-glass hourglass. Nothing else later than classical.</p>
+    <ul class="pros"><li>Faithful to the text and consistent with the series.</li><li>The paper itself says “Paxon mathematicians were remarkably advanced for their time”.</li></ul></div>
+  <div class="card rejected"><h4>C · Literal Byzantine (11th c. AD) <span class="badge no">not chosen</span></h4>
+    <p class="small">Domed churches, Byzantine court dress, illuminated codices.</p>
+    <ul class="cons"><li>Breaks series continuity: Vols I–IV and VI are all classical.</li><li>Priests would read as Orthodox clergy, which is the wrong tone.</li></ul></div>
+</div>
+<fieldset class="decision" data-id="D01" data-title="Period stance">
+  <legend>D01 · Period stance</legend>
+  <p class="locked-line">🔒 Locked: <b>B · Lamport's Pastiche</b></p>
+  <div class="opts">
+    <label class="opt"><input type="radio" name="D01" value="A · Strict Classical"> A · Strict Classical</label>
+    <label class="opt is-rec"><input type="radio" name="D01" value="B · Lamport's Pastiche" checked> B · Lamport's Pastiche</label>
+    <label class="opt"><input type="radio" name="D01" value="C · Literal Byzantine"> C · Literal Byzantine</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<!-- ===================================================== 4 CHAMBER -->
+<h2 id="chamber"><span class="num">4</span>The Chamber</h2>
+<p class="lede">Your brief: a large Greek amphitheatre, priests scattered across it, messengers racing between them, and the leader at
+the centre in the later protocols. That picture is exactly right for how the protocol <em>looks</em>. Before choosing a form, it has to satisfy four hard constraints from the text:</p>
+
+<div class="grid two">
+  <div class="card"><h4>① Oratory must be impossible <span class="sec">§1.3</span></h4>
+  <p class="small">This is the reason messengers exist at all. The catch: Greek theatres are famous for <em>good</em> acoustics
+  (Epidaurus carries a whisper to the top row). An open theatre needs a visible reason why voices don't carry. See D04.</p></div>
+  <div class="card"><h4>② Doors that can be locked <span class="sec">§2.4</span></h4>
+  <p class="small">“If the Chamber doors were locked with p and a majority set inside…”, which is the whole <code>hourglass</code> panel. An open bowl needs an enclosing wall with gates.</p></div>
+  <div class="card"><h4>③ Visible comings and goings <span class="sec">§1.1</span></h4>
+  <p class="small">Entrances must be readable in a single panel: legislators leaving for a banquet, messengers heading off to a ship.</p></div>
+  <div class="card"><h4>④ Room to race, and a readable centre <span class="sec">§2.2 · §3.2.2</span></h4>
+  <p class="small">Clear running lanes between scattered seats, and a centre that can hold the president's post in Chapter III.</p></div>
+</div>
+
+<h3>Four candidate forms</h3>
+<p class="small muted">Plan views. Dots = priests at their seats · dashed red = messenger runs · gold = gates / doors · ◎ = centre.</p>
+
+<div class="grid two">
+  <!-- A -->
+  <div class="card rejected">
+    <h4>A · The Walled Theatron <span class="badge canon">your brief, literally</span> <span class="badge no">not chosen</span></h4>
+    <div class="diagram"><svg viewBox="0 0 200 200" width="260" role="img" aria-label="Plan of a semicircular theatre enclosed by a wall with gated side entrances, facing the sea">
+      <rect x="0" y="176" width="200" height="24" fill="#136f9e" opacity=".35"/>
+      <path d="M10 120 A90 90 0 0 1 190 120 L190 170 L10 170 Z" fill="none" stroke="#1c1512" stroke-width="3"/>
+      <path d="M20 120 A80 80 0 0 1 180 120 L135 120 A35 35 0 0 0 65 120 Z" fill="#f2e7cd" stroke="#1c1512" stroke-width="1.5"/>
+      <path d="M42 120 A58 58 0 0 1 158 120" fill="none" stroke="#1c1512" stroke-dasharray="3 3"/>
+      <g stroke="#1c1512" stroke-width="1.2"><line x1="130.3" y1="102.5" x2="169.3" y2="80"/><line x1="117.5" y1="89.7" x2="140" y2="50.7"/><line x1="100" y1="85" x2="100" y2="40"/><line x1="82.5" y1="89.7" x2="60" y2="50.7"/><line x1="69.7" y1="102.5" x2="30.7" y2="80"/></g>
+      <circle cx="100" cy="120" r="26" fill="#faf3e0" stroke="#1c1512" stroke-width="1.5"/>
+      <rect x="62" y="150" width="76" height="12" fill="#bf4a26" opacity=".55" stroke="#1c1512"/>
+      <rect x="4" y="134" width="12" height="16" fill="#c1912b" stroke="#1c1512"/><rect x="184" y="134" width="12" height="16" fill="#c1912b" stroke="#1c1512"/>
+      <text x="100" y="124" font-size="9" text-anchor="middle">◎</text>
+      <g fill="#1c1512"><circle cx="52" cy="72" r="4"/><circle cx="142" cy="62" r="4"/><circle cx="160" cy="106" r="4"/><circle cx="78" cy="98" r="4"/><circle cx="120" cy="76" r="4"/></g>
+      <g fill="none" stroke="#bf4a26" stroke-width="1.6" stroke-dasharray="4 3"><path d="M52 72 Q100 30 142 62"/><path d="M78 98 Q100 110 120 76"/><path d="M160 106 Q180 125 190 142"/></g>
+      <text x="100" y="192" font-size="8" text-anchor="middle" fill="#0b4a6b">sea</text>
+      <text x="100" y="159" font-size="7" text-anchor="middle">stage building</text>
+    </svg></div>
+    <p class="small">Epidaurus-type semicircular bowl on a hillside facing the sea, a round orchestra and a low stage building. The whole precinct is walled, with <b>gated side entrances</b>; Epidaurus' side entrances really did have monumental gateways.</p>
+    <ul class="pros"><li>Exactly your image; the sea as a backdrop behind the president makes a heroic cover.</li><li>Gates at the two ends read clearly as “in” and “out”.</li></ul>
+    <ul class="cons"><li>The centre has a front and a back, so the president always faces the tiers and has his back to the sea. Hub-and-spoke reads less symmetrically.</li><li>The most famous acoustics in antiquity, so wind has to do all the work (D04).</li></ul>
+  </div>
+  <!-- B -->
+  <div class="card rec">
+    <h4>B · The Great Round <span class="badge rec">locked</span></h4>
+    <div class="diagram"><svg viewBox="0 0 200 200" width="260" role="img" aria-label="Plan of a circular sunken assembly bowl with a ring wall, four gates, radial stairways and a central point">
+      <circle cx="100" cy="100" r="92" fill="none" stroke="#1c1512" stroke-width="3.5"/>
+      <circle cx="100" cy="100" r="85" fill="#f2e7cd" stroke="#1c1512" stroke-width="1.5"/>
+      <circle cx="100" cy="100" r="58" fill="none" stroke="#1c1512" stroke-dasharray="3 3"/>
+      <g stroke="#1c1512" stroke-width="1.2"><line x1="132" y1="100" x2="185" y2="100"/><line x1="122.6" y1="77.4" x2="160.1" y2="39.9"/><line x1="100" y1="68" x2="100" y2="15"/><line x1="77.4" y1="77.4" x2="39.9" y2="39.9"/><line x1="68" y1="100" x2="15" y2="100"/><line x1="77.4" y1="122.6" x2="39.9" y2="160.1"/><line x1="100" y1="132" x2="100" y2="185"/><line x1="122.6" y1="122.6" x2="160.1" y2="160.1"/></g>
+      <circle cx="100" cy="100" r="32" fill="#faf3e0" stroke="#1c1512" stroke-width="1.5"/>
+      <g fill="#c1912b" stroke="#1c1512"><rect x="93" y="2" width="14" height="10"/><rect x="93" y="188" width="14" height="10"/><rect x="2" y="93" width="10" height="14"/><rect x="188" y="93" width="10" height="14"/></g>
+      <circle cx="100" cy="100" r="7" fill="#c1912b" stroke="#1c1512" stroke-width="1.5"/>
+      <g fill="#1c1512"><circle cx="58" cy="52" r="4"/><circle cx="150" cy="70" r="4"/><circle cx="140" cy="150" r="4"/><circle cx="46" cy="128" r="4"/><circle cx="112" cy="40" r="4"/></g>
+      <g fill="none" stroke="#bf4a26" stroke-width="1.6" stroke-dasharray="4 3"><path d="M58 52 Q80 40 112 40"/><path d="M150 70 Q162 110 140 150"/><path d="M46 128 Q70 160 140 150"/></g>
+    </svg></div>
+    <p class="small">A full circle of tiers sunk into a windswept saddle of the hill, closed by a ring wall with <b>four barred gateways</b>. It has real Greek precedent: the circular assembly places (ekklesiasteria) at <b>Metapontum</b> and <b>Paestum</b>. “Amphitheatre” in its literal sense: seating on every side.</p>
+    <ul class="pros"><li>The centre faces every way, so the president at the hub reads from any camera angle. Your Chapter III image, perfected.</li><li>In Chapter II no seat is privileged, which suits the Synod, where <em>any</em> priest may initiate a ballot.</li><li>Radial stairs and the ring walkway <em>are</em> a network drawing, hidden in architecture.</li><li>Four gates give plenty of choreography for comings and goings.</li></ul>
+    <ul class="cons"><li>Less familiar silhouette than a theatre; the first establishing shot has to sell it.</li><li>The sea is only seen over the rim, never as a stage backdrop.</li></ul>
+  </div>
+  <!-- C -->
+  <div class="card rejected">
+    <h4>C · The Odeion (roofed theatre) <span class="badge no">not chosen</span></h4>
+    <div class="diagram"><svg viewBox="0 0 200 200" width="260" role="img" aria-label="Plan of a rectangular roofed hall containing semicircular seating and roof columns">
+      <rect x="14" y="18" width="172" height="164" fill="#e6d5ae" stroke="#1c1512" stroke-width="3.5"/>
+      <g stroke="#1c1512" stroke-width=".6" opacity=".35"><line x1="14" y1="40" x2="186" y2="40"/><line x1="14" y1="62" x2="186" y2="62"/><line x1="14" y1="84" x2="186" y2="84"/><line x1="14" y1="106" x2="186" y2="106"/><line x1="14" y1="128" x2="186" y2="128"/><line x1="14" y1="150" x2="186" y2="150"/></g>
+      <path d="M28 140 A72 72 0 0 1 172 140 L128 140 A28 28 0 0 0 72 140 Z" fill="#f2e7cd" stroke="#1c1512" stroke-width="1.5"/>
+      <circle cx="100" cy="140" r="22" fill="#faf3e0" stroke="#1c1512" stroke-width="1.5"/>
+      <g fill="#1c1512"><circle cx="50" cy="60" r="3.2"/><circle cx="100" cy="46" r="3.2"/><circle cx="150" cy="60" r="3.2"/><circle cx="40" cy="110" r="3.2"/><circle cx="160" cy="110" r="3.2"/></g>
+      <g fill="#c1912b" stroke="#1c1512"><rect x="88" y="176" width="24" height="10"/></g>
+      <g fill="#bf4a26"><circle cx="70" cy="92" r="4"/><circle cx="128" cy="84" r="4"/><circle cx="148" cy="126" r="4"/></g>
+      <text x="100" y="144" font-size="9" text-anchor="middle">◎</text>
+    </svg></div>
+    <p class="small">A covered hall wrapped around semicircular seating, with a timber roof on columns among the tiers, lit by high windows. Precedent: the Odeion of Agrippa in Athens. Dots in red = priests; black = roof columns.</p>
+    <ul class="pros"><li>Doors and poor acoustics come for free: the echo of a big roof, and columns blocking lines of sight.</li><li>Torchlight Synod interiors look superb.</li></ul>
+    <ul class="cons"><li>Loses the sky, the sea and the scale; it isn't the amphitheatre you pictured.</li><li>Dark interiors compress badly at 800px.</li></ul>
+  </div>
+  <!-- D -->
+  <div class="card rejected">
+    <h4>D · The Hypostyle Hall (Thersilion) <span class="badge no">not chosen</span></h4>
+    <div class="diagram"><svg viewBox="0 0 200 200" width="260" role="img" aria-label="Plan of a vast square roofed hall with columns in lines radiating from a speaker point">
+      <rect x="12" y="12" width="176" height="176" fill="#e6d5ae" stroke="#1c1512" stroke-width="3.5"/>
+      <path d="M22 22 H178 V178 H150 V50 H50 V178 H22 Z" fill="#f2e7cd" stroke="#1c1512" stroke-width="1"/>
+      <g fill="#1c1512">
+        <circle cx="65" cy="125" r="2.6"/><circle cx="80" cy="120" r="2.6"/><circle cx="100" cy="118" r="2.6"/><circle cx="120" cy="120" r="2.6"/><circle cx="135" cy="125" r="2.6"/>
+        <circle cx="45" cy="95" r="2.6"/><circle cx="70" cy="82" r="2.6"/><circle cx="100" cy="76" r="2.6"/><circle cx="130" cy="82" r="2.6"/><circle cx="155" cy="95" r="2.6"/>
+        <circle cx="28" cy="60" r="2.6"/><circle cx="62" cy="40" r="2.6"/><circle cx="100" cy="32" r="2.6"/><circle cx="138" cy="40" r="2.6"/><circle cx="172" cy="60" r="2.6"/>
+      </g>
+      <circle cx="100" cy="160" r="7" fill="#c1912b" stroke="#1c1512" stroke-width="1.5"/>
+      <g fill="#c1912b" stroke="#1c1512"><rect x="60" y="182" width="16" height="8"/><rect x="92" y="182" width="16" height="8"/><rect x="124" y="182" width="16" height="8"/></g>
+      <g fill="#bf4a26"><circle cx="36" cy="140" r="4"/><circle cx="160" cy="36" r="4"/><circle cx="165" cy="150" r="4"/></g>
+    </svg></div>
+    <p class="small">A vast roofed hall, its columns set in lines that radiate from the speaker's spot, like the Thersilion at Megalopolis (c. 370 BC). A forest of columns between seats.</p>
+    <ul class="pros"><li>The columns make messengers weaving through them a gift.</li><li>Oratory is plainly impossible.</li></ul>
+    <ul class="cons"><li>Furthest from your brief; no amphitheatre.</li><li>Busy and dark; columns hide the very people panels need to show.</li></ul>
+  </div>
+</div>
+
+<fieldset class="decision" data-id="D02" data-title="Chamber form">
+  <legend>D02 · Chamber form</legend>
+  <p class="locked-line">🔒 Locked: <b>B · Great Round</b></p>
+  <div class="opts">
+    <label class="opt"><input type="radio" name="D02" value="A · Walled Theatron"> A · Walled Theatron</label>
+    <label class="opt is-rec"><input type="radio" name="D02" value="B · Great Round" checked> B · Great Round</label>
+    <label class="opt"><input type="radio" name="D02" value="C · Odeion"> C · Odeion</label>
+    <label class="opt"><input type="radio" name="D02" value="D · Hypostyle Hall"> D · Hypostyle Hall</label>
+  </div>
+  <p class="small muted" style="margin:.2em 0 .5em">Why B over A: the paper's president is a <em>hub</em> (§3.2.2). A round room makes that hub work from any angle, and in Chapter II it gives no seat special status. If the sea behind the president matters more to you, A is a close second.</p>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h3>Specification: the recommended Chamber (B)</h3>
+<div class="core">The Chamber of Paxos: a large open-air circular assembly theatre in classical Greek style (like the round ekklesiasteria of Metapontum and Paestum, but grander), sunk into a windswept saddle of the island's hill above the sea. Continuous rings of pale limestone tiers, about fourteen rows, descend on every side to a round flat orchestra floor of packed sand edged with a marble kerb. Eight narrow radial stairways cut through the tiers like the spokes of a wheel, and one broad walkway ring runs around the middle of the bowl; these are the messengers' running lanes. A high ashlar ring wall encloses the bowl, with four monumental gateways at the cardinal points; each gateway has heavy bronze-plated double doors and an oak drop-bar resting in iron brackets. Marble statues of past legislators stand on plinths along the outside of the ring wall. The bowl is about 50 metres across: people on the far side look small but always read clearly as life-size people. Scattered irregularly among the tiers are individual carved stone seats with low backrests, each with one owner's emblem carved on the backrest. Outside the wall: olive trees, cypresses, dry grass, terracotta roofs of the town downhill, and the sea visible over the rim on the downhill side. A steady sea wind always blows from the seaward side, tugging cloaks and stoles in one direction.</div>
+
+<div class="grid two">
+  <div class="card">
+    <h4>The centre across the eras <span class="sec">§1.1 · §2 · §3.2.2</span></h4>
+    <div class="diagram"><svg viewBox="0 0 420 190" role="img" aria-label="Two circular diagrams: Synod era with scattered messenger routes between priests; Parliament era with all routes radiating from a president at the centre">
+      <g transform="translate(95,95)">
+        <circle r="80" fill="#f2e7cd" stroke="#1c1512" stroke-width="2"/><circle r="26" fill="#faf3e0" stroke="#1c1512"/>
+        <path d="M-7 5 h14 l-3 -10 h-8z" fill="#bf4a26" stroke="#1c1512"/><path d="M0 -12 q-4 -6 0 -12 q4 6 0 12" fill="#c1912b" stroke="#1c1512" stroke-width=".8"/>
+        <g fill="#1c1512"><circle cx="-50" cy="-40" r="5"/><circle cx="45" cy="-52" r="5"/><circle cx="62" cy="30" r="5"/><circle cx="-10" cy="62" r="5"/><circle cx="-62" cy="22" r="5"/></g>
+        <g fill="none" stroke="#bf4a26" stroke-width="1.8" stroke-dasharray="4 3"><path d="M-50 -40 Q0 -70 45 -52"/><path d="M45 -52 Q75 -10 62 30"/><path d="M-62 22 Q-40 60 -10 62"/><path d="M-50 -40 Q-75 -10 -62 22"/><path d="M62 30 Q30 70 -10 62"/></g>
+        <text y="104" font-size="12" text-anchor="middle" font-weight="700">SYNOD · Chapter II</text>
+      </g>
+      <g transform="translate(320,95)">
+        <circle r="80" fill="#f2e7cd" stroke="#1c1512" stroke-width="2"/><circle r="26" fill="#faf3e0" stroke="#1c1512"/>
+        <circle r="10" fill="#c1912b" stroke="#1c1512" stroke-width="2"/>
+        <g fill="#1c1512"><circle cx="-50" cy="-40" r="5"/><circle cx="45" cy="-52" r="5"/><circle cx="62" cy="30" r="5"/><circle cx="-10" cy="62" r="5"/><circle cx="-62" cy="22" r="5"/><circle cx="10" cy="-66" r="5"/><circle cx="66" cy="-14" r="5"/></g>
+        <g stroke="#bf4a26" stroke-width="1.8" stroke-dasharray="4 3"><line x1="0" y1="0" x2="-50" y2="-40"/><line x1="0" y1="0" x2="45" y2="-52"/><line x1="0" y1="0" x2="62" y2="30"/><line x1="0" y1="0" x2="-10" y2="62"/><line x1="0" y1="0" x2="-62" y2="22"/><line x1="0" y1="0" x2="10" y2="-66"/><line x1="0" y1="0" x2="66" y2="-14"/></g>
+        <text y="104" font-size="12" text-anchor="middle" font-weight="700">PARLIAMENT · Chapter III</text>
+      </g>
+    </svg></div>
+    <p class="small"><b>Synod:</b> a round stone <b>altar with a bronze brazier</b> at the centre (it's still a theocracy); the floor around it is inlaid with a ring of <b>nineteen plain marble rays</b> for the 19-year convocation. Priests sit scattered at their own carved seats, and messengers run seat to seat. No hub.</p>
+    <p class="small"><b>Parliament:</b> the altar is gone. In its place is a <b>low round platform, two steps high</b>, with a <b>backless stool</b> (so the president can turn to face any direction), a small ledger table, a rack of sealed outgoing scrolls, and a bench of waiting messengers. Every run starts or ends at the hub.</p>
+  </div>
+  <div class="card">
+    <h4>Views the architecture sheet must show</h4>
+    <ol class="small">
+      <li><b>Aerial three-quarter view</b>: the whole Round, the ring wall, four gates, the town and harbour downhill, the sea.</li>
+      <li><b>From a top tier looking inward</b>: tiers, radial stairs, the ring walkway, scattered priest seats, the centre. Used by most protocol panels.</li>
+      <li><b>A gateway, doors shut and barred</b>: bronze doors, oak bar in brackets, statues on the wall beside it (for <code>hourglass</code> and the falling statue).</li>
+      <li><b>The centre, Synod era</b>: altar, brazier, nineteen rays.</li>
+      <li><b>The centre, Parliament era</b>: platform, backless stool, scroll rack, messenger bench.</li>
+      <li><b>The ruin today</b>: the same Round half-buried, tiers tumbled, one gateway standing, excavation trench (for the frame panel and Chapter IV).</li>
+    </ol>
+    <h4>Scale &amp; population</h4>
+    <p class="small">Protocol panels use <b>the Five priests</b> of Figure 1 plus a handful of messengers, so the bowl must look <em>large but not empty to the point of abstraction</em>. Establishing shots may show 20–40 people. Never more than one clear focal action per panel.</p>
+  </div>
+</div>
+
+<fieldset class="decision" data-id="D03" data-title="How the centre changes between eras">
+  <legend>D03 · The centre across the eras</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Altar (Synod) → president's platform (Parliament)</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D03" value="A · Altar (Synod) → president's platform (Parliament)" checked> A · Altar → president's platform</label>
+    <label class="opt"><input type="radio" name="D03" value="B · Empty centre always; president sits in the tiers"> B · Empty centre always</label>
+    <label class="opt"><input type="radio" name="D03" value="C · President's platform in both eras"> C · Platform in both eras</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h3>Why nobody can make a speech</h3>
+<div class="grid">
+  <div class="card rec"><h4>A · Wind and distance <span class="badge rec">locked</span></h4>
+  <p class="small">The Round sits on a saddle that funnels the summer sea wind (the meltemi). Seats are far apart, the agora's din rises
+  from below and cicadas saw away in the olives. Shown as streaming cloaks, bent cypresses, whitecaps, a priest cupping his ear.
+  Works with every form, and never requires anyone to explain acoustics.</p></div>
+  <div class="card rejected"><h4>B · Roof echo <span class="badge no">not chosen</span></h4><p class="small">Only with forms C or D: a boomy, echoing hall. It's physically true but invisible in a still image.</p></div>
+  <div class="card rejected"><h4>C · Custom of silence <span class="badge no">not chosen</span></h4><p class="small">A ritual ban on speaking. <span class="badge risk">off-canon</span> Lamport says acoustics, not law.</p></div>
+</div>
+<fieldset class="decision" data-id="D04" data-title="Acoustics device">
+  <legend>D04 · Why oratory is impossible</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Wind and distance</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D04" value="A · Wind and distance" checked> A · Wind and distance</label>
+    <label class="opt"><input type="radio" name="D04" value="B · Roof echo"> B · Roof echo</label>
+    <label class="opt"><input type="radio" name="D04" value="C · Custom of silence"> C · Custom of silence</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<!-- ===================================================== 5 PLACES -->
+<h2 id="places"><span class="num">5</span>Supporting places</h2>
+<div class="grid two">
+  <div class="card rec"><h4>A · Paxos as a Delos-type marble trading port <span class="badge rec">locked</span></h4>
+  <p class="small">A prosperous harbour city like Hellenistic Delos, the great Aegean trading hub: stone quays crowded with merchant ships
+  and amphorae, colonnaded warehouses, a busy agora under terracotta roofs, ochre and marble houses climbing to the Round on the
+  saddle above. Clearly richer and more civic than Vol I's shepherd villages. That's the point of §1.1: “wealth led to political sophistication”.</p></div>
+  <div class="card rejected"><h4>B · Cycladic whitewash (Vol I continuity) <span class="badge no">not chosen</span></h4>
+  <p class="small">White cube houses and blue doors. Maximum series familiarity, but Paxos would read as another Vol I shepherd island, not a mercantile power. It is also a modern look.</p></div>
+</div>
+<fieldset class="decision" data-id="D05" data-title="Island look">
+  <legend>D05 · The island of Paxos</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Delos-type marble trading port</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D05" value="A · Delos-type marble trading port" checked> A · Delos-type trading port</label>
+    <label class="opt"><input type="radio" name="D05" value="B · Cycladic whitewash"> B · Cycladic whitewash</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<div class="tbl"><table>
+<thead><tr><th>Place</th><th>Canon</th><th>Direction</th><th>Used by</th></tr></thead>
+<tbody>
+<tr><td><b>The harbour</b></td><td>§1.3 six-month voyage</td><td>Stone quays, one outbound merchantman loading, gangplank. The voyaging messenger's exit.</td><td>island, messenger</td></tr>
+<tr><td><b>The agora</b></td><td>§1.1, §3.3.3–4</td><td>Stoa with market stalls; cheese stalls; goat pen by the fountain; a sundial on a pillar.</td><td>island, cheese, goats</td></tr>
+<tr><td><b>The Statue Walk</b></td><td>§1.3 fn. 3</td><td>A paved path from the town to the Round's main gate, lined with statues on plinths.</td><td>wanderers, hourglass</td></tr>
+<tr><td><b>The banquet house</b></td><td>§1.2</td><td>A garden dining house with couches and vine pergola, a stone's throw outside the Round's east gate, visible from the tiers.</td><td>wanderers, conflict</td></tr>
+<tr><td><b>The scribes' hall</b></td><td>§3.3.1, §3.3.6</td><td>Long tables, parchment stacks, lamps. Where Ωκι copies, and where the fatal error is made.</td><td>president, fall</td></tr>
+<tr><td><b>The dig site (today)</b></td><td>Editor's note</td><td>The Round as a ruin: grid strings, spoil heaps, a canvas shade, finds trays. See D10.</td><td>manuscript, statemachine</td></tr>
+<tr><td><b>Paxos in decline</b></td><td>§3.3.6</td><td>The same Round under slate storm clouds, gates hanging open, tiers empty; soldiers on the Statue Walk.</td><td>fall</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================== 6 CAST -->
+<h2 id="cast"><span class="num">6</span>The cast</h2>
+<div class="box">
+  <h4>Casting rules</h4>
+  <ul class="small" style="margin-bottom:0">
+    <li><b>Priests</b> (Synod, Chapter II) and <b>legislators</b> (Parliament, Chapter III) are different generations with different costume languages. Priests are ceremonial; legislators are merchants who happen to legislate.</li>
+    <li><b>Follow the text's pronouns:</b> Synod priests and messengers are men (the paper says “he”). Parliament is mixed, and Λ˘ινχ∂ and Δφωρκ are women. The change itself signals the reform.</li>
+    <li><b>Women are half of Parliament and at least half of every townsfolk crowd.</b> A Parliament or street scene made only of men is a defect.</li>
+    <li><b>Paxos is a trading hub:</b> complexions range across the Mediterranean, from pale island skin through olive and sun-browned to the darker skin of families from Egypt and Libya. No crowd is uniform.</li>
+    <li><b>Body types vary on purpose</b>, because the weighted majority depends on it (<span class="sec">§2.2</span>): stout priests stay, lean priests wander.</li>
+    <li><b>Not likenesses.</b> Names like Λαμπσων or Δ˘ικστρα are jokes on real scholars; the characters are invented types.</li>
+    <li><b>Don't reuse Vol I's Leslie</b> (wild white hair, green himation) as a Paxon character, unless D10 = C.</li>
+  </ul>
+</div>
+<fieldset class="decision" data-id="D08" data-title="Casting by gender">
+  <legend>D08 · Who serves in the Synod and in Parliament</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Follow the text: Synod priests men, Parliament mixed</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D08" value="A · Follow the text: Synod priests men, Parliament mixed" checked> A · Follow the text</label>
+    <label class="opt"><input type="radio" name="D08" value="B · Mixed in both eras"> B · Mixed in both eras</label>
+  </div>
+  <p class="small muted" style="margin:.2em 0 .5em">A makes the reform visible: the ceremonial Synod is all men, as the paper's “he” implies, while the Parliament that replaced it seats Λ˘ινχ∂ and elects Δφωρκ.</p>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h3>The Five Priests of Figure 1</h3>
+<p>The core cast of every protocol panel. Each has a <b>stole colour</b> (readable at a distance, and <b>identical to the avatar colours the page's interactive oracles already use</b>: Α #136f9e, Β #bf4a26, Γ #66722c, Δ #8e5aa0, Ε #b8860b), an <b>emblem</b> (on their seat, ledger boss and ballot tokens; D07) and a <b>silhouette</b> that can't be confused with the others. Personalities are our invention and don't contradict Figure 1, where Β, Γ and Δ each sit in four of the five quorums and only Α, Γ and Δ complete a ballot (27). In the page's guided ballot, Γ is the one who dreams of his own decree.</p>
+<div class="grid">
+  <div class="card priest"><div class="glyph" style="background:#136f9e;color:#fff">Α</div><div><h4>Alpha · the Geometer</h4><p class="small">Tall, gaunt, 60s, long iron-grey beard, severe brows. Aegean-blue stole. Emblem: <span class="emoji">🐬</span> <b>dolphin</b>. Always has the hourglass in hand. Precise, a little impatient.</p></div></div>
+  <div class="card priest"><div class="glyph" style="background:#bf4a26;color:#fff">Β</div><div><h4>Beta · the Wanderer</h4><p class="small">Young (30), lean, restless; sunburnt, dusty sandals, traveller's hat hanging on his back. Terracotta stole. Emblem: <span class="emoji">🦉</span> <b>owl</b>. Most likely to be half out of a gate.</p></div></div>
+  <div class="card priest"><div class="glyph" style="background:#66722c;color:#fff">Γ</div><div><h4>Gamma · the Ambitious</h4><p class="small">40s, athletic, black curls, trimmed beard, bright eager eyes. Olive stole. Emblem: <span class="emoji">✴️</span> <b>eight-rayed star</b>. The one who initiates ballots and dreams of his own decree.</p></div></div>
+  <div class="card priest"><div class="glyph" style="background:#8e5aa0;color:#fff">Δ</div><div><h4>Delta · the Steadfast</h4><p class="small">50s, <b>stout and heavy</b>, bald crown with a grey fringe, jovial, settled deep into his seat. Purple stole. Emblem: <span class="emoji">🐢</span> <b>tortoise</b>. Never leaves the Chamber; in four of the five quorums.</p></div></div>
+  <div class="card priest"><div class="glyph" style="background:#b8860b;color:#fff">Ε</div><div><h4>Epsilon · the Elder</h4><p class="small">Very old but spry, short and wiry, clean-shaven, squints at his ledger held close. Dark-gold stole. Emblem: <span class="emoji">🐴</span> <b>horse</b>. Consults the back of his ledger for everything.</p></div></div>
+</div>
+
+<h4>Priestly costume</h4>
+<div class="grid">
+  <div class="card rec"><h4>A · White linen and coloured stoles <span class="badge rec">locked</span></h4>
+  <p class="small">Ankle-length undyed white linen chiton; a wide woollen stole in the priest's colour over both shoulders; olive-leaf fillet; leather ledger strap across the chest. Strong silhouette, maximum colour-coding.</p></div>
+  <div class="card rejected"><h4>B · Dark veiled robes <span class="badge no">not chosen</span></h4><p class="small">Echoes Vol III's priestesses. Solemn, but the Five lose their colour identity and look alike in torchlight.</p></div>
+  <div class="card rejected"><h4>C · Coloured himatia <span class="badge no">not chosen</span></h4><p class="small">Same costume as the legislators. Simple, but it erases the Synod→Parliament change.</p></div>
+</div>
+<div class="core">The Five Priests of the Paxon Synod, full-length, front-facing, evenly spaced on cream paper. All wear ankle-length undyed white linen chitons, leather sandals, a thin olive-leaf fillet, and a wide woollen stole over both shoulders in their own colour; each wears a thick parchment ledger on a leather strap across the body. (1) ALPHA: tall, gaunt man in his sixties, long iron-grey beard, severe brows, aegean-blue stole, holds a small glass hourglass. (2) BETA: lean restless man of thirty, sunburnt, dusty sandals, broad felt traveller's hat hanging on his back, terracotta-red stole, turned slightly as if about to leave. (3) GAMMA: athletic man in his forties, black curly hair and trimmed beard, bright eager eyes, olive-green stole, one hand raised as if about to give an order. (4) DELTA: stout, heavy, jovial man in his fifties, bald crown with a grey fringe, deep purple stole, sitting comfortably on a stone seat. (5) EPSILON: very old, short, wiry clean-shaven man, squinting at an open ledger held close to his face, dark mustard-gold stole. Each ledger's round bronze cover boss carries a different engraved emblem: dolphin, owl, eight-rayed star, tortoise, horse.</div>
+<fieldset class="decision" data-id="D06" data-title="Priest costume">
+  <legend>D06 · Priestly costume</legend>
+  <p class="locked-line">🔒 Locked: <b>A · White linen + coloured stoles</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D06" value="A · White linen + coloured stoles" checked> A · White linen + coloured stoles</label>
+    <label class="opt"><input type="radio" name="D06" value="B · Dark veiled robes"> B · Dark veiled robes</label>
+    <label class="opt"><input type="radio" name="D06" value="C · Coloured himatia"> C · Coloured himatia</label>
+  </div>
+  <textarea placeholder="Notes: e.g. change a priest's age, colour or emblem"></textarea>
+</fieldset>
+<fieldset class="decision" data-id="D07" data-title="Priest identity marks">
+  <legend>D07 · How the Five are marked on objects</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Coin-type emblems (dolphin, owl, star, tortoise, horse)</b></p>
+  <p class="small" style="margin:.2em 0">Figure 1 calls them Α–Ε, but single Greek capitals are exactly what image models garble into Latin letters.</p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D07" value="A · Coin-type emblems (dolphin, owl, star, tortoise, horse)" checked> A · Coin-type emblems</label>
+    <label class="opt"><input type="radio" name="D07" value="B · Greek capitals Α–Ε"> B · Greek capitals</label>
+    <label class="opt"><input type="radio" name="D07" value="C · Colour only"> C · Colour only</label>
+  </div>
+  <p class="small muted" style="margin:.2em 0 .5em">The emblems are classic Greek coin types (Athens' owl, Aegina's tortoise, Taras' dolphin), so they are period-authentic, and each silhouette still reads at thumbnail size.</p>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h3>Legislators &amp; presidents (Chapter III)</h3>
+<p class="small">Merchant-legislators in coloured himatia over chitons, with rings, purses and good sandals: people with businesses to get back to. No fixed colour-coding, but every one wears a ledger strap.</p>
+<div class="tbl"><table>
+<thead><tr><th>Character</th><th>§</th><th>Look</th><th>Beat</th></tr></thead>
+<tbody>
+<tr><td><b>Λ˘ινχ∂</b></td><td>1.2</td><td>Woman, 40s, poised olive-oil merchant; aegean-blue himation, gold earrings, ink-stained fingers.</td><td>Writes decree 155 (the <code>ledger</code> panel).</td></tr>
+<tr><td><b>Δφωρκ</b></td><td>3.1</td><td>Woman, 50s, composed, grey-streaked hair in a bun, terracotta himation; wears the presidency mark.</td><td>Monday president filling the gaps.</td></tr>
+<tr><td><b>Ωκι</b></td><td>3.3.1</td><td>Man, 40s, <b>deeply suntanned</b>, peeling nose, straw sun hat, sea-stained travelling cloak, a souvenir amphora; writes slowly with his tongue out.</td><td>Back from six months away, instantly president.</td></tr>
+<tr><td><b>The Rich President</b></td><td>3.3.1</td><td>Portly, silver-haired, heavy terracotta himation with an embroidered hem, heavy rings, followed by three scribes carrying ledgers.</td><td>“Could afford more scribes”.</td></tr>
+<tr><td><b>Στωκμ˘ιρ</b></td><td>3.3.4</td><td>Man, 30s, harried and apologetic, himation askew, ledger held open to show where it runs out.</td><td>His ledger stops at 76.</td></tr>
+<tr><td><b>Παρνας &amp; son</b></td><td>3.3.6</td><td>A white-haired elder and his look-alike young son; the same worn heirloom ledger passes between them.</td><td>Hereditary membership.</td></tr>
+<tr><td><b>Στρωνγ</b></td><td>3.3.6</td><td>Muscular young man, new himation, brand-new unscuffed ledger.</td><td>Admitted by decree 3252.</td></tr>
+<tr><td><b>Aides &amp; scribes</b></td><td>1.2, 3.3.1</td><td>Men and women in plain short tunics, reed pens behind ears, satchels of parchment.</td><td>Background.</td></tr>
+</tbody></table></div>
+
+<h4>The benches: recurring background legislators</h4>
+<p class="small">The paper names only a few legislators, but panels show many. These four women are drawn consistently wherever Parliament sits, so the benches are recognisably the same people from panel to panel. They're described by trait, not given invented Paxon names. Additional unnamed legislators follow the casting rules above.</p>
+<div class="tbl"><table>
+<thead><tr><th>Legislator</th><th>Look</th><th>Typical business</th></tr></thead>
+<tbody>
+<tr><td><b>The Shipowner</b></td><td>Woman, 60s, weathered and upright, silver braid coiled at the neck, aegean-blue himation fastened with a bronze ship-prow brooch, driftwood walking stick.</td><td>Most often seen leaving for the harbour.</td></tr>
+<tr><td><b>The Vintner</b></td><td>Woman, late 20s, quick and energetic, sleeves pinned up, terracotta chiton, grape-stained hands, straw hat hanging on her back.</td><td>First out of the gate to the banquet house.</td></tr>
+<tr><td><b>The Money-changer</b></td><td>Woman, 40s, dark-skinned, from a trading family out of Egypt; sharp-eyed, olive-green himation, gold rings, a coin purse on a chain at her belt.</td><td>Counts messenger fees; sits near the centre.</td></tr>
+<tr><td><b>The Potter</b></td><td>Woman, 30s, sturdy and broad-shouldered, clay-dusted forearms, sand-coloured chiton under a short leather apron.</td><td>Arrives late from her workshop, still dusty.</td></tr>
+</tbody></table></div>
+
+<h3>Messengers</h3>
+<p class="small">Hired help, honest but part-time (<span class="sec">§1.3</span>). The paper uses “he” for messengers. Four recurring messengers carry the four failure modes. Any other messenger in a scene is an unnamed extra: men from teenagers to their 50s, of varied build and complexion, all in the same kit.</p>
+<div class="grid">
+  <div class="card"><h4>① The Sprinter</h4><p class="small">About 18, wiry and long-limbed, close-cropped black hair, olive skin, bare-headed with his hat bouncing on his back; mid-stride on a radial stairway, scroll clutched to his chest. Normal delivery (≤ 4 minutes).</p></div>
+  <div class="card"><h4>② The Doubler</h4><p class="small">40s, round-faced and cheerful, balding with curly grey sides, slightly paunchy, hat pushed back, a reminder string tied round one finger that clearly doesn't work; arriving <em>again</em> with a scroll the priest is already holding. Duplicate delivery.</p></div>
+  <div class="card"><h4>③ The Voyager</h4><p class="small">30s, bearded and sea-tanned, felt sailor's cap instead of the broad hat, sea-bag over one shoulder, a scroll still tucked in his belt; walking up a gangplank. The six-month voyage.</p></div>
+  <div class="card"><h4>④ The Vanished</h4><p class="small">Only glimpsed from behind in the distance, if at all: a tall, thin man with a limp. What panels show is his abandoned satchel on a tier and footprints heading out through a gate. Leaving forever.</p></div>
+</div>
+<div class="grid">
+  <div class="card rec"><h4>A · Hired runner's kit <span class="badge rec">locked</span></h4><p class="small">Short undyed wool tunic belted at the waist and fastened on one shoulder; broad felt traveller's hat on a cord; laced running sandals; short dust-coloured cloak; hip satchel with a scroll case; a <b>bronze hire-tag</b> on a neck cord marks him as Parliament's messenger. Realistic, working-class and part-time.</p></div>
+  <div class="card rejected"><h4>B · Hermes styling <span class="badge no">not chosen</span></h4><p class="small">Winged sandals and a herald's staff (the current <code>voting</code> panel). Mythic, so messengers read as gods rather than unreliable hired help. <span class="badge risk">tone</span></p></div>
+  <div class="card rejected"><h4>C · House livery <span class="badge no">not chosen</span></h4><p class="small">Identical terracotta tunics. Very readable, but it implies a salaried corps, while the paper has legislators hiring as many messengers as they need.</p></div>
+</div>
+<fieldset class="decision" data-id="D09" data-title="Messenger look">
+  <legend>D09 · Messenger look</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Hired runner's kit</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D09" value="A · Hired runner's kit" checked> A · Hired runner's kit</label>
+    <label class="opt"><input type="radio" name="D09" value="B · Hermes styling"> B · Hermes styling</label>
+    <label class="opt"><input type="radio" name="D09" value="C · House livery"> C · House livery</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h3>Citizens, bureaucrats and the fall</h3>
+<div class="tbl"><table>
+<thead><tr><th>Character</th><th>§</th><th>Look</th></tr></thead>
+<tbody>
+<tr><td><b>Δ˘ικστρα</b>, first cheese inspector</td><td>3.3.3</td><td>Tall, thin, severe; nose wrinkled mid-sniff; bronze inspector's badge on a chain; carries a bronze stamp.</td></tr>
+<tr><td><b>Γωυδα</b>, new cheese inspector</td><td>3.3.3</td><td>Round, rosy and generous; the same badge and stamp, but newer and shinier.</td></tr>
+<tr><td><b>Φρανσεζ &amp; Πνυελ˘ι</b>, wine tasters</td><td>3.3.3</td><td>A pair with drinking cups; optional, no panel yet.</td></tr>
+<tr><td><b>Δωλεφ</b>, farmer</td><td>3.3.4</td><td>Weathered, broad-shouldered, sheepskin vest, shepherd's crook; proud of his goats.</td></tr>
+<tr><td>Goatherd</td><td>3.3.4</td><td>Boy of twelve with a switch, herding <b>black goats</b> (a later scene has brown ones).</td></tr>
+<tr><td><b>Σκεεν</b>, merchant</td><td>3.3.4</td><td>Careful, law-abiding; neat ochre himation; carries a wax note-tablet (he “remembers decree numbers”).</td></tr>
+<tr><td><b>Λισκωφ</b>, merchant</td><td>3.3.4</td><td>Optional: holds a golden fleece.</td></tr>
+<tr><td>The scribe of the error</td><td>3.3.6</td><td>A young copyist, horror-struck, reed pen still in hand over the fatal line.</td></tr>
+<tr><td><b>General Λαμπσων</b></td><td>3.3.6</td><td>Hoplite general in the Vol II idiom: bronze cuirass, crested Corinthian helmet under his arm, crimson cloak; an ordinary, calculating face, not a cartoon villain.</td></tr>
+</tbody></table></div>
+
+<h3>Townsfolk of Paxos</h3>
+<p class="small">The ordinary people of a prosperous port, for the island, harbour, agora, banquet-house and fall scenes. Recurring types, at least half of them women, all period-plausible working people. Nobody is depicted as enslaved.</p>
+<div class="tbl"><table>
+<thead><tr><th>Type</th><th>Look</th><th>Where seen</th></tr></thead>
+<tbody>
+<tr><td><b>The cheese seller</b></td><td>Woman, 50s, head-scarf, broad forearms, stall of rind-covered cheese wheels; the one who despairs when the two inspectors disagree.</td><td>cheese</td></tr>
+<tr><td><b>Water carrier</b></td><td>Young woman balancing a water jar on her head, one hand steadying it.</td><td>island, agora</td></tr>
+<tr><td><b>Mother and child</b></td><td>Woman in her 30s with a toddler on her hip; an older child tugging her hand.</td><td>agora, harbour</td></tr>
+<tr><td><b>Children at play</b></td><td>Two or three children playing knucklebones on the paving.</td><td>agora, Statue Walk</td></tr>
+<tr><td><b>Fisherwoman</b></td><td>Woman, 40s, sun-browned, net over her shoulder and a basket of fish.</td><td>harbour</td></tr>
+<tr><td><b>Dockworker</b></td><td>Muscular man carrying an amphora on his shoulder.</td><td>harbour</td></tr>
+<tr><td><b>Sailor</b></td><td>Wiry man in a felt cap coiling a rope on a quay.</td><td>harbour, messenger</td></tr>
+<tr><td><b>Elder on a bench</b></td><td>White-bearded old man with a walking stick, watching the world go by.</td><td>agora, Statue Walk</td></tr>
+<tr><td><b>Aulos player</b></td><td>Woman playing the double pipes at the banquet house.</td><td>wanderers, conflict</td></tr>
+<tr><td><b>Banquet server</b></td><td>Young man carrying a wine-mixing bowl.</td><td>wanderers, conflict</td></tr>
+<tr><td><b>Λαμπσων's soldiers</b></td><td>Hoplites in the Vol II idiom: bronze helmets, round shields with plain (no lettering) devices, spears.</td><td>fall</td></tr>
+</tbody></table></div>
+
+<h3>The frame: the archaeologist</h3>
+<p>The paper's narrator is a modern archaeologist “doing field work in the Greek isles” (editor's note). The audit condemned the current pith helmet and speech balloon, but its proposed fix, a Greek in a chiton excavating a Greek ruin, is <em>wrong</em>. The narrator is not ancient.</p>
+<div class="grid">
+  <div class="card rec"><h4>A · A 1990 field archaeologist, frame panels only <span class="badge rec">locked</span></h4>
+  <p class="small">The sole modern figure in the volume, confined to <code>manuscript</code> (and <code>statemachine</code> if D16 = C). Sensible linen field shirt and canvas sun hat (no pith helmet), a trowel, soft brushes, grid strings, finds trays and a canvas shade over the ruined Round. He kneels by a half-unrolled papyrus fragment. No text, no balloon. Allegorical: no resemblance to Lamport.</p></div>
+  <div class="card rejected"><h4>B · Hands and finds only <span class="badge no">not chosen</span></h4><p class="small">A close-up of weathered hands lifting the fragment from the trench. Avoids the question of a modern figure, but loses the wry person-in-a-world humour.</p></div>
+  <div class="card rejected"><h4>C · Vol I's Leslie as the chronicler <span class="badge no">not chosen</span></h4><p class="small">A series in-joke: the wandering scholar is found in the ruin. Charming, but it muddles two frames (ancient scholar vs modern archaeologist).</p></div>
+</div>
+<fieldset class="decision" data-id="D10" data-title="Frame figure">
+  <legend>D10 · The archaeologist frame</legend>
+  <p class="locked-line">🔒 Locked: <b>A · 1990 field archaeologist (frame only)</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D10" value="A · 1990 field archaeologist (frame only)" checked> A · 1990 field archaeologist</label>
+    <label class="opt"><input type="radio" name="D10" value="B · Hands and finds only"> B · Hands only</label>
+    <label class="opt"><input type="radio" name="D10" value="C · Vol I's Leslie"> C · Vol I's Leslie</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<!-- ===================================================== 7 LEDGER -->
+<h2 id="ledger"><span class="num">7</span>The ledger</h2>
+<p class="lede">The most important prop in the volume, and the one the paper describes most closely. It has to perform every function Lamport gives it, and still look like an object a craftsman could have made.</p>
+
+<div class="tbl"><table>
+<thead><tr><th>Function</th><th>§</th><th>Physical answer (recommended design)</th></tr></thead>
+<tbody>
+<tr><td>Sturdy; carried at all times</td><td>1.3</td><td>Wooden boards covered in leather, bronze corners, a long shoulder strap: <b>worn</b>, not held.</td></tr>
+<tr><td>Finest parchment</td><td>1.3</td><td>Cream parchment leaves with visible hair-side speckle at the edges.</td></tr>
+<tr><td>Numbered decree list, in order</td><td>1.2</td><td>Front section: ruled rows, each starting with a <b>red-ochre margin mark</b> (the number) and a small decree emblem (§9).</td></tr>
+<tr><td>Indelible; never changed</td><td>1.2</td><td>Black <b>iron-gall ink</b>, which bites into parchment. Ordinary carbon ink could be sponged off, and the Paxon kit pointedly has <b>no sponge</b> (§8).</td></tr>
+<tr><td>May lack an entry (gaps)</td><td>1.2, 3.1</td><td>An empty ruled row with only its margin mark, between two filled rows.</td></tr>
+<tr><td>Notes in the back; can be crossed out</td><td>1.3, 2.3</td><td>A distinct back section (cream page edges). It <i>may</i> be written from the back cover, upside down, as real scribes did for a second text; this is optional and needn't be shown. Struck out with a single stroke.</td></tr>
+<tr><td>lastTried · prevVote · nextBal</td><td>2.3</td><td>Three small ruled boxes on the first back page. Each is a column of struck-out lines ending in one live line. Marked by a <b>token</b>, an <b>urn</b> and a <b>clasped hand</b> (the promise).</td></tr>
+<tr><td>Separate losable slip of paper</td><td>1.3, 2.3</td><td>A torn papyrus scrap tucked under the strap: status, votes received, quorum, voters. The wind's favourite.</td></tr>
+<tr><td>Ownership</td><td>2.2</td><td>A round bronze boss on the front cover engraved with the owner's emblem.</td></tr>
+<tr><td>Synod version holds at most one decree</td><td>2</td><td>A slim ceremonial ledger: <b>one consecrated leaf</b> in a painted meander border, followed by the notes section.</td></tr>
+<tr><td>Becomes a law book by area + “complete through N”</td><td>3.3.2</td><td>Fatter, older; <b>leather thumb-tabs</b> on the fore-edge, each stamped with an area emblem; a <b>knotted cord with a sliding bronze clamp</b> down the spine marks how far it is complete; past week's decrees in the back.</td></tr>
+<tr><td>Inherited</td><td>3.3.6</td><td>Παρνας' copy: polished corners, a re-sewn spine, strap mended with a new buckle.</td></tr>
+</tbody></table></div>
+
+<h3>Construction options</h3>
+<div class="grid">
+  <div class="card rec"><h4>A · Parchment codex between boards <span class="badge rec">locked</span></h4>
+  <p class="small">A sewn book of parchment in olive-wood boards. It is the only form that gives a literal “back of the ledger”, random access to any decree, parchment throughout and durability. It grew out of the Greco-Roman tablet-book; D01-B allows it.</p>
+  <ul class="pros"><li>Every row of the table above is literal.</li><li>Instantly readable as “a ledger”.</li></ul>
+  <ul class="cons"><li>The audit called a stitched codex anachronistic. That's true for the strict classical reading; D01 decides it.</li></ul></div>
+  <div class="card rejected"><h4>B · Tablet-book hybrid <span class="badge no">not chosen</span></h4>
+  <p class="small">Hinged wooden leaves: parchment leaves at the front for decrees, wax tablets at the back for notes.</p>
+  <ul class="pros"><li>Earlier-looking; the indelible/erasable contrast is visible.</li></ul>
+  <ul class="cons"><li><b>Contradicts canon:</b> notes are in the <em>parchment</em> ledger and are crossed out, not smoothed away.</li><li>Wax softens in the sun, and losing a nextBal promise breaks safety. A Paxon mathematician would forbid it.</li></ul></div>
+  <div class="card rejected"><h4>C · Roll with notes on the back <span class="badge no">not chosen</span></h4>
+  <p class="small">A parchment roll in a cylindrical case, decrees on the front, notes on the reverse (a real ancient practice).</p>
+  <ul class="pros"><li>Unimpeachably ancient.</li></ul>
+  <ul class="cons"><li>No random access; unrolling to decree 1298 is absurd; the “back” is invisible in panels; hard to wear “at all times”.</li></ul></div>
+</div>
+<fieldset class="decision" data-id="D11" data-title="Ledger construction">
+  <legend>D11 · Ledger construction</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Parchment codex between boards</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D11" value="A · Parchment codex between boards" checked> A · Parchment codex</label>
+    <label class="opt"><input type="radio" name="D11" value="B · Tablet-book hybrid (parchment + wax)"> B · Tablet-book hybrid</label>
+    <label class="opt"><input type="radio" name="D11" value="C · Roll with notes on the back"> C · Roll with notes on the back</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h3>Anatomy of the recommended ledger</h3>
+<div class="diagram"><svg viewBox="0 0 900 330" role="img" aria-label="Ledger anatomy: closed book with strap and two-colour fore-edge; front spread with numbered rows and a gap; back section written upside down with three note boxes and crossed-out lines; law-book era with thumb tabs and a completeness cord">
+  <!-- 1 closed -->
+  <g transform="translate(20,30)">
+    <path d="M40 -20 C 10 60, 150 -30, 140 20" fill="none" stroke="#6b3a1f" stroke-width="5"/>
+    <rect x="10" y="20" width="130" height="175" rx="8" fill="#6b2a1e" stroke="#1c1512" stroke-width="3"/>
+    <rect x="140" y="26" width="18" height="163" fill="#bf4a26" stroke="#1c1512" stroke-width="1.5"/>
+    <rect x="140" y="140" width="18" height="49" fill="#f2e7cd" stroke="#1c1512" stroke-width="1.5"/>
+    <g fill="#c1912b" stroke="#1c1512"><circle cx="22" cy="32" r="6"/><circle cx="128" cy="32" r="6"/><circle cx="22" cy="183" r="6"/><circle cx="128" cy="183" r="6"/></g>
+    <circle cx="75" cy="107" r="22" fill="#c1912b" stroke="#1c1512" stroke-width="2.5"/><text x="75" y="115" font-size="22" text-anchor="middle">🐬</text>
+    <g fill="#3d1a12" stroke="#1c1512"><rect x="120" y="70" width="46" height="10" rx="3"/><rect x="120" y="140" width="46" height="10" rx="3"/></g>
+    <g fill="#c1912b" stroke="#1c1512"><circle cx="166" cy="75" r="4"/><circle cx="166" cy="145" r="4"/></g>
+    <text x="85" y="222" font-size="13" text-anchor="middle" font-weight="700">① Closed, worn on its strap</text>
+    <text x="85" y="240" font-size="11" text-anchor="middle">fore-edge: red = decrees · cream = notes</text>
+    <text x="85" y="256" font-size="11" text-anchor="middle">emblem boss · bronze corners · 2 clasps</text>
+  </g>
+  <!-- 2 front spread -->
+  <g transform="translate(225,40)">
+    <path d="M0 10 Q70 0 140 10 V190 Q70 180 0 190Z" fill="#faf3e0" stroke="#1c1512" stroke-width="2"/>
+    <path d="M140 10 Q210 0 280 10 V190 Q210 180 140 190Z" fill="#faf3e0" stroke="#1c1512" stroke-width="2"/>
+    <g id="rowsL">
+      <g><rect x="12" y="24" width="6" height="8" fill="#bf4a26"/><circle cx="28" cy="28" r="5" fill="none" stroke="#1c1512"/><path d="M38 28 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="#1c1512" stroke-width="1.3"/></g>
+      <g transform="translate(0,26)"><rect x="12" y="24" width="6" height="8" fill="#bf4a26"/><circle cx="28" cy="28" r="5" fill="none" stroke="#1c1512"/><path d="M38 28 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="#1c1512" stroke-width="1.3"/></g>
+      <g transform="translate(0,52)"><rect x="12" y="24" width="6" height="8" fill="#bf4a26"/><circle cx="28" cy="28" r="5" fill="none" stroke="#1c1512"/><path d="M38 28 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="#1c1512" stroke-width="1.3"/></g>
+      <g transform="translate(0,78)"><rect x="12" y="24" width="6" height="8" fill="#bf4a26"/><rect x="24" y="18" width="108" height="18" fill="none" stroke="#136f9e" stroke-width="1.5" stroke-dasharray="4 3"/><text x="80" y="31" font-size="9" text-anchor="middle" fill="#0b4a6b">gap: margin mark only</text></g>
+      <g transform="translate(0,104)"><rect x="12" y="24" width="6" height="8" fill="#bf4a26"/><circle cx="28" cy="28" r="5" fill="none" stroke="#1c1512"/><path d="M38 28 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="#1c1512" stroke-width="1.3"/></g>
+      <g transform="translate(0,130)"><rect x="12" y="24" width="6" height="8" fill="#bf4a26"/><circle cx="28" cy="28" r="5" fill="none" stroke="#1c1512"/><path d="M38 28 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="#1c1512" stroke-width="1.3"/></g>
+    </g>
+    <g transform="translate(140,0)">
+      <g><rect x="12" y="24" width="6" height="8" fill="#bf4a26"/><circle cx="28" cy="28" r="5" fill="none" stroke="#1c1512"/><path d="M38 28 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="#1c1512" stroke-width="1.3"/></g>
+      <g transform="translate(0,26)"><rect x="12" y="24" width="6" height="8" fill="#bf4a26"/><circle cx="28" cy="28" r="5" fill="none" stroke="#1c1512"/><path d="M38 28 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="#1c1512" stroke-width="1.3"/></g>
+      <g transform="translate(0,52)"><rect x="12" y="24" width="6" height="8" fill="#bf4a26"/><circle cx="28" cy="28" r="5" fill="none" stroke="#1c1512"/><path d="M38 28 q6 -4 12 0 t12 0 t12 0" fill="none" stroke="#1c1512" stroke-width="1.3"/></g>
+      <g transform="translate(0,78)"><rect x="12" y="24" width="6" height="8" fill="#bf4a26" opacity=".35"/></g>
+      <g transform="translate(0,104)"><rect x="12" y="24" width="6" height="8" fill="#bf4a26" opacity=".35"/></g>
+    </g>
+    <text x="140" y="212" font-size="13" text-anchor="middle" font-weight="700">② Front: the decrees</text>
+    <text x="140" y="230" font-size="11" text-anchor="middle">red margin mark = number · ○ = decree emblem</text>
+    <text x="140" y="246" font-size="11" text-anchor="middle">iron-gall ink · never struck out · gaps allowed</text>
+  </g>
+  <!-- 3 back inverted -->
+  <g transform="translate(535,40)">
+    <path d="M0 10 Q70 0 140 10 V190 Q70 180 0 190Z" fill="#faf3e0" stroke="#1c1512" stroke-width="2"/>
+    <g transform="rotate(180 70 100)">
+      <g><rect x="12" y="20" width="116" height="48" fill="none" stroke="#1c1512" stroke-width="1.2"/><circle cx="22" cy="30" r="5" fill="#c1912b" stroke="#1c1512"/>
+        <path d="M34 32 h60 M34 44 h70 M34 56 h50" stroke="#1c1512" stroke-width="1.3"/><path d="M32 32 h64 M32 44 h74" stroke="#bf4a26" stroke-width="1.8"/></g>
+      <g transform="translate(0,56)"><rect x="12" y="20" width="116" height="48" fill="none" stroke="#1c1512" stroke-width="1.2"/><path d="M17 36 q5 -12 10 0 v6 h-10z" fill="#bf4a26" stroke="#1c1512"/>
+        <path d="M34 32 h62 M34 44 h48" stroke="#1c1512" stroke-width="1.3"/><path d="M32 32 h66" stroke="#bf4a26" stroke-width="1.8"/></g>
+      <g transform="translate(0,112)"><rect x="12" y="20" width="116" height="48" fill="none" stroke="#1c1512" stroke-width="1.2"/><path d="M16 32 h12 M16 36 h12" stroke="#1c1512" stroke-width="2.4"/>
+        <path d="M34 32 h58 M34 44 h66 M34 56 h40" stroke="#1c1512" stroke-width="1.3"/><path d="M32 32 h62 M32 44 h70" stroke="#bf4a26" stroke-width="1.8"/></g>
+    </g>
+    <path d="M110 150 l30 -12 l-6 22 z" fill="#e6d5ae" stroke="#1c1512"/><text x="150" y="170" font-size="9" fill="#5b4f45">slip</text>
+    <text x="70" y="212" font-size="13" text-anchor="middle" font-weight="700">③ Back: the notes</text>
+    <text x="70" y="230" font-size="11" text-anchor="middle">(may be written from the back)</text>
+    <text x="70" y="246" font-size="11" text-anchor="middle">lastTried · prevVote · nextBal</text>
+    <text x="70" y="262" font-size="11" text-anchor="middle">old lines struck · newest line live</text>
+  </g>
+  <!-- 4 law book -->
+  <g transform="translate(730,30)">
+    <rect x="10" y="20" width="120" height="175" rx="8" fill="#5a2418" stroke="#1c1512" stroke-width="3"/>
+    <rect x="130" y="26" width="24" height="163" fill="#f2e7cd" stroke="#1c1512" stroke-width="1.5"/>
+    <g stroke="#1c1512" stroke-width="1.5">
+      <rect x="152" y="36" width="16" height="20" rx="3" fill="#bf4a26"/><rect x="152" y="66" width="16" height="20" rx="3" fill="#66722c"/><rect x="152" y="96" width="16" height="20" rx="3" fill="#136f9e"/><rect x="152" y="126" width="16" height="20" rx="3" fill="#c1912b"/><rect x="152" y="156" width="16" height="20" rx="3" fill="#a98a5c"/>
+    </g>
+    <text x="160" y="51" font-size="10" text-anchor="middle">🏺</text><text x="160" y="81" font-size="10" text-anchor="middle">🐐</text><text x="160" y="111" font-size="10" text-anchor="middle">⛵</text><text x="160" y="141" font-size="10" text-anchor="middle">🧀</text><text x="160" y="171" font-size="10" text-anchor="middle">🍇</text>
+    <line x1="6" y1="20" x2="6" y2="200" stroke="#6b3a1f" stroke-width="2.5"/>
+    <g fill="#6b3a1f"><circle cx="6" cy="45" r="3"/><circle cx="6" cy="70" r="3"/><circle cx="6" cy="95" r="3"/><circle cx="6" cy="120" r="3"/><circle cx="6" cy="145" r="3"/><circle cx="6" cy="170" r="3"/></g>
+    <rect x="0" y="113" width="12" height="14" rx="2" fill="#c1912b" stroke="#1c1512" stroke-width="1.5"/>
+    <circle cx="70" cy="107" r="20" fill="#c1912b" stroke="#1c1512" stroke-width="2.5" opacity=".85"/>
+    <text x="85" y="222" font-size="13" text-anchor="middle" font-weight="700">④ Law-book era</text>
+    <text x="85" y="240" font-size="11" text-anchor="middle">area tabs with emblems</text>
+    <text x="85" y="256" font-size="11" text-anchor="middle">knotted cord + bronze clamp</text>
+    <text x="85" y="272" font-size="11" text-anchor="middle">= “complete through N”</text>
+  </g>
+</svg></div>
+
+<div class="core">The Paxon ledger: a thick hand-held book, about 25 by 33 cm and 7 cm thick, of cream parchment leaves sewn between two olive-wood boards covered in oxblood-red leather. Bronze corner pieces; a round bronze boss in the centre of the front cover engraved with the owner's emblem; two leather straps with bronze pin-clasps across the fore-edge; a long leather shoulder strap so it is worn across the body. On the page edges, the front two-thirds are stained red ochre and the back third is left cream. OPEN AT THE FRONT: neat ruled rows of dense black ink handwriting shown only as unreadable wavy scribble texture; each row begins with a small red-ochre margin mark and a tiny engraved-style emblem roundel; no row is ever struck out; one row is left empty except for its margin mark (a gap). OPEN AT THE BACK: three small ruled boxes of short scribble lines, the older lines crossed out with one straight stroke and only the newest line left uncrossed. A torn scrap of papyrus is tucked loosely under the strap. No legible letters or numerals anywhere.</div>
+<div class="grid two">
+  <div class="core">SYNOD LEDGER VARIANT: slimmer and older, the same construction, with a single consecrated first leaf bearing one short block of scribble texture inside a painted red-and-black meander border, followed by many note pages.</div>
+  <div class="core">LAW-BOOK VARIANT: the same ledger decades later, fatter and scuffed, with small leather tabs sewn along the fore-edge, each stamped with a simple emblem (amphora, goat, ship, cheese wheel, grape cluster), and a knotted leather cord running down the spine with a small sliding bronze clamp set at one knot.</div>
+</div>
+
+<!-- ===================================================== 8 PROPS -->
+<h2 id="props"><span class="num">8</span>The standard kit and other props</h2>
+<div class="grid two">
+  <div class="card">
+    <h4>① Pen and a supply of indelible ink <span class="sec">§1.3</span></h4>
+    <p class="small">Reed pen; a bronze <b>double inkwell</b> (black iron-gall and red ochre for margin marks); a small <b>sealed terracotta ink flask</b> (the “supply”); a bronze penknife; pumice. <b>No sponge</b>: ancient scribes erased carbon ink with a sponge, and a Paxon kit's lack of one is a quiet joke for readers who know.</p>
+  </div>
+  <div class="card">
+    <h4>② The slip of paper <span class="sec">§1.3 · A1</span></h4>
+    <p class="small">A torn, curling papyrus scrap with a few scribbles and tally strokes. Flimsy, visibly different from the parchment. Tucked under the ledger strap or held down by the hourglass; in the wind it escapes. Everything that is lost when a priest leaves lives here.</p>
+  </div>
+</div>
+
+<h3>The hourglass</h3>
+<p class="small">Canon names hourglasses made by “the skilled glass blowers of Paxos”, and the site already uses hourglasses (Vol IV, Vol IX). Paxon ones need their own look so they aren't mistaken for Vol IV's navigators' timers.</p>
+<div class="grid">
+  <div class="card rec"><h4>A · Paxon blown-glass sand-glass <span class="badge rec">locked</span></h4><p class="small">Palm-sized; pale <b>sea-green glass</b> with tiny bubbles; <b>black volcanic sand</b>; bronze end caps on three turned olive-wood pillars; a leather loop to hang it from the ledger strap. Each priest has his own.</p></div>
+  <div class="card rejected"><h4>B · Water-clock <span class="badge no">not chosen</span></h4><p class="small">Historically authentic, but contradicts “hourglass timers” and “hourglass shards”. <span class="badge risk">off-canon</span></p></div>
+  <div class="card rejected"><h4>C · Bronze-cased sand-glass <span class="badge no">not chosen</span></h4><p class="small">A sand-glass inside a pierced bronze cylinder with a viewing slot. Sturdy and distinct, but the sand is hard to read at 800px.</p></div>
+</div>
+<fieldset class="decision" data-id="D12" data-title="Hourglass">
+  <legend>D12 · The hourglass</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Paxon sea-green glass, black sand</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D12" value="A · Paxon sea-green glass, black sand" checked> A · Sea-green glass, black sand</label>
+    <label class="opt"><input type="radio" name="D12" value="B · Water-clock"> B · Water-clock</label>
+    <label class="opt"><input type="radio" name="D12" value="C · Bronze-cased sand-glass"> C · Bronze-cased</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h3>The mark of the president</h3>
+<p>A subtle but important point. In the Synod, <b>two priests may each believe they are president</b>, which only slows things down (<span class="sec">§2.4</span>; the oracle's legend “Two would-be presidents”). A <em>unique</em> physical token, such as one crown or one sceptre passed from hand to hand, would silently tell readers the opposite.</p>
+<div class="grid">
+  <div class="card rec"><h4>A · A self-donned black-and-gold sash <span class="badge rec">locked</span></h4><p class="small">Every priest or legislator keeps a folded <b>black sash with a gold meander border</b> in their satchel and puts it on, worn diagonally, when they believe they are president. Two can wear one at once. In Parliament, the president also takes the stool at the centre.</p></div>
+  <div class="card rejected"><h4>B · The unique chair or sceptre <span class="badge no">not chosen</span></h4><p class="small">Very readable, but it implies exactly one president. <span class="badge risk">misleads</span></p></div>
+  <div class="card rejected"><h4>C · A laurel wreath <span class="badge no">not chosen</span></h4><p class="small">Clashes with the olive fillets and with Success-message laurel (§9).</p></div>
+</div>
+<fieldset class="decision" data-id="D15" data-title="Presidency mark">
+  <legend>D15 · The mark of the president</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Self-donned black sash, gold meander</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D15" value="A · Self-donned black sash, gold meander" checked> A · Self-donned black-and-gold sash</label>
+    <label class="opt"><input type="radio" name="D15" value="B · Unique chair / sceptre"> B · Unique chair / sceptre</label>
+    <label class="opt"><input type="radio" name="D15" value="C · Laurel wreath"> C · Laurel wreath</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h3>Offices, time and money</h3>
+<div class="tbl"><table>
+<thead><tr><th>Prop</th><th>§</th><th>Direction</th></tr></thead>
+<tbody>
+<tr><td>Weighing balance</td><td>2.2</td><td>A large bronze balance with pans of pebbles: the weighted majority. Optional flavour for the Synod scene.</td></tr>
+<tr><td>Messenger purse &amp; drachmas</td><td>1.3</td><td>A leather coin purse; silver drachmas marked with an owl-like stamp (no legend).</td></tr>
+<tr><td>Hire-tag</td><td>1.3</td><td>A small bronze tag on a cord around each messenger's neck.</td></tr>
+<tr><td>Sundial &amp; star-sight</td><td>3.3.3</td><td>A bowl sundial on a pillar in the agora; a sighting rod for stars. Time “within 15 minutes”. No clocks.</td></tr>
+<tr><td>Inspector's badge &amp; stamp</td><td>3.3.3</td><td>A bronze disc on a chain; a bronze stamp that presses <b>a whole-wheel emblem (fit)</b> or <b>a split-wheel emblem (unfit)</b> into the rind. Never words.</td></tr>
+<tr><td>Specialist's badge</td><td>3.3.4</td><td>A pendant with the same emblem as the law-book tab for their area (amphora = taxes, goat = mercantile law…), tying specialists to the ledger visually.</td></tr>
+<tr><td>Olive-day sprig</td><td>3.1</td><td>A small olive sprig with a full-moon disc: the emblem for filler decrees.</td></tr>
+<tr><td>Figure 1 fragment</td><td>2.1</td><td>A papyrus fragment with five ruled rows of unreadable marks, a few of them boxed. Suggests the manuscript without transcribing it (the page's interactive SVG does that).</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================== 9 NOTATION -->
+<h2 id="notation"><span class="num">9</span>Symbols: showing numbers and messages without text</h2>
+<p class="lede">This volume is all numbers (decree 155, ballot <i>b</i>, quorum <i>Q</i>) and it forbids legible writing. So we define one <b>closed set of symbols</b>, use it in all 19 images, and print its key on the reference sheet. The exact numbers stay in the captions. Images only need to show <em>relations</em>: same or different, higher or lower, filled or gap, whose.</p>
+
+<h3>Decree emblems</h3>
+<p class="small">Every decree in the paper gets a simple engraved-style emblem that appears in ledger margins, on BeginBallot and Success seals, and in scenes. The emoji below are shorthand for this document only. The art draws them as <b>engraved ink roundels in the same finish as the priest coin emblems</b>: ink line and halftone on bronze or cream, never flat coloured clip-art.</p>
+<div class="tbl"><table>
+<thead><tr><th>Decree</th><th>§</th><th>Emblem</th></tr></thead>
+<tbody>
+<tr><td>155 · olive tax 3 drachmas per ton</td><td>1.2</td><td><span class="emoji">🫒</span> olive branch over three coins</td></tr>
+<tr><td>132 · lamps use only olive oil</td><td>1.2</td><td><span class="emoji">🪔</span> oil lamp</td></tr>
+<tr><td>37 · painting on temple walls forbidden</td><td>1.2</td><td><span class="emoji">🖌️</span> a paintbrush snapped in two in front of a column (no modern circle-and-slash sign)</td></tr>
+<tr><td>37 · freedom of artistic expression</td><td>1.2</td><td><span class="emoji">🎭</span> open hand holding a brush</td></tr>
+<tr><td>125 · olive day (ides of February)</td><td>3.1</td><td><span class="emoji">🌿</span> olive sprig with full moon</td></tr>
+<tr><td>77 / 277 · black / brown goats may be sold</td><td>3.3.4</td><td><span class="emoji">🐐</span> goat, filled black or brown</td></tr>
+<tr><td>1375 / 2716 · cheese inspector</td><td>3.3.3</td><td><span class="emoji">🧀</span> cheese wheel with rind and one wedge cut out (no holes)</td></tr>
+<tr><td>2854 · wine taster</td><td>3.3.3</td><td><span class="emoji">🍇</span> grape cluster</td></tr>
+<tr><td>3252 · new legislator</td><td>3.3.6</td><td><span class="emoji">🌱</span> ledger with a sprig</td></tr>
+<tr><td>The fatal decree · drowned sailors</td><td>3.3.6</td><td><span class="emoji">⚓</span> anchor over waves</td></tr>
+<tr><td>Synod decrees α, β, δ</td><td>2.1</td><td>exactly three: ☀ sun disc · ☾ crescent · ✦ small star-in-circle</td></tr>
+</tbody></table></div>
+
+<h3>Ballots, votes and quorums</h3>
+<div class="grid two">
+  <div class="card">
+    <div class="diagram"><svg viewBox="0 0 420 150" role="img" aria-label="Ballot token: bronze disc with rim notches and a central emblem; vote token: disc pierced by an axle; null vote: blank rough clay disc">
+      <g transform="translate(70,70)">
+        <circle r="44" fill="#c1912b" stroke="#1c1512" stroke-width="3"/>
+        <g stroke="#1c1512" stroke-width="4"><line x1="0" y1="-44" x2="0" y2="-32"/><line x1="15" y1="-41" x2="11" y2="-30"/><line x1="-15" y1="-41" x2="-11" y2="-30"/></g>
+        <text y="12" font-size="30" text-anchor="middle">🐢</text>
+        <text y="70" font-size="12" text-anchor="middle" font-weight="700">ballot token</text>
+      </g>
+      <g transform="translate(210,70)">
+        <circle r="34" fill="#c1912b" stroke="#1c1512" stroke-width="3"/><rect x="-50" y="-5" width="100" height="10" rx="4" fill="#8a6a22" stroke="#1c1512" stroke-width="2"/>
+        <text y="70" font-size="12" text-anchor="middle" font-weight="700">vote (psephos)</text>
+      </g>
+      <g transform="translate(345,70)">
+        <path d="M-34 -6 C -30 -36, 20 -40, 34 -10 C 40 20, 10 38, -16 34 C -36 28, -38 10, -34 -6Z" fill="#d9b48a" stroke="#1c1512" stroke-width="3" stroke-dasharray="6 3"/>
+        <text y="70" font-size="12" text-anchor="middle" font-weight="700">null vote</text>
+      </g>
+    </svg></div>
+    <ul class="small">
+      <li><b>Ballot number</b> = bronze disc; <b>one to five small V-notches on the rim</b> give the count (never evenly spaced teeth that look like a gear) (only small counts, in demonstration panels); the <b>stamped emblem</b> is the owner, i.e. the (integer, priest) pair of <span class="sec">§2.2</span>. A higher ballot simply has more notches.</li>
+      <li><b>A vote</b> = a small bronze voting disc pierced by an axle (the real Athenian juror's ballot) stamped with the voter's emblem. The priest drops it into a messenger's palm.</li>
+      <li><b>Null vote</b> (−∞) = a blank, rough, unfired clay disc.</li>
+      <li><b>Quorum membership</b> is shown by who receives BeginBallot. No extra marker; keep panels clean.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Other signs</h4>
+    <ul class="small">
+      <li><b>Decree number in a ledger</b> = its row position plus the red margin mark. Never a digit.</li>
+      <li><b>Gap</b> = an empty ruled row with only the margin mark.</li>
+      <li><b>Crossed-out note</b> = one straight red-brown stroke through a scribble line.</li>
+      <li><b>“Complete through N”</b> = the bronze clamp on the knotted spine cord.</li>
+      <li><b>Time of day</b> = sun position and shadow length; night = stars.</li>
+      <li><b>Elapsed protocol time</b> = sand level in the priest's hourglass.</li>
+      <li><b>Presidency</b> = the black sash with a gold meander (D15).</li>
+      <li><b>Heartbeat</b> (“a message containing his name”, <span class="sec">§2.4</span>) = a clay name-tag stamped with the sender's emblem, carried on a cord.</li>
+    </ul>
+  </div>
+</div>
+<fieldset class="decision" data-id="D14" data-title="Ballot number depiction">
+  <legend>D14 · Ballot numbers in pictures</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Notched bronze token + owner emblem</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D14" value="A · Notched bronze token + owner emblem" checked> A · Notched token + emblem</label>
+    <label class="opt"><input type="radio" name="D14" value="B · Never shown; captions only"> B · Captions only</label>
+    <label class="opt"><input type="radio" name="D14" value="C · Token size grows with number"> C · Size grows with number</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h3>The messages: told apart by shape</h3>
+<p class="small">Wax colour alone doesn't survive 800px compression, so each message type has a <b>different container shape</b>, with colour as a backup. No two containers may share an outline. All scrolls are drawn the same way (a tight roll), and every token tied to a scroll is the same notched ballot token.</p>
+<div class="diagram"><svg viewBox="0 0 960 190" role="img" aria-label="Eight message containers: NextBallot scroll with dangling token; LastVote tied diptych; BeginBallot scroll with red seal and token; Voted bronze vote token; Success scroll with olive sprig; higher-ballot reply scroll with red knotted cord; heartbeat clay name tag; citizen request single wax tablet with dovetail handles">
+  <g transform="translate(60,70)">
+    <rect x="-40" y="-12" width="80" height="24" rx="12" fill="#faf3e0" stroke="#1c1512" stroke-width="2.5"/><circle cx="-40" cy="0" r="12" fill="#e6d5ae" stroke="#1c1512" stroke-width="2.5"/>
+    <line x1="10" y1="12" x2="10" y2="34" stroke="#6b3a1f" stroke-width="2"/><circle cx="10" cy="42" r="10" fill="#c1912b" stroke="#1c1512" stroke-width="2"/><line x1="10" y1="32" x2="10" y2="37" stroke="#1c1512" stroke-width="2"/>
+    <text y="84" font-size="13" text-anchor="middle" font-weight="700">NextBallot</text><text y="100" font-size="10.5" text-anchor="middle">scroll + ballot token</text>
+  </g>
+  <g transform="translate(180,70)">
+    <rect x="-32" y="-24" width="30" height="44" fill="#a98a5c" stroke="#1c1512" stroke-width="2.5"/><rect x="2" y="-24" width="30" height="44" fill="#a98a5c" stroke="#1c1512" stroke-width="2.5"/>
+    <path d="M-32 -2 H32 M0 -24 V20" stroke="#136f9e" stroke-width="3.5"/>
+    <text y="84" font-size="13" text-anchor="middle" font-weight="700">LastVote</text><text y="100" font-size="10.5" text-anchor="middle">tied two-leaf tablet</text><text y="114" font-size="10.5" text-anchor="middle">(the promise)</text>
+  </g>
+  <g transform="translate(300,70)">
+    <rect x="-40" y="-12" width="80" height="24" rx="12" fill="#faf3e0" stroke="#1c1512" stroke-width="2.5"/><circle cx="-40" cy="0" r="12" fill="#e6d5ae" stroke="#1c1512" stroke-width="2.5"/>
+    <circle cx="8" cy="0" r="12" fill="#bf4a26" stroke="#1c1512" stroke-width="2"/><circle cx="8" cy="0" r="5" fill="none" stroke="#1c1512"/>
+    <line x1="30" y1="12" x2="30" y2="34" stroke="#6b3a1f" stroke-width="2"/><circle cx="30" cy="42" r="10" fill="#c1912b" stroke="#1c1512" stroke-width="2"/>
+    <text y="84" font-size="13" text-anchor="middle" font-weight="700">BeginBallot</text><text y="100" font-size="10.5" text-anchor="middle">red decree seal</text>
+  </g>
+  <g transform="translate(420,70)">
+    <circle r="22" fill="#c1912b" stroke="#1c1512" stroke-width="2.5"/><rect x="-34" y="-4" width="68" height="8" rx="3" fill="#8a6a22" stroke="#1c1512" stroke-width="1.8"/>
+    <text y="84" font-size="13" text-anchor="middle" font-weight="700">Voted</text><text y="100" font-size="10.5" text-anchor="middle">voter's own token</text>
+  </g>
+  <g transform="translate(540,70)">
+    <rect x="-40" y="-12" width="80" height="24" rx="12" fill="#faf3e0" stroke="#1c1512" stroke-width="2.5"/><circle cx="-40" cy="0" r="12" fill="#e6d5ae" stroke="#1c1512" stroke-width="2.5"/>
+    <rect x="-6" y="-13" width="12" height="26" fill="#c1912b" stroke="#1c1512" stroke-width="1.5"/>
+    <g fill="#66722c" stroke="#1c1512"><ellipse cx="18" cy="-20" rx="9" ry="4" transform="rotate(-30 18 -20)"/><ellipse cx="28" cy="-24" rx="9" ry="4" transform="rotate(-10 28 -24)"/><ellipse cx="8" cy="-24" rx="9" ry="4" transform="rotate(-50 8 -24)"/></g>
+    <text y="84" font-size="13" text-anchor="middle" font-weight="700">Success</text><text y="100" font-size="10.5" text-anchor="middle">gold band + olive sprig</text>
+  </g>
+  <g transform="translate(660,70)">
+    <rect x="-40" y="-12" width="80" height="24" rx="12" fill="#faf3e0" stroke="#1c1512" stroke-width="2.5"/><circle cx="-40" cy="0" r="12" fill="#e6d5ae" stroke="#1c1512" stroke-width="2.5"/>
+    <path d="M-10 -12 V12 M4 -12 V12" stroke="#8e2323" stroke-width="3.5"/><circle cx="-3" cy="16" r="5" fill="#8e2323"/>
+    <text y="84" font-size="13" text-anchor="middle" font-weight="700">“Higher ballot”</text><text y="100" font-size="10.5" text-anchor="middle">red knotted cord</text><text y="114" font-size="10.5" text-anchor="middle">(§2.4 extension)</text>
+  </g>
+  <g transform="translate(780,70)">
+    <path d="M-22 -26 H22 V20 Q0 34 -22 20Z" fill="#d9b48a" stroke="#1c1512" stroke-width="2.5"/><circle cx="0" cy="-16" r="4" fill="#faf3e0" stroke="#1c1512"/><path d="M0 -20 V-40" stroke="#6b3a1f" stroke-width="2"/>
+    <text y="12" font-size="18" text-anchor="middle">🦉</text>
+    <text y="84" font-size="13" text-anchor="middle" font-weight="700">Heartbeat</text><text y="100" font-size="10.5" text-anchor="middle">clay name-tag</text>
+  </g>
+  <g transform="translate(900,70)">
+    <path d="M-22 -20 H22 V20 H-22 Z M-22 -20 L-40 -6 V6 L-22 20 M22 -20 L40 -6 V6 L22 20" fill="#6b3a1f" stroke="#1c1512" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M-22 -20 L-40 -6 V6 L-22 20 Z M22 -20 L40 -6 V6 L22 20 Z" fill="#6b3a1f" stroke="#1c1512" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="-16" y="-14" width="32" height="28" fill="#3d2a1a"/><circle cx="0" cy="24" r="6" fill="#bf4a26" stroke="#1c1512"/>
+    <text y="84" font-size="13" text-anchor="middle" font-weight="700">Citizen request</text><text y="100" font-size="10.5" text-anchor="middle">single wax tablet</text><text y="114" font-size="10.5" text-anchor="middle">with dovetail handles</text>
+  </g>
+</svg></div>
+<fieldset class="decision" data-id="D13" data-title="Message coding">
+  <legend>D13 · How message types are told apart</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Container shape (colour secondary)</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D13" value="A · Container shape (colour secondary)" checked> A · Container shape</label>
+    <label class="opt"><input type="radio" name="D13" value="B · Wax-seal colour only"> B · Seal colour only</label>
+    <label class="opt"><input type="radio" name="D13" value="C · Messengers colour-coded by message"> C · Messenger colour</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<!-- ===================================================== 10 COLOUR -->
+<h2 id="colour"><span class="num">10</span>Colour and light by chapter</h2>
+<p class="small">The house palette never changes; the light does. Within the ballot sequence (nextballot → lastvote → voting → success) the <b>sun lowers gradually</b>, so the hourglass minutes are visible in the sky.</p>
+<div class="script">
+  <div><div class="bar" style="background:linear-gradient(90deg,#f2e7cd,#e6d5ae,#c9b48a)"></div><p><b>Frame / dig</b><br>bleached noon, dust, pale sky</p></div>
+  <div><div class="bar" style="background:linear-gradient(90deg,#136f9e,#f8f5ee,#bf4a26,#66722c)"></div><p><b>Ch I · Problem</b><br>bright trading-day noon, full palette</p></div>
+  <div><div class="bar" style="background:linear-gradient(90deg,#1c1512,#c1912b,#bf4a26)"></div><p><b>Ch II · Synod</b><br>late afternoon into torchlight; gold and ink</p></div>
+  <div><div class="bar" style="background:linear-gradient(90deg,#e9c46a,#c1912b,#bf4a26,#6b3a1f)"></div><p><b>Ch II · Ballot sequence</b><br>golden hour, sun lowering panel by panel</p></div>
+  <div><div class="bar" style="background:linear-gradient(90deg,#8fc3dc,#136f9e,#f8f5ee,#66722c)"></div><p><b>Ch III · Parliament</b><br>crisp busy morning, aegean-heavy</p></div>
+  <div><div class="bar" style="background:linear-gradient(90deg,#4a5560,#6e7a80,#8e2323)"></div><p><b>§3.3.6 · The fall</b><br>slate storm, desaturated, one red cloak</p></div>
+  <div><div class="bar" style="background:linear-gradient(90deg,#c1912b,#7a5a8a,#1c1512)"></div><p><b>Ch IV · Relevance</b><br>dusk over the ruin</p></div>
+</div>
+
+<!-- ===================================================== 11 COVER -->
+<h2 id="cover"><span class="num">11</span>Cover</h2>
+<p class="small"><code>COVER_PROMPTS.md</code> sets two constraints: the cover shows <em>the setting and its people, not a mechanism</em>, and no cover repeats another's stock elements (this cover currently owns the hilltop temple, sunny bay and ships). The masthead copies Vol I exactly: laurel wreath with P, numeral <b>V</b>, the PAXOS COMICS box, the title <b>THE PART-TIME PARLIAMENT</b>, and <b>by LESLIE LAMPORT</b>.</p>
+<div class="grid">
+  <div class="card rec"><h4>A · The Round at work <span class="badge rec">locked</span></h4>
+  <p class="small">A high three-quarter view down into the Round on a bright morning. Scattered legislators on the tiers, messengers running the radial stairs. Through the near gateway, two legislators stroll out toward the banquet house while one arrives, dusty from the harbour. Sea over the far rim. Foreground figures at the bottom edge, as on the Vol I cover. People doing things, not a diagram; but a reader of the paper sees the network.</p></div>
+  <div class="card rejected"><h4>B · The Oath of Ink <span class="badge no">not chosen</span></h4>
+  <p class="small">Close and heroic: one legislator in the foreground writing in the ledger, hourglass beside, messenger arriving; the Round blurred behind. <span class="badge risk">shows a mechanism</span></p></div>
+  <div class="card rejected"><h4>C · Lost and found <span class="badge no">not chosen</span></h4>
+  <p class="small">The living Round above, fading down into the ruin at the dig with the archaeologist at the bottom. Poetic, but it courts the split-panel failure and puts a modern figure on the cover.</p></div>
+</div>
+<fieldset class="decision" data-id="D17" data-title="Cover concept">
+  <legend>D17 · Cover concept</legend>
+  <p class="locked-line">🔒 Locked: <b>A · The Round at work</b></p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D17" value="A · The Round at work" checked> A · The Round at work</label>
+    <label class="opt"><input type="radio" name="D17" value="B · The Oath of Ink"> B · The Oath of Ink</label>
+    <label class="opt"><input type="radio" name="D17" value="C · Lost and found"> C · Lost and found</label>
+  </div>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<!-- ===================================================== 12 SHEETS -->
+<h2 id="sheets"><span class="num">12</span>Reference sheet plan (for Gemini)</h2>
+<h3>Phase A: proof sheets first</h3>
+<p class="small">With the decisions locked, there are no option images to compare. Instead, generate the sheets that carry the most risk, review them, amend this document if needed, and only then do the rest. Every sheet: house style (§2), <b>locked</b> options only, plain cream paper, 16:9, no words (circled item numbers allowed on prop and symbol plates).</p>
+<div class="tbl"><table>
+<thead><tr><th>Order</th><th>Sheet</th><th>Why first</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>vol5_ref_chamber</code></td><td>The biggest bet and the least familiar silhouette. It has to read as a round Greek assembly bowl with barred gates, not a Roman arena or a modern stadium.</td></tr>
+<tr><td>2</td><td><code>vol5_ref_priests</code></td><td>The cast of every protocol panel; checks that the stole colours, body types and emblems survive generation.</td></tr>
+<tr><td>3</td><td><code>vol5_ref_ledger</code></td><td>The most detailed prop, and where writing leaks most easily (page texture must stay unreadable).</td></tr>
+<tr><td>4</td><td><code>vol5_ref_symbols</code></td><td>Unblocks the D19 relic code pass, and fixes the emblem and container shapes every panel reuses.</td></tr>
+<tr><td>5</td><td><code>vol5_ref_messengers</code></td><td>New in v1.2. In about ten panels, almost as many as the priests.</td></tr>
+<tr><td>6</td><td><code>vol5_ref_benches</code></td><td>New in v1.2. The recurring background legislators; makes Parliament half women.</td></tr>
+<tr><td>7</td><td><code>vol5_ref_townsfolk</code></td><td>New in v1.2. The commoners of every street, harbour and banquet scene.</td></tr>
+</tbody></table></div>
+
+<h3>Phase B: all reference sheets</h3>
+<p class="small">Phase A's seven sheets are included below; generate the other five after the proofs are approved. The additional cast lives on its own new sheets (messengers, benches, townsfolk); <code>vol5_ref_priests</code> stays the Five only.</p>
+<div class="tbl"><table>
+<thead><tr><th>File</th><th>Layout</th><th>Contents</th></tr></thead>
+<tbody>
+<tr><td><code>vol5_ref_priests</code></td><td>5 full-length figures in a row</td><td>Α Β Γ Δ Ε with stoles, ledgers, emblems (visual description in §6).</td></tr>
+<tr><td><code>vol5_ref_parliament</code></td><td>5–6 figures</td><td>Λ˘ινχ∂, Δφωρκ (with sash), Ωκι, the Rich President + a scribe, Στωκμ˘ιρ.</td></tr>
+<tr><td><code>vol5_ref_benches</code></td><td>7 figures</td><td>The Shipowner, the Vintner, the Money-changer, the Potter, Παρνας and his son sharing one ledger, Στρωνγ.</td></tr>
+<tr><td><code>vol5_ref_citizens</code></td><td>6 figures + goats</td><td>Δ˘ικστρα, Γωυδα, Δωλεφ + goatherd + black goats, Σκεεν, General Λαμπσων, the scribe of the error.</td></tr>
+<tr><td><code>vol5_ref_townsfolk</code></td><td>8–10 figures, may overlap slightly</td><td>Cheese seller, water carrier, mother and child, children at play, fisherwoman, dockworker, sailor, elder, aulos player, banquet server; one soldier.</td></tr>
+<tr><td><code>vol5_ref_messengers</code></td><td>3 figures + 1 still life</td><td>Sprinter, Doubler, Voyager (full-length, front-facing); the Vanished's abandoned satchel with footprints leading away. </td></tr>
+<tr><td><code>vol5_ref_chamber</code></td><td>3 tall panes</td><td>Aerial · from the top tier · barred gateway with statues.</td></tr>
+<tr><td><code>vol5_ref_chamber_centre</code></td><td>3 panes</td><td>Synod altar · Parliament platform · the ruin today, with the 1990 archaeologist (D10) as the only figure.</td></tr>
+<tr><td><code>vol5_ref_island</code></td><td>3 tall panes</td><td>Harbour · agora with cheese and goat market · banquet house + Statue Walk.</td></tr>
+<tr><td><code>vol5_ref_ledger</code></td><td>numbered plate ①–⑥</td><td>Closed · front spread with gap · back with note boxes · slip · Synod variant · law-book variant.</td></tr>
+<tr><td><code>vol5_ref_props</code></td><td>numbered plate ①–⑧</td><td>Writing kit (no sponge) · hourglass · president's sash · balance · purse &amp; hire-tag · sundial · inspector's badge &amp; stamp · Figure 1 fragment.</td></tr>
+<tr><td><code>vol5_ref_symbols</code></td><td>numbered plate</td><td>The eight message containers · ballot token / vote / null vote · the five priest emblems · decree emblems. The one sheet where the symbols' key lives.</td></tr>
+</tbody></table></div>
+
+<fieldset class="decision" data-id="D18" data-title="File naming">
+  <legend>D18 · File names for the new panels</legend>
+  <p class="locked-line">🔒 Locked: <b>A · New vol5_* stems; update volume-5.html + R2 at swap</b></p>
+  <p class="small" style="margin:.2em 0">Volume V's current files have no prefix (<code>ledger.png</code>, <code>synod.png</code>) and <code>volume-5.html</code> loads them from R2 by those names.</p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D18" value="A · New vol5_* stems; update volume-5.html + R2 at swap" checked> A · New <code>vol5_*</code> names</label>
+    <label class="opt"><input type="radio" name="D18" value="B · Overwrite legacy stems"> B · Overwrite legacy names</label>
+  </div>
+  <p class="small muted" style="margin:.2em 0 .5em"><b>Real cost of each.</b> Every Volume V image is served from R2 (<code>pub-360f…r2.dev/&lt;stem&gt;_small.webp</code>), not from local <code>images/</code>. <b>A</b> = 19 new R2 uploads <em>plus</em> 19 <code>src</code> rewrites (and alt text, §13) in <code>volume-5.html</code>; the old art stays live until the swap commit, and the names match Vols I and IV. <b>B</b> = 19 uploads over the same keys and zero URL edits, but no staging: each upload goes live immediately and CDN caches may serve a mix of old and new art. Either way the cover stays <code>cover.png</code>: replace the local PNG (<code>index.html</code> uses it as the <code>&lt;img&gt;</code> fallback) <em>and</em> re-upload <code>cover_small.webp</code> to R2.</p>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<!-- ===================================================== 13 PANELS -->
+<h2 id="panels"><span class="num">13</span>Panel map: what each image needs</h2>
+<p class="small">What each image must show, which reference sheets it depends on, and which failure modes it is most exposed to.</p>
+<div class="tbl"><table>
+<thead><tr><th>Image</th><th>Ratio</th><th>§</th><th>References</th><th>Direction / traps</th></tr></thead>
+<tbody>
+<tr><td><code>cover</code></td><td>2:3</td><td>—</td><td>chamber, parliament, benches, messengers, island</td><td>D17. Masthead exactly as Vol I.</td></tr>
+<tr><td><code>manuscript</code></td><td>4:3</td><td>Editor</td><td>chamber_centre (ruin), props ⑧</td><td>D10. No pith helmet, no balloon; fragment unreadable.</td></tr>
+<tr><td><code>island</code></td><td>16:9</td><td>1.1</td><td>island, chamber, townsfolk</td><td>Harbour → agora → Statue Walk → Round. No banners or labels (audit). The legacy file is a 2.36:1 panorama; at 16:9 it will be noticeably less wide.</td></tr>
+<tr><td><code>wanderers</code></td><td>16:9</td><td>1.1</td><td>chamber, parliament, benches, townsfolk</td><td>A gateway in the foreground: one legislator off to the banquet, one arriving; half-empty tiers behind. Everyone life-size.</td></tr>
+<tr><td><code>ledger</code></td><td>4:3</td><td>1.2</td><td>ledger ②, props ①</td><td>Λ˘ινχ∂'s hands writing a row with the olive-coin emblem. Iron-gall ink.</td></tr>
+<tr><td><code>conflict</code></td><td>16:9</td><td>1.2</td><td>chamber, parliament, benches, symbols</td><td><b>One continuous scene</b>: group 1 leaving by the east gate toward the banquet house, group 2 entering by the west gate; two ledgers with different decree-37 emblems. No gutter.</td></tr>
+<tr><td><code>equipment</code></td><td>4:3</td><td>1.3</td><td>ledger, props</td><td>Museum-plate still life: ledger, reed pen, ink flask, hourglass, the slip. <em>No sponge.</em></td></tr>
+<tr><td><code>messenger</code></td><td>4:3</td><td>1.3</td><td>messengers, island, townsfolk</td><td>No inset: the Sprinter in the foreground; beyond the gate, the Voyager walking up a gangplank in the harbour below.</td></tr>
+<tr><td><code>synod</code></td><td>16:9</td><td>2</td><td>priests, chamber_centre (Synod)</td><td>Torchlit; nineteen rays; Β slipping out through a gate. The Five only.</td></tr>
+<tr><td><code>nextballot</code></td><td>16:9</td><td>2.2</td><td>priests, messengers, symbols</td><td>Γ sends messengers out, each with a scroll and a star-emblem token.</td></tr>
+<tr><td><code>lastvote</code></td><td>4:3</td><td>2.2</td><td>priests (Ε), ledger ③, symbols</td><td>Ε reads the back of his ledger (upside-down pages), ties a two-leaf tablet for a messenger.</td></tr>
+<tr><td><code>voting</code></td><td>16:9</td><td>2.2</td><td>priests, messengers, symbols</td><td>Quorum priests hand vote tokens to messengers who run to Γ. No urns, no winged sandals.</td></tr>
+<tr><td><code>success</code></td><td>16:9</td><td>2.2</td><td>priests, messengers, symbols</td><td>Olive-sprig scrolls to every priest; Δ writes the single decree on the consecrated leaf.</td></tr>
+<tr><td><code>hourglass</code></td><td>4:3</td><td>2.4</td><td>chamber (gate), props</td><td>A sea-green hourglass in the foreground; a gateway barred with the oak bar; statues on the wall.</td></tr>
+<tr><td><code>president</code></td><td>4:3</td><td>3.3.1</td><td>parliament (Ωκι), chamber_centre (Parliament)</td><td>Ωκι wears the sash on the stool at the hub, copying from a tall stack of ledgers while messengers wait.</td></tr>
+<tr><td><code>cheese</code></td><td>4:3</td><td>3.3.3</td><td>citizens, townsfolk (cheese seller), island (agora), props</td><td>Two badges, two stamps: whole-wheel vs split-wheel emblems. No FIT/UNFIT text (current image).</td></tr>
+<tr><td><code>goats</code></td><td>4:3</td><td>3.3.4</td><td>citizens, parliament (Στωκμ˘ιρ), ledger</td><td>Στωκμ˘ιρ's ledger open where the rows run out; black goats; Σκεεν refusing.</td></tr>
+<tr><td><code>fall</code></td><td>16:9</td><td>3.3.6</td><td>citizens, townsfolk (soldiers), chamber (storm), symbols</td><td>One continuous scene: the empty Round under storm; the scribe with the anchor-emblem decree; Λαμπσων's soldiers on the Statue Walk.</td></tr>
+<tr><td><code>statemachine</code></td><td>16:9</td><td>4.1</td><td>depends on D16</td><td>See D16.</td></tr>
+</tbody></table></div>
+
+<fieldset class="decision" data-id="D16" data-title="Chapter IV state-machine panel">
+  <legend>D16 · Chapter IV: the state machine panel</legend>
+  <p class="locked-line">🔒 Locked: <b>A · Ancient translation plate (relief/mosaic diagram, no modern objects)</b></p>
+  <p class="small" style="margin:.2em 0">The current panel is a split with a modern server room, which breaks the series rule “computers are always clerks”. The caption already spells out the mapping (legislator ↔ server, citizen ↔ client, current law ↔ database state).</p>
+  <div class="opts">
+    <label class="opt is-rec"><input type="radio" name="D16" value="A · Ancient translation plate (relief/mosaic diagram, no modern objects)" checked> A · Ancient “translation plate”</label>
+    <label class="opt"><input type="radio" name="D16" value="B · Sanctioned modern exception (1990s servers)"> B · Modern exception</label>
+    <label class="opt"><input type="radio" name="D16" value="C · The dig at dusk (archaeologist + ruin)"> C · The dig at dusk</label>
+  </div>
+  <p class="small muted" style="margin:.2em 0 .5em">A: a carved frieze on the Round's gateway showing citizens bringing requests to identical legislators who copy the same law book in the same order: the state-machine idea told in Paxon stone. Keep the relief pictorial (no inscriptions).</p>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h3>Captions &amp; alt text</h3>
+<p class="small">Captions are chronicle text: the art should complement them, not repeat or contradict them. Three current alt texts describe exactly what this direction forbids (“inset”, “Two-panel illustration”, “Split panel … server room”), so each new image ships with new alt text. The drafts below assume the recommended options; adjust them to the final images.</p>
+<div class="tbl"><table>
+<thead><tr><th>Image</th><th>Caption on page (verbatim)</th><th>Draft replacement alt text</th><th>Tension</th></tr></thead>
+<tbody>
+<tr><td><code>cover</code></td><td>—</td><td>Cover: The Part-Time Parliament by Leslie Lamport. A round open-air stone chamber on a windy island hill; legislators on the tiers, messengers running its stairways, people strolling out of a gateway toward the sea.</td><td>—</td></tr>
+<tr><td><code>manuscript</code></td><td>THE SUBMISSION WAS DISCOVERED BEHIND A FILING CABINET IN THE TOCS EDITORIAL OFFICE…</td><td>An archaeologist in a sun hat kneels in an excavation trench among the ruins of a round stone chamber, lifting a fragile papyrus fragment.</td><td>The caption is about the <em>editor's</em> discovery; the image shows the <em>author's</em> dig. That's complementary, not contradictory, but a 1990 office with a filing cabinet is a possible alternative for D10.</td></tr>
+<tr><td><code>island</code></td><td>EARLY IN THIS MILLENNIUM, THE AEGEAN ISLAND OF PAXOS WAS A THRIVING MERCANTILE CENTER.</td><td>Panorama of Paxos: a harbour crowded with merchant ships, a busy colonnaded agora, and a statue-lined road climbing to the round Chamber on the hill.</td><td>—</td></tr>
+<tr><td><code>wanderers</code></td><td>NO ONE WAS WILLING TO DEVOTE HIS LIFE TO PARLIAMENT — LEGISLATORS WANDERED IN AND OUT OF THE CHAMBER CONTINUALLY.</td><td>At a gateway of the half-empty Chamber, one legislator strolls out toward a banquet house while another arrives from town.</td><td>—</td></tr>
+<tr><td><code>ledger</code></td><td>LEDGERS WERE WRITTEN IN INDELIBLE INK — AN ENTRY, ONCE MADE, COULD NEVER BE CHANGED.</td><td>A legislator's hands write a new numbered row in a parchment ledger with a reed pen, beside a double inkwell.</td><td>—</td></tr>
+<tr><td><code>conflict</code></td><td>DISASTER! TWO GROUPS, ONE DECREE NUMBER, TWO CONTRADICTORY LAWS. THE PROTOCOL MUST MAKE THIS IMPOSSIBLE.</td><td>In one scene, a group of legislators leaves the Chamber by one gate for a banquet while a second group enters by another, their ledgers open at the same row with different decree emblems.</td><td>—</td></tr>
+<tr><td><code>equipment</code></td><td>STANDARD ISSUE, ONE PER LEGISLATOR: STURDY LEDGER, PEN, INDELIBLE INK, HOURGLASS TIMER… AND A VERY LOSABLE SLIP OF PAPER.</td><td>A still life of a legislator's kit: leather-bound ledger, reed pen, sealed ink flask, green glass hourglass and a torn scrap of papyrus.</td><td>—</td></tr>
+<tr><td><code>messenger</code></td><td>THE MESSENGER: FAST, HONEST… AND LIABLE TO SAIL AWAY MID-ERRAND WITH YOUR SCROLL IN HIS BELT.</td><td>A messenger sprints down the Chamber's stairs with a scroll; far below in the harbour, another walks up a ship's gangplank with a scroll still tucked in his belt.</td><td>—</td></tr>
+<tr><td><code>synod</code></td><td>EVERY 19 YEARS THE SYNOD CONVENED TO CHOOSE A SINGLE, SYMBOLIC DECREE. THEN THE PRIESTS TOOK UP WANDERING… AND ONE YEAR, NO DECREE WAS CHOSEN AT ALL.</td><td>Torchlit ceremony in the round Chamber: five priests in white with coloured stoles around a central altar and brazier, one slipping out through a gate.</td><td>—</td></tr>
+<tr><td><code>nextballot</code></td><td>STEP 1: PRIEST <i>p</i> CHOOSES BALLOT NUMBER <i>b</i> AND HIS MESSENGERS FAN OUT WITH <i>NextBallot(b)</i> SCROLLS.</td><td>A priest sends messengers running along the Chamber's stairways, each carrying a scroll with a bronze ballot token tied to it.</td><td>—</td></tr>
+<tr><td><code>lastvote</code></td><td>STEP 2: EACH PRIEST CHECKS THE BACK OF HIS LEDGER AND REPLIES <i>LastVote(b, v)</i> — A SOLEMN PROMISE TO CAST NO NEW VOTE BELOW <i>b</i>.</td><td>An elderly priest squints at the notes in the back of his ledger and hands a waiting messenger a tied two-leaf tablet.</td><td>Old alt says “LastVote scroll”; with D13-A it's a tablet.</td></tr>
+<tr><td><code>voting</code></td><td>STEPS 3–5: <i>BeginBallot</i> GOES OUT, THE QUORUM VOTES, AND <i>Voted</i> SCROLLS RACE BACK TO BE TALLIED.</td><td>Priests press bronze voting tokens into messengers' hands; the messengers race back to the initiating priest, who counts the tokens.</td><td><b>Conflict with D13-A:</b> caption says Voted <em>scrolls</em>, the symbol set says tokens. Either change the caption to “TOKENS” (the paper never says scrolls) or tie each token to a slim scroll.</td></tr>
+<tr><td><code>success</code></td><td>STEP 6: <i>Success(d)</i> TO ALL — EVERY PRIEST WRITES THE DECREE IN HIS LEDGER. THE SYNOD HAS CHOSEN!</td><td>Messengers deliver scrolls bound with olive sprigs to every priest, and each priest writes the single decree into his ledger.</td><td>—</td></tr>
+<tr><td><code>hourglass</code></td><td>BAR THE DOORS WITH A MAJORITY INSIDE, AND THE HOURGLASS PROMISES A DECREE WITHIN 99 MINUTES.</td><td>A green glass hourglass in the foreground; behind it, the Chamber's bronze gate is shut and barred with an oak beam.</td><td>—</td></tr>
+<tr><td><code>president</code></td><td>LEGISLATOR Ωκι RETURNS FROM SIX MONTHS ABROAD… AND IS INSTANTLY MADE PRESIDENT, ALPHABETICALLY. PARLIAMENT HALTS WHILE HE COPIES SIX MONTHS OF DECREES.</td><td>A sunburnt legislator in a president's sash sits at the centre of the Chamber, laboriously copying from a towering stack of ledgers while messengers wait idle.</td><td>—</td></tr>
+<tr><td><code>cheese</code></td><td>TWO CHEESE INSPECTORS AT ONCE! Δ˘ικστρα SAYS “UNFIT,” Γωυδα SAYS “FIT,” AND THE CHEESE MARKET DESCENDS INTO CHAOS.</td><td>Two cheese inspectors with identical badges stamp the same wheel of cheese with opposite marks while a merchant despairs.</td><td>Caption quotes the words; the image must use emblems only.</td></tr>
+<tr><td><code>goats</code></td><td>THE LAW SAYS BLACK GOATS MAY BE SOLD — BUT LEGISLATOR Στωκμ˘ιρ’S LEDGER STOPS AT DECREE 76, AND THE DEAL COLLAPSES.</td><td>A farmer presents black goats; a cautious merchant refuses after a legislator shows a ledger whose entries run out partway down the page.</td><td>—</td></tr>
+<tr><td><code>fall</code></td><td>ONE SCRIBE’S ERROR MADE DROWNED SAILORS THE ONLY LEGISLATORS. NO DECREE COULD PASS — NOT EVEN THE FIX. GENERAL Λαμπσων SAW HIS MOMENT.</td><td>Storm clouds over the empty Chamber: a horrified scribe stares at his ledger while a general's soldiers march up the statue-lined road.</td><td>—</td></tr>
+<tr><td><code>statemachine</code></td><td>THE CHAMBER, TRANSLATED: LEGISLATOR ↔ SERVER · CITIZEN ↔ CLIENT · CURRENT LAW ↔ DATABASE STATE.</td><td>A carved stone frieze on the Chamber gate: citizens bring requests to a row of identical legislators, each copying the same law book in the same order.</td><td>Depends on D16.</td></tr>
+</tbody></table></div>
+
+<h3>The interactive relics</h3>
+<p class="small"><code>volume-5.html</code> has five interactive pieces that draw the same world in HTML/SVG: The Manuscript (Fig. 1), The Six Steps, The Chamber oracle, Fill the Gaps and the Hidden Names decoder. They show priests as round avatars <b>lettered Α–Ε in the same five colours this document assigns to the stoles</b>, messages as scroll “chips”, and ledgers as entry lists. D19 locks full adoption, so the relics switch to the emblem and container vocabulary together with the new panels.</p>
+<fieldset class="decision" data-id="D19" data-title="Interactive relics">
+  <legend>D19 · Do the interactives follow the new art?</legend>
+  <p class="locked-line">🔒 Locked: <b>B · Full adoption now (emblems replace letters, container icons everywhere)</b></p>
+  <div class="opts">
+    <label class="opt"><input type="radio" name="D19" value="A · Keep letters + shared colours; later add emblems beside letters and message icons on chips"> A · Letters + shared colours; small follow-up</label>
+    <label class="opt is-rec"><input type="radio" name="D19" value="B · Full adoption now (emblems replace letters, container icons everywhere)" checked> B · Full adoption now</label>
+    <label class="opt"><input type="radio" name="D19" value="C · Out of scope for this pass"> C · Out of scope</label>
+  </div>
+  <p class="small muted" style="margin:.2em 0 .5em">Chosen over the recommended A: the relics should look like the panels beside them, not like a separate diagram.</p>
+  <textarea placeholder="Notes (optional)"></textarea>
+</fieldset>
+
+<h4>D19 implementation spec (Claude's code pass)</h4>
+<div class="tbl"><table>
+<thead><tr><th>Where</th><th>Today</th><th>After D19</th></tr></thead>
+<tbody>
+<tr><td><b>Icon source</b></td><td>Letters in coloured circles; text-only scroll chips</td><td>One inline SVG sprite, <code>assets/vol5-emblems.svg</code>: 5 priest emblems, 8 message containers, the ballot token and the decree emblems. Drawn as ink-outline silhouettes with flat fill, <b>traced from the approved <code>vol5_ref_symbols</code> sheet</b>, so the code pass starts once that sheet is approved. No emoji (they render differently on every platform and break the comic look).</td></tr>
+<tr><td><b>Priest avatars</b> (Six Steps, Chamber oracle)</td><td>Letter on stole colour</td><td>Emblem on the same stole colour. The priest's letter moves to a small label under the header (the relics' explanations and the paper quote Α–Ε).</td></tr>
+<tr><td><b>Initiator picker</b> (Chamber oracle)</td><td><code>&lt;select&gt;</code> of “Priest Α…”</td><td>A row of five emblem buttons (a <code>&lt;select&gt;</code> can't show icons), each with <code>aria-label="Priest Α, dolphin"</code>.</td></tr>
+<tr><td><b>Ballot numbers</b> in cards, stamps and log</td><td><code>(14,Γ)</code></td><td>A small token icon: the count, then the owner's emblem (<code>14 ✴</code> drawn as an icon), matching D14.</td></tr>
+<tr><td><b>Messages</b> (tray chips, mail slots, log lines)</td><td>Text chip “NextBallot(14)”</td><td>Container icon + the message name. The name stays: the relics teach the protocol's vocabulary.</td></tr>
+<tr><td><b>The Manuscript</b> (Fig. 1)</td><td>Boxed Greek letters per ballot</td><td>Emblem tokens in the quorum column; voters' tokens get the box. A one-line key above the table (Α = dolphin, Β = owl, Γ = star, Δ = tortoise, Ε = horse) because the commentary under the table is the paper's own prose naming Α, Γ, Δ.</td></tr>
+<tr><td><b>Fill the Gaps</b></td><td>Numbered text entries, gaps tinted red</td><td>Rows styled like the ledger (§7): red margin mark and decree emblem per row; gaps as empty ruled rows; olive-day entries get the olive-sprig emblem.</td></tr>
+<tr><td><b>Hidden Names decoder</b></td><td>Cards of researchers</td><td>No change (no priests or messages).</td></tr>
+<tr><td><b>Never changed</b></td><td>—</td><td>The paper's prose, formulas, Figure 1 commentary and captions keep Greek letters exactly. Every icon carries its letter in <code>aria-label</code>/<code>title</code>.</td></tr>
+</tbody></table></div>
+
+<!-- ===================================================== 14 DECISIONS -->
+<h2 id="decisions"><span class="num">14</span>Decisions &amp; handoff</h2>
+<div class="box gold">
+  <p style="margin-top:0"><b>Locked v1.2.</b> v1.2 completes the cast (messenger looks, Parliament's benches, townsfolk) and adds a messengers proof sheet. v1.1 amended details after the first proof sheets (citizen-request tablet, ballot-token notches, decree-emblem style, painting-forbidden emblem, optional upside-down back, 2K sheets); no decision changed. The choices below are pre-selected from the decisions of 15 Sep 2026. To reopen one, change it here, add a note, copy the export back to Claude, and the document is amended as v2.</p>
+  <p><button class="btn" id="btn-copy" type="button">Copy decisions as Markdown</button>
+     <button class="btn ghost" id="btn-rec" type="button">Fill undecided with recommendations</button>
+     <button class="btn ghost" id="btn-clear" type="button">Clear all</button>
+     <span class="decided-flag" id="copy-status" aria-live="polite"></span></p>
+  <textarea id="export-out" readonly aria-label="Exported decisions"></textarea>
+</div>
+
+<h3>Conditions for the image team</h3>
+<ol class="small">
+  <li>Every image matches the <b>house style</b> (§2).</li>
+  <li>Only <b>locked</b> options apply; everything marked <i>not chosen</i> is out. Every detail in a <b>visual description</b> must be visible in the result; details may be added, never contradicted.</li>
+  <li>Reference sheets: plain cream paper, 16:9, no word labels; circled item numbers only where a plate needs them.</li>
+  <li>A panel built from a reference sheet is a new picture, not an edit of the sheet, and contains only the characters its scene names.</li>
+  <li>Every result is checked against §1 (canon) and the failure-mode table (§2) before it is shown for approval.</li>
+</ol>
+
+<p class="small muted" style="margin-top:3em">Sources: Lamport, “The Part-Time Parliament”, ACM TOCS 16(2), 1998 (<code>sources/vol-5_lamport-1998_part-time-parliament.pdf</code>) · <code>volume-5.html</code> · <code>image-quality-check.html</code> · <code>IMAGE_PROMPTS.md</code> · <code>COVER_PROMPTS.md</code> · <code>IMAGE_MASTER_PROMPT.md</code>.</p>
+</main>
+
+<script>
+(function(){
+  var KEY = 'paxos-vol5-art-direction-locked-v1';
+  var sets = Array.prototype.slice.call(document.querySelectorAll('fieldset.decision'));
+  sets.sort(function(a,b){ return a.dataset.id.localeCompare(b.dataset.id); });
+
+  function load(){ try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){ return {}; } }
+  function save(state){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+
+  function read(){
+    var state = {};
+    sets.forEach(function(fs){
+      var checked = fs.querySelector('input[type=radio]:checked');
+      var note = fs.querySelector('textarea');
+      state[fs.dataset.id] = { choice: checked ? checked.value : '', note: note ? note.value : '' };
+    });
+    return state;
+  }
+
+  function render(){
+    var state = read();
+    var decided = 0, lines = ['# Volume V art direction: decisions', ''];
+    sets.forEach(function(fs){
+      var s = state[fs.dataset.id];
+      var rec = fs.querySelector('.opt.is-rec input');
+      if (s.choice) decided++;
+      var choice = s.choice || ((rec ? rec.value : '?') + ' (recommended, not yet confirmed)');
+      lines.push('- **' + fs.dataset.id + ' · ' + fs.dataset.title + ':** ' + choice + (s.note.trim() ? '\n  - note: ' + s.note.trim().replace(/\n/g, ' ') : ''));
+    });
+    document.getElementById('progress').textContent = decided + ' / ' + sets.length + ' decided';
+    document.getElementById('export-out').value = lines.join('\n');
+    save(state);
+  }
+
+  var initial = load();
+  sets.forEach(function(fs){
+    var s = initial[fs.dataset.id];
+    if (s){
+      fs.querySelectorAll('input[type=radio]').forEach(function(r){ if (r.value === s.choice) r.checked = true; });
+      var ta = fs.querySelector('textarea'); if (ta && s.note) ta.value = s.note;
+    }
+    fs.addEventListener('change', render);
+    fs.addEventListener('input', render);
+  });
+
+  document.getElementById('btn-rec').addEventListener('click', function(){
+    sets.forEach(function(fs){
+      if (!fs.querySelector('input[type=radio]:checked')){
+        var rec = fs.querySelector('.opt.is-rec input'); if (rec) rec.checked = true;
+      }
+    });
+    render();
+  });
+  document.getElementById('btn-clear').addEventListener('click', function(){
+    sets.forEach(function(fs){
+      fs.querySelectorAll('input[type=radio]').forEach(function(r){ r.checked = false; });
+      var ta = fs.querySelector('textarea'); if (ta) ta.value = '';
+    });
+    render();
+  });
+  document.getElementById('btn-copy').addEventListener('click', function(){
+    var out = document.getElementById('export-out');
+    var status = document.getElementById('copy-status');
+    function fallback(){ out.focus(); out.select(); status.textContent = 'Selected: press ⌘C / Ctrl+C'; }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(out.value).then(function(){ status.textContent = 'Copied ✓'; }, fallback);
+    } else { fallback(); }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
